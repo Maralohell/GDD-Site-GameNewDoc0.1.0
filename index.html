@@ -1,0 +1,3069 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>not found - Game Design Document</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0f0f15;
+            --bg-card: #1a1f1a;
+            --bg-card-hover: #1f2620;
+            --accent: #2d8a3d;
+            --accent-dark: #1f5f2c;
+            --accent-glow: rgba(45, 138, 61, 0.3);
+            --accent-secondary: #3a9e4d;
+            --text-primary: #e8e8e8;
+            --text-secondary: #a8a8a8;
+            --text-muted: #666680;
+            --border: #262626;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --info: #3498db;
+            --gradient-1: linear-gradient(135deg, #2d8a3d, #1f5f2c);
+            --gradient-2: linear-gradient(135deg, #0a0a0f, #1a1f1a);
+            --gradient-3: linear-gradient(135deg, #0f3460, #1a2a3a);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            background: rgba(45, 138, 61, 0.1);
+        }
+
+        .nav-cta {
+            background: var(--gradient-1) !important;
+            color: white !important;
+            -webkit-text-fill-color: white !important;
+            font-weight: 600 !important;
+        }
+
+        .nav-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .nav-burger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .nav-burger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: 0.3s;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(45, 138, 61, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(15, 52, 96, 0.3) 0%, transparent 50%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(45, 138, 61, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(45, 138, 61, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            background: rgba(45, 138, 61, 0.15);
+            border: 1px solid rgba(45, 138, 61, 0.3);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 900;
+            letter-spacing: 12px;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #2d8a3d 50%, #3a9e4d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 20px rgba(45, 138, 61, 0.3)); }
+            100% { filter: drop-shadow(0 0 40px rgba(45, 138, 61, 0.6)); }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .hero-tagline {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            color: var(--text-primary);
+            margin-bottom: 3rem;
+            font-weight: 500;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-tagline span {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .btn {
+            padding: 0.9rem 2.2rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            background: rgba(45, 138, 61, 0.1);
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .hero-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.3rem;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-dark {
+            background: var(--bg-secondary);
+            max-width: 100%;
+            padding: 6rem 2rem;
+        }
+
+        .section-dark .section-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-number {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(45, 138, 61, 0.3);
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: rgba(45, 138, 61, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ===== PROBLEM / OPPORTUNITY ===== */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .problem-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .problem-column.problems h3 {
+            color: #2d8a3d;
+        }
+
+        .problem-column.opportunities h3 {
+            color: var(--success);
+        }
+
+        .problem-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            border-left: 3px solid;
+        }
+
+        .problem-item.problem {
+            border-color: #2d8a3d;
+        }
+
+        .problem-item.opportunity {
+            border-color: var(--success);
+        }
+
+        .problem-item-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .problem-item-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .problem-item-text strong {
+            color: var(--text-primary);
+        }
+
+        /* ===== PRODUCT FEATURES ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(45, 138, 61, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .feature-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .feature-card-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .feature-card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .feature-list li::before {
+            content: "▸";
+            color: var(--accent);
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* ===== PILLARS ===== */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .pillar-card {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-1);
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(45, 138, 61, 0.3);
+        }
+
+        .pillar-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .pillar-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .pillar-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ===== COMPARISON TABLE ===== */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .comparison-table thead {
+            background: var(--bg-card);
+        }
+
+        .comparison-table th {
+            padding: 1rem 1.2rem;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .comparison-table th:first-child {
+            color: var(--accent);
+        }
+
+        .comparison-table td {
+            padding: 0.9rem 1.2rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .comparison-table tr:hover td {
+            background: rgba(45, 138, 61, 0.05);
+        }
+
+        .comparison-table .highlight-row td {
+            background: rgba(45, 138, 61, 0.08);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .comparison-table .highlight-row td:first-child {
+            color: var(--accent);
+        }
+
+        .check { color: var(--success); }
+        .cross { color: #2d8a3d; }
+        .warn { color: var(--warning); }
+
+        /* ===== MARKET ===== */
+        .market-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .market-stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .market-stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .market-stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .market-stat-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        /* ===== FINANCE ===== */
+        .finance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .finance-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .finance-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .finance-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .finance-item:last-child {
+            border-bottom: none;
+        }
+
+        .finance-item-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .finance-item-value {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .finance-item-value.positive {
+            color: var(--success);
+        }
+
+        .finance-item-value.negative {
+            color: #2d8a3d;
+        }
+
+        .finance-total {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .finance-total-label {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .finance-total-value {
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
+        /* ===== SCENARIOS ===== */
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .scenario-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .scenario-card.featured {
+            border-color: var(--accent);
+            background: rgba(45, 138, 61, 0.05);
+            transform: scale(1.03);
+        }
+
+        .scenario-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .scenario-badge.pessimistic {
+            background: rgba(45, 138, 61, 0.15);
+            color: #2d8a3d;
+        }
+
+        .scenario-badge.realistic {
+            background: rgba(45, 138, 61, 0.15);
+            color: var(--accent);
+        }
+
+        .scenario-badge.optimistic {
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--success);
+        }
+
+        .scenario-sales {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+        }
+
+        .scenario-revenue {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .scenario-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .scenario-detail:last-child {
+            border-bottom: none;
+        }
+
+        .scenario-detail-label {
+            color: var(--text-muted);
+        }
+
+        .scenario-detail-value {
+            font-weight: 600;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding: 1.5rem 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            border-color: rgba(45, 138, 61, 0.3);
+            transform: translateX(4px);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.35rem;
+            top: 1.8rem;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg-primary);
+            z-index: 1;
+        }
+
+        .timeline-phase {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-period {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .timeline-tasks {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .timeline-tasks li {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .timeline-tasks li::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* ===== TEAM ===== */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .team-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            border-color: rgba(45, 138, 61, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .team-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 auto 1rem;
+            color: white;
+        }
+
+        .team-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .team-role {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.8rem;
+        }
+
+        .team-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ===== STATUS ===== */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.2rem;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .status-check {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(46, 204, 113, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--success);
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .status-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .status-text strong {
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        /* ===== ASK ===== */
+        .ask-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .ask-amount {
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .ask-amount-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .ask-amount-value {
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .ask-amount-sub {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .ask-tranches {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .ask-tranche {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            background: rgba(45, 138, 61, 0.08);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .ask-tranche-name {
+            color: var(--text-secondary);
+        }
+
+        .ask-tranche-value {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .ask-offer {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .ask-offer-item {
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .ask-offer-item h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ask-offer-item p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ===== REASONS ===== */
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+        }
+
+        .reason-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .reason-card:hover {
+            border-color: rgba(45, 138, 61, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .reason-number {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent);
+            opacity: 0.3;
+            margin-bottom: 0.5rem;
+        }
+
+        .reason-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .reason-text {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ===== RISKS ===== */
+        .risks-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .risk-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 3fr;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 1.2rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .risk-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .risk-level {
+            text-align: center;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 0.25rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .risk-badge.high {
+            background: rgba(45, 138, 61, 0.15);
+            color: #2d8a3d;
+        }
+
+        .risk-badge.medium {
+            background: rgba(243, 156, 18, 0.15);
+            color: var(--warning);
+        }
+
+        .risk-badge.low {
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--success);
+        }
+
+        .risk-mitigation {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== WEAPONS SHOWCASE ===== */
+        .weapons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .weapon-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .weapon-card:hover {
+            border-color: rgba(45, 138, 61, 0.3);
+        }
+
+        .weapon-category {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .weapon-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .weapon-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .weapon-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .weapon-stat-label {
+            color: var(--text-muted);
+        }
+
+        .weapon-stat-bar {
+            width: 100px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .weapon-stat-fill {
+            height: 100%;
+            background: var(--gradient-1);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        /* ===== MAPS ===== */
+        .maps-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .map-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .map-card:hover {
+            border-color: rgba(45, 138, 61, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .map-preview {
+            height: 180px;
+            background: var(--gradient-3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+        }
+
+        .map-preview::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(transparent, var(--bg-card));
+        }
+
+        .map-info {
+            padding: 1.5rem;
+        }
+
+        .map-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .map-type {
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+        }
+
+        .map-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .map-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .map-tag {
+            padding: 0.2rem 0.6rem;
+            background: rgba(45, 138, 61, 0.1);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ===== CAMPAIGN ===== */
+        .campaign-missions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mission-card {
+            display: grid;
+            grid-template-columns: 60px 1fr auto;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .mission-card:hover {
+            border-color: rgba(45, 138, 61, 0.3);
+            transform: translateX(4px);
+        }
+
+        .mission-number {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--accent);
+            opacity: 0.5;
+            text-align: center;
+        }
+
+        .mission-info h4 {
+            font-size: 1.05rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .mission-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .mission-type {
+            padding: 0.3rem 0.8rem;
+            background: rgba(45, 138, 61, 0.1);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 4rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: 6px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-contacts {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-contact {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-contact:hover {
+            color: var(--accent);
+        }
+
+        .footer-copy {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== VIDEO EMBED ===== */
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 3rem auto;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        .video-placeholder {
+            aspect-ratio: 16/9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(ellipse at center, rgba(45, 138, 61, 0.1) 0%, transparent 70%),
+                var(--bg-card);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .video-placeholder:hover {
+            background:
+                radial-gradient(ellipse at center, rgba(45, 138, 61, 0.2) 0%, transparent 70%),
+                var(--bg-card);
+        }
+
+        .video-play-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 30px var(--accent-glow);
+            transition: transform 0.3s;
+        }
+
+        .video-placeholder:hover .video-play-btn {
+            transform: scale(1.1);
+        }
+
+        .video-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== TECH STACK ===== */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .tech-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            border-color: rgba(45, 138, 61, 0.3);
+        }
+
+        .tech-icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .tech-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .tech-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-section {
+            margin: 3rem 0;
+        }
+
+        .progress-bar-container {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-1);
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+
+        .progress-milestones {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .progress-milestone {
+            text-align: center;
+        }
+
+        .progress-milestone.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .fade-in-right {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+            .reasons-grid { grid-template-columns: repeat(3, 1fr); }
+            .tech-grid { grid-template-columns: repeat(2, 1fr); }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-burger { display: flex; }
+
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 15, 0.98);
+                padding: 1rem;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .hero-stats { grid-template-columns: repeat(2, 1fr); }
+            .problem-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .pillars-grid { grid-template-columns: 1fr; }
+            .finance-grid { grid-template-columns: 1fr; }
+            .scenarios-grid { grid-template-columns: 1fr; }
+            .market-stats { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: 1fr; }
+            .status-grid { grid-template-columns: 1fr; }
+            .ask-grid { grid-template-columns: 1fr; }
+            .reasons-grid { grid-template-columns: 1fr; }
+            .weapons-grid { grid-template-columns: 1fr; }
+            .maps-grid { grid-template-columns: 1fr; }
+            .tech-grid { grid-template-columns: repeat(2, 1fr); }
+
+            .risk-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .risk-level { text-align: left; }
+
+            .mission-card {
+                grid-template-columns: 40px 1fr;
+            }
+
+            .mission-type {
+                grid-column: 2;
+            }
+
+            .scenario-card.featured {
+                transform: none;
+            }
+
+            .section { padding: 4rem 1.5rem; }
+            .section-dark { padding: 4rem 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .tech-grid { grid-template-columns: 1fr; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">not found</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#problem">Проблема</a></li>
+                <li><a href="#product">Продукт</a></li>
+                <li><a href="#market">Рынок</a></li>
+                <li><a href="#finance">Финансы</a></li>
+                <li><a href="#timeline">План</a></li>
+                <li><a href="#team">Команда</a></li>
+                <li><a href="docs.html"> Документация</a></li>
+                <li><a href="#ask" class="nav-cta">Предложение</a></li>
+            </ul>
+            <div class="nav-burger" id="navBurger" onclick="toggleNav()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <div class="hero-badge">Питч-документ 2025</div>
+            <h1 class="hero-title">not found</h1>
+            <p class="hero-subtitle">Тактический шутер от первого лица</p>
+            <p class="hero-tagline">
+                Кинематографичная кампания и мультиплеер 6v6 в духе классических Call of Duty.
+                <span>Первый российский аркадный FPS</span> для голодного рынка.
+            </p>
+            <div class="hero-buttons">
+                <a href="#ask" class="btn btn-primary"> Инвестировать</a>
+                <a href="#prototype" class="btn btn-secondary"> Смотреть прототип</a>
+                <a href="#product" class="btn btn-secondary"> О проекте</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">18</div>
+                    <div class="hero-stat-label">Месяцев разработки</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">6</div>
+                    <div class="hero-stat-label">Человек в команде</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">22M₽</div>
+                    <div class="hero-stat-label">Бюджет</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">114%</div>
+                    <div class="hero-stat-label">Прогноз ROI</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PROBLEM & OPPORTUNITY ===== -->
+    <div class="section-dark" id="problem">
+        <div class="section-inner">
+            <div class="section-header fade-in">
+                <div class="section-number">01 — Проблема и возможность</div>
+                <h2 class="section-title">Почему именно сейчас?</h2>
+                <p class="section-subtitle">Рынок FPS в России — пустая ниша с огромным потенциалом</p>
+            </div>
+
+            <div class="problem-grid fade-in">
+                <div class="problem-column problems">
+                    <h3> Проблемы рынка</h3>
+                    <div class="problem-item problem">
+                        <div class="problem-item-icon"></div>
+                        <div class="problem-item-text">
+                            <strong>Нет российского аркадного FPS</strong>
+                            На рынке РФ отсутствует качественный сингплеер/мультиплеер шутер от отечественного разработчика
+                        </div>
+                    </div>
+                    <div class="problem-item problem">
+                        <div class="problem-item-icon"></div>
+                        <div class="problem-item-text">
+                            <strong>Call of Duty стоит 5000–7000₽</strong>
+                            И ежегодно теряет доверие аудитории: SBMM, агрессивные микротранзакции, баги на релизе
+                        </div>
+                    </div>
+                    <div class="problem-item problem">
+                        <div class="problem-item-icon"></div>
+                        <div class="problem-item-text">
+                            <strong>Западные издатели уходят</strong>
+                            Усложнение покупки, блокировки, отсутствие локальной поддержки
+                        </div>
+                    </div>
+                    <div class="problem-item problem">
+                        <div class="problem-item-icon"></div>
+                        <div class="problem-item-text">
+                            <strong>Существующие альтернативы не закрывают нишу</strong>
+                            Warface устарел, Caliber — тактический PvE, Tarkov — хардкор. Аркадного шутера с кампанией нет
+                        </div>
+                    </div>
+                </div>
+
+                <div class="problem-column opportunities">
+                    <h3> Возможности</h3>
+                    <div class="problem-item opportunity">
+                        <div class="problem-item-icon"></div>
+                        <div class="problem-item-text">
+                            <strong>15+ млн FPS-игроков в РФ</strong>
+                            Шутеры — самый популярный жанр. Аудитория есть, продукта нет
+                        </div>
+                    </div>
+                    <div class="problem-item opportunity">
+                        <div class="problem-item-icon"></div>
+                        <div class="problem-item-text">
+                            <strong>UE5 снижает порог входа в 10 раз</strong>
+                            Nanite, Lumen, Megascans, AI-инструменты — малая команда может создать продукт уровня AA
+                        </div>
+                    </div>
+                    <div class="problem-item opportunity">
+                        <div class="problem-item-icon">️</div>
+                        <div class="problem-item-text">
+                            <strong>Государственная поддержка</strong>
+                            Гранты ИРИ, программы Сколково, интерес VK Play к эксклюзивам
+                        </div>
+                    </div>
+                    <div class="problem-item opportunity">
+                        <div class="problem-item-icon"></div>
+                        <div class="problem-item-text">
+                            <strong>Ностальгия = маркетинг</strong>
+                            «Золотая эра» CoD4/MW2 — мощный эмоциональный рычаг для привлечения аудитории
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PRODUCT ===== -->
+    <section class="section" id="product">
+        <div class="section-header fade-in">
+            <div class="section-number">02 — Продукт</div>
+            <h2 class="section-title">Что такое «not found»?</h2>
+            <p class="section-subtitle">Классический FPS с кампанией и мультиплеером для российского рынка</p>
+        </div>
+
+        <!-- Design Pillars -->
+        <div class="pillars-grid fade-in" style="margin-bottom: 4rem;">
+            <div class="pillar-card">
+                <div class="pillar-icon"></div>
+                <div class="pillar-title">Ощущение стрельбы</div>
+                <div class="pillar-text">Каждый выстрел чувствуется: отдача, хитмаркеры, звук, реакция врагов. Это ДНК жанра.</div>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-icon"></div>
+                <div class="pillar-title">Кинематографичность</div>
+                <div class="pillar-text">Скриптовые моменты, постановка, ощущение «боевика» даже при инди-бюджете.</div>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-icon"></div>
+                <div class="pillar-title">«Ещё один матч»</div>
+                <div class="pillar-text">Мультиплеер с короткими раундами, быстрым прогрессом, затягивающим лупом.</div>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-icon"></div>
+                <div class="pillar-title">Доступность</div>
+                <div class="pillar-text">Низкий порог входа, понятные механики, работает на средних ПК. Цена — 999₽.</div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="features-grid fade-in">
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-card-icon" style="background: rgba(45, 138, 61, 0.15);">️</div>
+                    <div class="feature-card-title">Кампания (3–4 часа)</div>
+                </div>
+                <ul class="feature-list">
+                    <li>7 кинематографичных миссий</li>
+                    <li>Современный военный сеттинг</li>
+                    <li>Скриптовые моменты в духе лучших CoD</li>
+                    <li>Полная русская озвучка</li>
+                    <li>Смена темпа: штурм → стелс → оборона → снайпинг</li>
+                    <li>4 уровня сложности</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-card-icon" style="background: rgba(255, 107, 53, 0.15);">️</div>
+                    <div class="feature-card-title">Мультиплеер (6v6)</div>
+                </div>
+                <ul class="feature-list">
+                    <li>4 карты на релизе (+2 бесплатно за 3 месяца)</li>
+                    <li>Режимы: TDM, Domination, Search & Destroy, FFA</li>
+                    <li>Система создания классов</li>
+                    <li>16 единиц оружия с модификациями</li>
+                    <li>55 уровней прогрессии + Prestige</li>
+                    <li>Killstreaks (БПЛА, авиаудар, вертолёт)</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-card-icon" style="background: rgba(52, 152, 219, 0.15);"></div>
+                    <div class="feature-card-title">Арсенал</div>
+                </div>
+                <ul class="feature-list">
+                    <li>4 штурмовые винтовки (АК-15, АЕК-971, М4А1, HK416)</li>
+                    <li>3 пистолета-пулемёта</li>
+                    <li>2 снайперские винтовки</li>
+                    <li>2 дробовика, 2 пулемёта, 3 пистолета</li>
+                    <li>5 слотов модификаций на каждое оружие</li>
+                    <li>Камуфляжи за достижения</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-card-icon" style="background: rgba(46, 204, 113, 0.15);">️</div>
+                    <div class="feature-card-title">Технологии</div>
+                </div>
+                <ul class="feature-list">
+                    <li>Unreal Engine 5.4 (Nanite, Lumen)</li>
+                    <li>Dedicated серверы (60 Hz tick rate)</li>
+                    <li>Easy Anti-Cheat</li>
+                    <li>FSR 2.0 / DLSS поддержка</li>
+                    <li>60 FPS на GTX 1060 (1080p, низкие)</li>
+                    <li>Серверы в РФ (низкий пинг)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CAMPAIGN MISSIONS ===== -->
+    <div class="section-dark">
+        <div class="section-inner">
+            <div class="section-header fade-in">
+                <div class="section-number">02.1 — Кампания</div>
+                <h2 class="section-title">7 миссий. Одна история.</h2>
+                <p class="section-subtitle">WORK IN PROGRESS</p>
+            </div>
+
+            <div class="campaign-missions fade-in">
+                <div class="mission-card">
+                    <div class="mission-number">01</div>
+                    <div class="mission-info">
+                        <h4>«Первый контакт»</h4>
+                        <p>Тренировочная база → боевая операция. Обучение механикам. Взрыв стены, вход через пролом.</p>
+                    </div>
+                    <div class="mission-type">Штурм / Обучение</div>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-number">02</div>
+                    <div class="mission-info">
+                        <h4>«Конвой»</h4>
+                        <p>Горная дорога, деревня. Провести конвой через засаду. IED взрывает головную машину.</p>
+                    </div>
+                    <div class="mission-type">Сопровождение</div>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-number">03</div>
+                    <div class="mission-info">
+                        <h4>«Тихая охота»</h4>
+                        <p>Ночной город, порт. Разведка и ликвидация. Глушитель, ПНВ. Референс: «All Ghillied Up».</p>
+                    </div>
+                    <div class="mission-type">Стелс</div>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-number">04</div>
+                    <div class="mission-info">
+                        <h4>«Шторм»</h4>
+                        <p>Нефтеперерабатывающий завод. Масштабный штурм при поддержке авиации. Обрушение трубы.</p>
+                    </div>
+                    <div class="mission-type">Масштабный штурм</div>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-number">05</div>
+                    <div class="mission-info">
+                        <h4>«Осада»</h4>
+                        <p>Посольство в городе. Удержать позицию до эвакуации. Вертолёт эвакуации подбит.</p>
+                    </div>
+                    <div class="mission-type">Оборона</div>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-number">06</div>
+                    <div class="mission-info">
+                        <h4>«Глубина»</h4>
+                        <p>Подземный бункер. Обнаружить и обезвредить оружие. Обратный отсчёт, побег.</p>
+                    </div>
+                    <div class="mission-type">Инфильтрация</div>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-number">07</div>
+                    <div class="mission-info">
+                        <h4>«not found»</h4>
+                        <p>Столица. Финальная кульминация. Погоня, противостояние с лидером «Серпа». Эпилог.</p>
+                    </div>
+                    <div class="mission-type">Финал</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAPS ===== -->
+    <section class="section">
+        <div class="section-header fade-in">
+            <div class="section-number">02.2 — Карты мультиплеера</div>
+            <h2 class="section-title">4 карты на релизе</h2>
+            <p class="section-subtitle">Классическая структура с тремя линиями. Каждая карта — уникальный опыт.</p>
+        </div>
+
+        <div class="maps-grid fade-in">
+            <div class="map-card">
+                <div class="map-preview"></div>
+                <div class="map-info">
+                    <div class="map-name">«Завод»</div>
+                    <div class="map-type">Средняя • Все режимы</div>
+                    <div class="map-desc">Заброшенный промышленный комплекс. Классические 3 линии: открытая для снайперов, CQB в здании, переулки на средней дистанции.</div>
+                    <div class="map-tags">
+                        <span class="map-tag">3 линии</span>
+                        <span class="map-tag">2 уровня</span>
+                        <span class="map-tag">Все дистанции</span>
+                    </div>
+                </div>
+            </div>
+            <div class="map-card">
+                <div class="map-preview">️</div>
+                <div class="map-info">
+                    <div class="map-name">«Посольство»</div>
+                    <div class="map-type">Малая • TDM, S&D</div>
+                    <div class="map-desc">Городской квартал с посольством в центре. Симметричная, плотная. Много дверей, окон, углов. Динамичные перестрелки.</div>
+                    <div class="map-tags">
+                        <span class="map-tag">CQB</span>
+                        <span class="map-tag">3 уровня</span>
+                        <span class="map-tag">Симметричная</span>
+                    </div>
+                </div>
+            </div>
+            <div class="map-card">
+                <div class="map-preview">️</div>
+                <div class="map-info">
+                    <div class="map-name">«Перевал»</div>
+                    <div class="map-type">Большая • Domination, Hardpoint</div>
+                    <div class="map-desc">Горная дорога, блокпосты, деревня. Асимметричная, разнообразный рельеф. Открытые зоны + здания.</div>
+                    <div class="map-tags">
+                        <span class="map-tag">Открытые зоны</span>
+                        <span class="map-tag">Холмы</span>
+                        <span class="map-tag">Снайперы</span>
+                    </div>
+                </div>
+            </div>
+            <div class="map-card">
+                <div class="map-preview"></div>
+                <div class="map-info">
+                    <div class="map-name">«Порт»</div>
+                    <div class="map-type">Средняя • Все режимы</div>
+                    <div class="map-desc">Ночной грузовой порт. Лабиринт контейнеров + открытые причалы. Динамическое освещение, прожекторы.</div>
+                    <div class="map-tags">
+                        <span class="map-tag">Ночная</span>
+                        <span class="map-tag">Контейнеры</span>
+                        <span class="map-tag">Вертикальность</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== WEAPONS ===== -->
+    <div class="section-dark">
+        <div class="section-inner">
+            <div class="section-header fade-in">
+                <div class="section-number">02.3 — Арсенал</div>
+                <h2 class="section-title">16 единиц оружия</h2>
+                <p class="section-subtitle">Каждое оружие уникально. 5 слотов модификаций. Камуфляжи за достижения.</p>
+            </div>
+
+            <div class="weapons-grid fade-in">
+                <div class="weapon-card">
+                    <div class="weapon-category">Штурмовая винтовка</div>
+                    <div class="weapon-name">АК-15</div>
+                    <div class="weapon-stats">
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Урон</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 85%"></div></div>
+                        </div>
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Отдача</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 75%"></div></div>
+                        </div>
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Скорострельность</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 55%"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="weapon-card">
+                    <div class="weapon-category">Штурмовая винтовка</div>
+                    <div class="weapon-name">М4А1</div>
+                    <div class="weapon-stats">
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Урон</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 65%"></div></div>
+                        </div>
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Отдача</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 50%"></div></div>
+                        </div>
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Скорострельность</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 75%"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="weapon-card">
+                    <div class="weapon-category">Пистолет-пулемёт</div>
+                    <div class="weapon-name">ПП-19 «Витязь»</div>
+                    <div class="weapon-stats">
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Урон</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 50%"></div></div>
+                        </div>
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Отдача</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 35%"></div></div>
+                        </div>
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Скорострельность</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 80%"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="weapon-card">
+                    <div class="weapon-category">Снайперская винтовка</div>
+                    <div class="weapon-name">ОРСИС Т-5000</div>
+                    <div class="weapon-stats">
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Урон</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 100%"></div></div>
+                        </div>
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Отдача</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 90%"></div></div>
+                        </div>
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Скорострельность</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 15%"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="weapon-card">
+                    <div class="weapon-category">Дробовик</div>
+                    <div class="weapon-name">Сайга-12</div>
+                    <div class="weapon-stats">
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Урон</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 95%"></div></div>
+                        </div>
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Отдача</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 80%"></div></div>
+                        </div>
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Скорострельность</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 40%"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="weapon-card">
+                    <div class="weapon-category">Пулемёт</div>
+                    <div class="weapon-name">ПКП «Печенег»</div>
+                    <div class="weapon-stats">
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Урон</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 80%"></div></div>
+                        </div>
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Отдача</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 70%"></div></div>
+                        </div>
+                        <div class="weapon-stat">
+                            <span class="weapon-stat-label">Скорострельность</span>
+                            <div class="weapon-stat-bar"><div class="weapon-stat-fill" style="width: 65%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== COMPARISON TABLE ===== -->
+    <section class="section">
+        <div class="section-header fade-in">
+            <div class="section-number">02.4 — Сравнение</div>
+            <h2 class="section-title">Наш проект vs Конкуренты</h2>
+        </div>
+
+        <div class="table-container fade-in">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Параметр</th>
+                        <th>Not Found</th>
+                        <th>CoD </th>
+                        <th>Warface</th>
+                        <th>Caliber</th>
+                        <th>CS2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td>Цена</td>
+                        <td>999–1499₽</td>
+                        <td>5000–7000₽</td>
+                        <td>F2P</td>
+                        <td>F2P</td>
+                        <td>F2P</td>
+                    </tr>
+                    <tr>
+                        <td>Кампания</td>
+                        <td><span class="check">✅ Да</span></td>
+                        <td><span class="check">✅ Да</span></td>
+                        <td><span class="cross">❌ Нет</span></td>
+                        <td><span class="cross">❌ Нет</span></td>
+                        <td><span class="cross">❌ Нет</span></td>
+                    </tr>
+                    <tr>
+                        <td>Мультиплеер 6v6</td>
+                        <td><span class="check">✅ Да</span></td>
+                        <td><span class="check">✅ Да</span></td>
+                        <td><span class="check">✅ Да</span></td>
+                        <td><span class="warn">⚠️ PvE</span></td>
+                        <td><span class="check">✅ 5v5</span></td>
+                    </tr>
+                    <tr>
+                        <td>Честная монетизация</td>
+                        <td><span class="check">✅</span></td>
+                        <td><span class="cross">❌ P2W</span></td>
+                        <td><span class="cross">❌ P2W</span></td>
+                        <td><span class="warn">⚠️</span></td>
+                        <td><span class="check">✅</span></td>
+                    </tr>
+                    <tr>
+                        <td>Российский продукт</td>
+                        <td><span class="check">✅</span></td>
+                        <td><span class="cross">❌</span></td>
+                        <td><span class="warn">⚠️ Кипр</span></td>
+                        <td><span class="check">✅</span></td>
+                        <td><span class="cross">❌</span></td>
+                    </tr>
+                    <tr>
+                        <td>Классический геймплей</td>
+                        <td><span class="check">✅</span></td>
+                        <td><span class="warn">⚠️ SBMM</span></td>
+                        <td><span class="cross">❌ Устарел</span></td>
+                        <td><span class="cross">❌ Другой жанр</span></td>
+                        <td><span class="warn">⚠️ Тактический</span></td>
+                    </tr>
+                    <tr>
+                        <td>Серверы в РФ</td>
+                        <td><span class="check">✅</span></td>
+                        <td><span class="cross">❌</span></td>
+                        <td><span class="check">✅</span></td>
+                        <td><span class="check">✅</span></td>
+                        <td><span class="check">✅</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ===== MARKET ===== -->
+    <div class="section-dark" id="market">
+        <div class="section-inner">
+            <div class="section-header fade-in">
+                <div class="section-number">03 — Рынок</div>
+                <h2 class="section-title">Размер возможности</h2>
+                <p class="section-subtitle">FPS — самый популярный жанр в России. Ниша аркадного шутера с кампанией свободна.</p>
+            </div>
+
+            <div class="market-stats fade-in">
+                <div class="market-stat-card">
+                    <div class="market-stat-value">$700M</div>
+                    <div class="market-stat-label">Рынок FPS в России</div>
+                    <div class="market-stat-sub">~25% от $2.8B игрового рынка РФ</div>
+                </div>
+                <div class="market-stat-card">
+                    <div class="market-stat-value">15M+</div>
+                    <div class="market-stat-label">FPS-игроков в РФ</div>
+                    <div class="market-stat-sub">Steam + VK Play активные пользователи</div>
+                </div>
+                <div class="market-stat-card">
+                    <div class="market-stat-value">0</div>
+                    <div class="market-stat-label">Российских аркадных FPS с кампанией</div>
+                    <div class="market-stat-sub">Ниша полностью свободна</div>
+                </div>
+            </div>
+
+            <div class="section-header fade-in" style="margin-top: 2rem;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 1rem;">Продажи аналогичных проектов</h3>
+            </div>
+
+            <div class="table-container fade-in">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Проект</th>
+                            <th>Страна</th>
+                            <th>Продажи</th>
+                            <th>Цена</th>
+                            <th>Команда</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Escape from Tarkov</td>
+                            <td>Россия</td>
+                            <td><strong>14M+ копий</strong></td>
+                            <td>$45–150</td>
+                            <td>~100 чел</td>
+                        </tr>
+                        <tr>
+                            <td>Insurgency: Sandstorm</td>
+                            <td>Канада</td>
+                            <td><strong>4M+ копий</strong></td>
+                            <td>$30</td>
+                            <td>~40 чел</td>
+                        </tr>
+                        <tr>
+                            <td>Ready or Not</td>
+                            <td>Новая Зеландия</td>
+                            <td><strong>3M+ копий</strong></td>
+                            <td>$40</td>
+                            <td>~25 чел</td>
+                        </tr>
+                        <tr>
+                            <td>World War 3</td>
+                            <td>Польша</td>
+                            <td><strong>500K+ копий</strong></td>
+                            <td>$30</td>
+                            <td>~30 чел</td>
+                        </tr>
+                        <tr>
+                            <td>Bodycam</td>
+                            <td>Нидерланды</td>
+                            <td><strong>500K+ копий</strong></td>
+                            <td>$20</td>
+                            <td>~5 чел</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FINANCE ===== -->
+    <section class="section" id="finance">
+        <div class="section-header fade-in">
+            <div class="section-number">04 — Финансы</div>
+            <h2 class="section-title">Бюджет и прогнозы</h2>
+            <p class="section-subtitle">Детальная финансовая модель с тремя сценариями</p>
+        </div>
+
+        <div class="finance-grid fade-in">
+            <div class="finance-card">
+                <h3> Расходы (20 месяцев)</h3>
+                <div class="finance-item">
+                    <span class="finance-item-label">Зарплаты (6 чел × 20 мес)</span>
+                    <span class="finance-item-value">14,400,000₽</span>
+                </div>
+                <div class="finance-item">
+                    <span class="finance-item-label">Аутсорс (музыка, озвучка, QA)</span>
+                    <span class="finance-item-value">2,000,000₽</span>
+                </div>
+                <div class="finance-item">
+                    <span class="finance-item-label">Инфраструктура (серверы, софт)</span>
+                    <span class="finance-item-value">600,000₽</span>
+                </div>
+                <div class="finance-item">
+                    <span class="finance-item-label">Маркетинг</span>
+                    <span class="finance-item-value">2,000,000₽</span>
+                </div>
+                <div class="finance-item">
+                    <span class="finance-item-label">Юридическое</span>
+                    <span class="finance-item-value">300,000₽</span>
+                </div>
+                <div class="finance-item">
+                    <span class="finance-item-label">Буфер (15%)</span>
+                    <span class="finance-item-value">2,900,000₽</span>
+                </div>
+                <div class="finance-total">
+                    <span class="finance-total-label">ИТОГО</span>
+                    <span class="finance-total-value">22,200,000₽</span>
+                </div>
+            </div>
+
+            <div class="finance-card">
+                <h3> Модель монетизации</h3>
+                <div class="finance-item">
+                    <span class="finance-item-label">Базовая цена игры</span>
+                    <span class="finance-item-value">999–1499₽</span>
+                </div>
+                <div class="finance-item">
+                    <span class="finance-item-label">Battle Pass (сезонный)</span>
+                    <span class="finance-item-value">499₽</span>
+                </div>
+                <div class="finance-item">
+                    <span class="finance-item-label">Скины оружия</span>
+                    <span class="finance-item-value">149–299₽</span>
+                </div>
+                <div class="finance-item">
+                    <span class="finance-item-label">Наборы оператора</span>
+                    <span class="finance-item-value">499₽</span>
+                </div>
+                <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(46, 204, 113, 0.1); border-radius: 8px; border-left: 3px solid var(--success);">
+                    <div style="font-size: 0.85rem; color: var(--success); font-weight: 600; margin-bottom: 0.3rem;"> Принципы монетизации</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                        Все карты бесплатно. Никакого P2W. Только косметика. Новые карты не дробят базу игроков.
+                    </div>
+                </div>
+                <div class="finance-total">
+                    <span class="finance-total-label">LTV игрока</span>
+                    <span class="finance-total-value">~2,000₽</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenarios -->
+        <div class="scenarios-grid fade-in">
+            <div class="scenario-card">
+                <div class="scenario-badge pessimistic">Пессимистичный</div>
+                <div class="scenario-sales">20,000</div>
+                <div class="scenario-revenue">копий за год</div>
+                <div class="scenario-detail">
+                    <span class="scenario-detail-label">Выручка (продажи)</span>
+                    <span class="scenario-detail-value">20M₽</span>
+                </div>
+                <div class="scenario-detail">
+                    <span class="scenario-detail-label">Косметика</span>
+                    <span class="scenario-detail-value">2M₽</span>
+                </div>
+                <div class="scenario-detail">
+                    <span class="scenario-detail-label">Комиссии (30%)</span>
+                    <span class="scenario-detail-value" style="color: #2d8a3d;">-6.6M₽</span>
+                </div>
+                <div class="scenario-detail">
+                    <span class="scenario-detail-label">Чистая выручка</span>
+                    <span class="scenario-detail-value">15.4M₽</span>
+                </div>
+                <div class="scenario-detail" style="border-top: 1px solid var(--border); padding-top: 0.8rem; margin-top: 0.3rem;">
+                    <span class="scenario-detail-label"><strong>Прибыль</strong></span>
+                    <span class="scenario-detail-value" style="color: #2d8a3d; font-size: 1.1rem;"><strong>-6.8M₽</strong></span>
+                </div>
+            </div>
+
+            <div class="scenario-card featured">
+                <div class="scenario-badge realistic">Реалистичный</div>
+                <div class="scenario-sales" style="color: var(--accent);">50,000</div>
+                <div class="scenario-revenue">копий за год</div>
+                <div class="scenario-detail">
+                    <span class="scenario-detail-label">Выручка (продажи)</span>
+                    <span class="scenario-detail-value">60M₽</span>
+                </div>
+                <div class="scenario-detail">
+                    <span class="scenario-detail-label">Косметика</span>
+                    <span class="scenario-detail-value">10M₽</span>
+                </div>
+                <div class="scenario-detail">
+                    <span class="scenario-detail-label">Комиссии + роялти</span>
+                    <span class="scenario-detail-value" style="color: #2d8a3d;">-22.5M₽</span>
+                </div>
+                <div class="scenario-detail">
+                    <span class="scenario-detail-label">Чистая выручка</span>
+                    <span class="scenario-detail-value">47.5M₽</span>
+                </div>
+                <div class="scenario-detail" style="border-top: 1px solid var(--accent); padding-top: 0.8rem; margin-top: 0.3rem;">
+                    <span class="scenario-detail-label"><strong>Прибыль</strong></span>
+                    <span class="scenario-detail-value" style="color: var(--success); font-size: 1.1rem;"><strong>+25.3M₽</strong></span>
+                </div>
+                <div style="margin-top: 0.8rem; font-size: 0.8rem; color: var(--accent); font-weight: 600;">ROI: +114% • Окупаемость: 8 мес</div>
+            </div>
+
+            <div class="scenario-card">
+                <div class="scenario-badge optimistic">Оптимистичный</div>
+                <div class="scenario-sales">120,000</div>
+                <div class="scenario-revenue">копий за год</div>
+                <div class="scenario-detail">
+                    <span class="scenario-detail-label">Выручка (продажи)</span>
+                    <span class="scenario-detail-value">144M₽</span>
+                </div>
+                <div class="scenario-detail">
+                    <span class="scenario-detail-label">Косметика</span>
+                    <span class="scenario-detail-value">30M₽</span>
+                </div>
+                <div class="scenario-detail">
+                    <span class="scenario-detail-label">Комиссии + роялти</span>
+                    <span class="scenario-detail-value" style="color: #2d8a3d;">-58.1M₽</span>
+                </div>
+                <div class="scenario-detail">
+                    <span class="scenario-detail-label">Чистая выручка</span>
+                    <span class="scenario-detail-value">115.9M₽</span>
+                </div>
+                <div class="scenario-detail" style="border-top: 1px solid var(--border); padding-top: 0.8rem; margin-top: 0.3rem;">
+                    <span class="scenario-detail-label"><strong>Прибыль</strong></span>
+                    <span class="scenario-detail-value" style="color: var(--success); font-size: 1.1rem;"><strong>+93.7M₽</strong></span>
+                </div>
+                <div style="margin-top: 0.8rem; font-size: 0.8rem; color: var(--success); font-weight: 600;">ROI: +422% • Окупаемость: 3 мес</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem; padding: 1.5rem; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--border);" class="fade-in">
+            <div style="font-size: 1rem; color: var(--text-secondary);">
+                 <strong style="color: var(--text-primary);">Точка безубыточности:</strong> ~26,000 копий по средней цене 1,200₽
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TECH STACK ===== -->
+    <div class="section-dark">
+        <div class="section-inner">
+            <div class="section-header fade-in">
+                <div class="section-number">05 — Технологии</div>
+                <h2 class="section-title">Технологический стек</h2>
+                <p class="section-subtitle">Проверенные решения, минимизирующие риски и стоимость</p>
+            </div>
+
+            <div class="tech-grid fade-in">
+                <div class="tech-item">
+                    <div class="tech-icon"></div>
+                    <div class="tech-name">Unreal Engine 5.4</div>
+                    <div class="tech-desc">Nanite, Lumen, Megascans. Бесплатно до $1M</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon"></div>
+                    <div class="tech-name">Epic Online Services</div>
+                    <div class="tech-desc">Matchmaking, lobbies, voice chat. Бесплатно</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">️</div>
+                    <div class="tech-name">Easy Anti-Cheat</div>
+                    <div class="tech-desc">Kernel-level защита. Бесплатно через EOS</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">️</div>
+                    <div class="tech-name">Dedicated Servers</div>
+                    <div class="tech-desc">60 Hz tick rate. Серверы в РФ (Selectel/VK Cloud)</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon"></div>
+                    <div class="tech-name">Blender + Substance</div>
+                    <div class="tech-desc">3D моделирование и текстурирование</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon"></div>
+                    <div class="tech-name">MetaSounds</div>
+                    <div class="tech-desc">Процедурный звук выстрелов и окружения</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon"></div>
+                    <div class="tech-name">Git + Perforce</div>
+                    <div class="tech-desc">Контроль версий кода и ассетов</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon"></div>
+                    <div class="tech-name">AI-инструменты</div>
+                    <div class="tech-desc">Copilot, Midjourney, Suno для ускорения</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TIMELINE ===== -->
+    <section class="section" id="timeline">
+        <div class="section-header fade-in">
+            <div class="section-number">06 — План разработки</div>
+            <h2 class="section-title">18–20 месяцев до релиза</h2>
+            <p class="section-subtitle">Чёткие майлстоуны с измеримыми результатами</p>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-bar-container fade-in" style="margin-bottom: 3rem;">
+            <div class="progress-label">
+                <span>Текущий прогресс</span>
+                <span style="color: var(--accent); font-weight: 700;">Прототип разрабатывается</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 12%;"></div>
+            </div>
+            <div class="progress-milestones">
+                <div class="progress-milestone active">Прототип ✓</div>
+                <div class="progress-milestone">Pre-prod</div>
+                <div class="progress-milestone">Alpha</div>
+                <div class="progress-milestone">Beta</div>
+                <div class="progress-milestone">Polish</div>
+                <div class="progress-milestone">Релиз</div>
+            </div>
+        </div>
+
+        <div class="timeline fade-in">
+            <div class="timeline-item">
+                <div class="timeline-phase">Фаза 1</div>
+                <div class="timeline-title">Pre-production</div>
+                <div class="timeline-period">Месяцы 1–3 • Транш: 4 млн ₽</div>
+                <ul class="timeline-tasks">
+                    <li>Финализация GDD</li>
+                    <li>Greybox всех карт мультиплеера и миссий кампании</li>
+                    <li>Все игровые системы в прототипе</li>
+                    <li>Арт-пайплайн утверждён</li>
+                    <li>Майлстоун: играбельный greybox всей игры</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-phase">Фаза 2</div>
+                <div class="timeline-title">Production — Alpha</div>
+                <div class="timeline-period">Месяцы 4–10 • Транш: 8 млн ₽</div>
+                <ul class="timeline-tasks">
+                    <li>Все миссии кампании играбельны</li>
+                    <li>Все карты мультиплеера играбельны</li>
+                    <li>16 единиц оружия в игре</li>
+                    <li>ИИ финализирован</li>
+                    <li>Система прогрессии работает</li>
+                    <li>Первый арт-пасс (50% финального качества)</li>
+                    <li>Майлстоун: Alpha-билд, внутренний плейтест</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-phase">Фаза 3</div>
+                <div class="timeline-title">Production — Beta</div>
+                <div class="timeline-period">Месяцы 11–15 • Транш: 6 млн ₽</div>
+                <ul class="timeline-tasks">
+                    <li>Весь контент в игре, финальное качество арта</li>
+                    <li>Озвучка записана и интегрирована</li>
+                    <li>Музыка готова</li>
+                    <li>Закрытая бета мультиплеера (1000+ игроков)</li>
+                    <li>Оптимизация производительности</li>
+                    <li>Майлстоун: Beta-билд, публичный плейтест</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-phase">Фаза 4</div>
+                <div class="timeline-title">Polish & Release</div>
+                <div class="timeline-period">Месяцы 16–18/20 • Транш: 4 млн ₽</div>
+                <ul class="timeline-tasks">
+                    <li>Баг-фиксинг и финальная оптимизация</li>
+                    <li>Маркетинговая кампания (стримеры, трейлеры)</li>
+                    <li>Подготовка Steam / VK Play страниц</li>
+                    <li>Демо-версия для привлечения аудитории</li>
+                    <li>Майлстоун: РЕЛИЗ </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TEAM ===== -->
+    <div class="section-dark" id="team">
+        <div class="section-inner">
+            <div class="section-header fade-in">
+                <div class="section-number">07 — Команда</div>
+                <h2 class="section-title">Люди за проектом</h2>
+                <p class="section-subtitle">6 специалистов с опытом в геймдеве и страстью к шутерам</p>
+            </div>
+
+            <div class="team-grid fade-in">
+                <div class="team-card">
+                    <div class="team-avatar">ГД</div>
+                    <div class="team-name">[Имя Фамилия]</div>
+                    <div class="team-role">Game Director / Продюсер</div>
+                    <div class="team-desc">Видение продукта, управление командой, бизнес-девелопмент. Опыт: X лет в геймдеве.</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">ЛП</div>
+                    <div class="team-name">[Имя Фамилия]</div>
+                    <div class="team-role">Lead Programmer</div>
+                    <div class="team-desc">Архитектура, gameplay, сетевой код. UE5 C++, X лет опыта. Ранее: [проекты].</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">ПР</div>
+                    <div class="team-name">[Имя Фамилия]</div>
+                    <div class="team-role">Programmer</div>
+                    <div class="team-desc">UI, AI, инструменты, оптимизация. UE5 Blueprints + C++.</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">3D</div>
+                    <div class="team-name">[Имя Фамилия]</div>
+                    <div class="team-role">3D Artist (Environment)</div>
+                    <div class="team-desc">Уровни, пропсы, материалы. Blender, Substance. Портфолио: [ArtStation].</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">3D</div>
+                    <div class="team-name">[Имя Фамилия]</div>
+                    <div class="team-role">3D Artist (Characters/Weapons)</div>
+                    <div class="team-desc">Персонажи, оружие, анимация. Blender, Mixamo. Портфолио: [ArtStation].</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">ЛД</div>
+                    <div class="team-name">[Имя Фамилия]</div>
+                    <div class="team-role">Level Designer</div>
+                    <div class="team-desc">Дизайн карт, скриптинг миссий, баланс. Опыт создания карт для [игры].</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PROTOTYPE ===== -->
+    <section class="section" id="prototype">
+        <div class="section-header fade-in">
+            <div class="section-number">08 — Текущий статус</div>
+            <h2 class="section-title">Прототип разрабатывается</h2>
+            <p class="section-subtitle">Текущий статус разработки проекта</p>
+        </div>
+
+        <!-- Video -->
+        <div class="video-container fade-in">
+            <div class="video-placeholder" onclick="this.innerHTML='<iframe width=\'100%\' height=\'100%\' style=\'aspect-ratio:16/9;\' src=\'https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1\' frameborder=\'0\' allowfullscreen></iframe>'">
+                <div class="video-play-btn"></div>
+                <div class="video-label">Нажмите для просмотра видео прототипа (2:30)</div>
+            </div>
+        </div>
+
+        <div class="status-grid fade-in">
+            <div class="status-item">
+                <div class="status-check">✓</div>
+                <div class="status-text">
+                    <strong>Система стрельбы</strong>
+                    3 вида оружия, отдача, хитмаркеры, ADS, hip-fire
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-check">✓</div>
+                <div class="status-text">
+                    <strong>Передвижение</strong>
+                    Спринт, присед, скольжение, перелезание, наклоны
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-check">✓</div>
+                <div class="status-text">
+                    <strong>Базовый ИИ</strong>
+                    Укрытия, стрельба, фланги, гранаты
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-check">✓</div>
+                <div class="status-text">
+                    <strong>Один уровень (greybox)</strong>
+                    Играбельная миссия для демонстрации
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-check">✓</div>
+                <div class="status-text">
+                    <strong>Базовый мультиплеер</strong>
+                    2 игрока, TDM, одна карта
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-check">✓</div>
+                <div class="status-text">
+                    <strong>HUD</strong>
+                    Здоровье, патроны, мини-карта, килл-фид
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-check">✓</div>
+                <div class="status-text">
+                    <strong>GDD и тех. архитектура</strong>
+                    50+ страниц документации
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-check">✓</div>
+                <div class="status-text">
+                    <strong>Юридическое оформление</strong>
+                    ООО зарегистрировано, договоры подготовлены
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;" class="fade-in">
+            <a href="#" class="btn btn-primary" style="margin-right: 1rem;"> Скачать билд прототипа</a>
+            <a href="#" class="btn btn-secondary"> Скачать полный GDD (PDF)</a>
+        </div>
+    </section>
+
+    <!-- ===== ASK ===== -->
+    <div class="section-dark" id="ask">
+        <div class="section-inner">
+            <div class="section-header fade-in">
+                <div class="section-number">09 — Предложение</div>
+                <h2 class="section-title">Что мы просим</h2>
+                <p class="section-subtitle">Финансирование + издательская экспертиза для создания хита</p>
+            </div>
+
+            <div class="ask-grid fade-in">
+                <div class="ask-amount">
+                    <div class="ask-amount-label">Запрос финансирования</div>
+                    <div class="ask-amount-value">22M ₽</div>
+                    <div class="ask-amount-sub">~$220,000 • 20 месяцев разработки</div>
+
+                    <div class="ask-tranches">
+                        <div class="ask-tranche">
+                            <span class="ask-tranche-name">Транш 1: Pre-production</span>
+                            <span class="ask-tranche-value">4,000,000₽</span>
+                        </div>
+                        <div class="ask-tranche">
+                            <span class="ask-tranche-name">Транш 2: Alpha</span>
+                            <span class="ask-tranche-value">8,000,000₽</span>
+                        </div>
+                        <div class="ask-tranche">
+                            <span class="ask-tranche-name">Транш 3: Beta</span>
+                            <span class="ask-tranche-value">6,000,000₽</span>
+                        </div>
+                        <div class="ask-tranche">
+                            <span class="ask-tranche-name">Транш 4: Release</span>
+                            <span class="ask-tranche-value">4,000,000₽</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ask-offer">
+                    <div class="ask-offer-item">
+                        <h4> Что мы ищем в партнёре</h4>
+                        <p>Издательская экспертиза: маркетинг, PR, QA-поддержка, помощь с локализацией для глобального рынка, бизнес-девелопмент (VK Play, консоли).</p>
+                    </div>
+                    <div class="ask-offer-item">
+                        <h4> Что мы предлагаем</h4>
+                        <p>Доля от выручки (обсуждается). Полная прозрачность: еженедельные отчёты, доступ к билдам. Совместное принятие ключевых решений.</p>
+                    </div>
+                    <div class="ask-offer-item">
+                        <h4> Снижение рисков для инвестора</h4>
+                        <p>Транши по майлстоунам — оплата только за результат. Работающий прототип уже существует. Детальная документация и план.</p>
+                    </div>
+                    <div class="ask-offer-item">
+                        <h4> Потенциал возврата</h4>
+                        <p>Реалистичный сценарий: ROI +114%, прибыль 25M₽. При успехе — франшиза, сиквел, консольные порты.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 5 REASONS ===== -->
+    <section class="section">
+        <div class="section-header fade-in">
+            <div class="section-number">10 — Почему мы</div>
+            <h2 class="section-title">5 причин инвестировать</h2>
+        </div>
+
+        <div class="reasons-grid fade-in">
+            <div class="reason-card">
+                <div class="reason-number">01</div>
+                <div class="reason-title">Пустая ниша</div>
+                <div class="reason-text">Нет российского аркадного FPS с кампанией. Мы первые.</div>
+            </div>
+            <div class="reason-card">
+                <div class="reason-number">02</div>
+                <div class="reason-title">Проверенная формула</div>
+                <div class="reason-text">CoD4 — одна из самых продаваемых игр. Мы адаптируем, не изобретаем.</div>
+            </div>
+            <div class="reason-card">
+                <div class="reason-number">03</div>
+                <div class="reason-title">Технологическое окно</div>
+                <div class="reason-text">UE5 + AI позволяют 6 людям сделать то, что раньше требовало 60.</div>
+            </div>
+            <div class="reason-card">
+                <div class="reason-number">04</div>
+                <div class="reason-title">Рыночное окно</div>
+                <div class="reason-text">Западные издатели уходят. Государство поддерживает. Аудитория ждёт.</div>
+            </div>
+            <div class="reason-card">
+                <div class="reason-number">05</div>
+                <div class="reason-title">Прототип есть</div>
+                <div class="reason-text">Не мечтатели — работающий билд, GDD, техническая экспертиза.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== RISKS ===== -->
+    <div class="section-dark">
+        <div class="section-inner">
+            <div class="section-header fade-in">
+                <div class="section-number">11 — Риски</div>
+                <h2 class="section-title">Честно о рисках</h2>
+                <p class="section-subtitle">Мы знаем, что может пойти не так, и готовы к этому</p>
+            </div>
+
+            <div class="risks-grid fade-in">
+                <div class="risk-item">
+                    <div class="risk-name">Срыв сроков</div>
+                    <div class="risk-level"><span class="risk-badge medium">Средний</span></div>
+                    <div class="risk-mitigation">Agile-спринты, буфер 15% в бюджете, приоритизация фич (MVP). Транши по майлстоунам.</div>
+                </div>
+                <div class="risk-item">
+                    <div class="risk-name">Уход члена команды</div>
+                    <div class="risk-level"><span class="risk-badge medium">Средний</span></div>
+                    <div class="risk-mitigation">Документация всех процессов, модульный код, договоры с lock-in периодом.</div>
+                </div>
+                <div class="risk-item">
+                    <div class="risk-name">Сложность сетевого кода</div>
+                    <div class="risk-level"><span class="risk-badge medium">Средний</span></div>
+                    <div class="risk-mitigation">UE5 — зрелый движок с встроенной репликацией. EOS для matchmaking. Проверенные решения.</div>
+                </div>
+                <div class="risk-item">
+                    <div class="risk-name">Низкие продажи</div>
+                    <div class="risk-level"><span class="risk-badge medium">Средний</span></div>
+                    <div class="risk-mitigation">Бета-тест для валидации спроса. Маркетинг через стримеров. Доступная цена. Точка безубыточности — 26K копий.</div>
+                </div>
+                <div class="risk-item">
+                    <div class="risk-name">Сравнение с AAA CoD</div>
+                    <div class="risk-level"><span class="risk-badge high">Высокий</span></div>
+                    <div class="risk-mitigation">Позиционирование: «инди по доступной цене», не «убийца CoD». Честность с аудиторией. Фокус на game feel.</div>
+                </div>
+                <div class="risk-item">
+                    <div class="risk-name">Появление конкурента</div>
+                    <div class="risk-level"><span class="risk-badge low">Низкий</span></div>
+                    <div class="risk-mitigation">Скорость выхода на рынок. Уникальный сеттинг. Лояльность раннего сообщества.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CTA / CONTACT ===== -->
+    <section class="section" style="text-align: center;">
+        <div class="fade-in">
+            <div class="section-number">12 — Следующий шаг</div>
+            <h2 class="section-title" style="margin-bottom: 1.5rem;">Давайте создадим историю</h2>
+            <p class="section-subtitle" style="max-width: 700px; margin: 0 auto 3rem;">
+                Российский рынок ждёт свой шутер. У нас есть видение, команда, прототип и план.
+                Нам нужен партнёр, который верит в этот рынок так же, как мы.
+            </p>
+
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
+                <a href="mailto:your@email.com" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+                     Написать нам
+                </a>
+                <a href="#" class="btn btn-secondary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+                     Скачать PDF-версию
+                </a>
+                <a href="#" class="btn btn-secondary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+                     Скачать прототип
+                </a>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;">
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Email</div>
+                    <div style="font-size: 1rem; margin-top: 0.3rem;">your@email.com</div>
+                </div>
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Telegram</div>
+                    <div style="font-size: 1rem; margin-top: 0.3rem;">@yourtelegram</div>
+                </div>
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Телефон</div>
+                    <div style="font-size: 1rem; margin-top: 0.3rem;">+7 (XXX) XXX-XX-XX</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">not found</div>
+            <div class="footer-text">
+                Тактический FPS от первого лица • Кампания + Мультиплеер 6v6 • Unreal Engine 5
+            </div>
+            <div class="footer-contacts">
+                <a href="mailto:your@email.com" class="footer-contact"> your@email.com</a>
+                <a href="#" class="footer-contact"> Telegram</a>
+                <a href="#" class="footer-contact"> Сайт проекта</a>
+            </div>
+            <div class="footer-copy">
+                 2025 [Название студии]. Все права защищены. Документ подготовлен для Game Art Pioneer.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // Mobile navigation toggle
+        function toggleNav() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Close mobile nav on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
+        // Scroll animations (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(10, 10, 15, 0.95)';
+                nav.style.borderBottomColor = 'rgba(45, 138, 61, 0.2)';
+            } else {
+                nav.style.background = 'rgba(10, 10, 15, 0.9)';
+                nav.style.borderBottomColor = 'var(--border)';
+            }
+        });
+
+        // Smooth counter animation for hero stats
+        function animateValue(element, start, end, duration, suffix = '') {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                element.textContent = value + suffix;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Animate weapon stat bars on scroll
+        const weaponObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const fills = entry.target.querySelectorAll('.weapon-stat-fill');
+                    fills.forEach(fill => {
+                        const width = fill.style.width;
+                        fill.style.width = '0%';
+                        setTimeout(() => {
+                            fill.style.width = width;
+                        }, 200);
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.weapon-card').forEach(card => {
+            weaponObserver.observe(card);
+        });
+
+        // Progress bar animation
+        const progressObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const fill = entry.target.querySelector('.progress-fill');
+                    if (fill) {
+                        const width = fill.style.width;
+                        fill.style.width = '0%';
+                        setTimeout(() => {
+                            fill.style.width = width;
+                        }, 300);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.progress-bar-container').forEach(el => {
+            progressObserver.observe(el);
+        });
+    </script>
+
+</body>
+</html>

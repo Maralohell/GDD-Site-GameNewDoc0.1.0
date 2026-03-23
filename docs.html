@@ -1,0 +1,2502 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>not found GDD и Техническая документация</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0f0f15;
+            --bg-card: #1a1f1a;
+            --bg-card-hover: #1f2620;
+            --accent: #2d8a3d;
+            --accent-dark: #1f5f2c;
+            --accent-glow: rgba(45, 138, 61, 0.3);
+            --accent-secondary: #3a9e4d;
+            --text-primary: #e8e8e8;
+            --text-secondary: #a8a8a8;
+            --text-muted: #666680;
+            --border: #262626;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --info: #3498db;
+            --gradient-1: linear-gradient(135deg, #2d8a3d, #1f5f2c);
+            --gradient-2: linear-gradient(135deg, #0a0a0f, #1a1f1a);
+            --gradient-3: linear-gradient(135deg, #0f3460, #1a2a3a);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+        /* ===== NAVIGATION ===== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 0.3rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-primary);
+            background: rgba(230, 57, 70, 0.1);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent) !important;
+            border: 1px solid rgba(230, 57, 70, 0.3) !important;
+        }
+
+        .nav-burger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .nav-burger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+        }
+
+        /* ===== LAYOUT: SIDEBAR + CONTENT ===== */
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 0;
+            max-width: 1400px;
+            margin: 70px auto 0;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 2rem 0;
+        }
+
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-title {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 0 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 0.4rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            color: var(--text-primary);
+            background: rgba(230, 57, 70, 0.05);
+            border-left-color: rgba(230, 57, 70, 0.3);
+        }
+
+        .sidebar-link.active {
+            color: var(--accent);
+            background: rgba(230, 57, 70, 0.08);
+            border-left-color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-link.sub {
+            padding-left: 2.5rem;
+            font-size: 0.8rem;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 1rem 1.5rem;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .doc-content {
+            padding: 3rem 4rem;
+            max-width: 900px;
+        }
+
+        /* ===== DOC HEADER ===== */
+        .doc-hero {
+            margin-bottom: 4rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .doc-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: rgba(230, 57, 70, 0.1);
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .doc-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .doc-hero h1 span {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .doc-hero-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .doc-hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* ===== HEADINGS ===== */
+        .doc-section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 90px;
+        }
+
+        .doc-section h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .doc-section h2 .section-icon {
+            font-size: 1.5rem;
+        }
+
+        .doc-section h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .doc-section h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-top: 1.8rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .doc-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .doc-section strong {
+            color: var(--text-primary);
+        }
+
+        /* ===== CODE BLOCKS ===== */
+        .code-block {
+            background: var(--bg-code);
+            border: 1px solid var(--border-code);
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-code);
+        }
+
+        .code-lang {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .code-copy {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .code-copy:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .code-body {
+            padding: 1.2rem 1.5rem;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: var(--text-code);
+            white-space: pre;
+            tab-size: 4;
+        }
+
+        .code-body .comment { color: #8b949e; }
+        .code-body .keyword { color: #ff7b72; }
+        .code-body .type { color: #79c0ff; }
+        .code-body .string { color: #a5d6ff; }
+        .code-body .number { color: #d2a8ff; }
+        .code-body .function { color: #d2a8ff; }
+        .code-body .macro { color: #ffa657; }
+        .code-body .accent { color: var(--accent); font-weight: 600; }
+        .code-body .success { color: var(--success); }
+        .code-body .warn { color: var(--warning); }
+        .code-body .info { color: var(--info); }
+
+        /* ===== INLINE CODE ===== */
+        code {
+            background: rgba(230, 57, 70, 0.1);
+            color: var(--accent);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.85em;
+        }
+
+        /* ===== TABLES ===== */
+        .doc-table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .doc-table thead {
+            background: var(--bg-card);
+        }
+
+        .doc-table th {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .doc-table td {
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+        }
+
+        .doc-table tr:hover td {
+            background: rgba(230, 57, 70, 0.03);
+        }
+
+        .doc-table td:first-child {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* ===== INFO BOXES ===== */
+        .info-box {
+            padding: 1.2rem 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+            font-size: 0.9rem;
+        }
+
+        .info-box.note {
+            background: rgba(52, 152, 219, 0.08);
+            border-color: var(--info);
+        }
+
+        .info-box.warning {
+            background: rgba(243, 156, 18, 0.08);
+            border-color: var(--warning);
+        }
+
+        .info-box.success {
+            background: rgba(46, 204, 113, 0.08);
+            border-color: var(--success);
+        }
+
+        .info-box.danger {
+            background: rgba(230, 57, 70, 0.08);
+            border-color: var(--accent);
+        }
+
+        .info-box-title {
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            font-size: 0.85rem;
+        }
+
+        .info-box.note .info-box-title { color: var(--info); }
+        .info-box.warning .info-box-title { color: var(--warning); }
+        .info-box.success .info-box-title { color: var(--success); }
+        .info-box.danger .info-box-title { color: var(--accent); }
+
+        .info-box p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        /* ===== LISTS ===== */
+        .doc-list {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .doc-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            padding: 0.4rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .doc-list li::before {
+            content: "▸";
+            color: var(--accent);
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .doc-list.check li::before {
+            content: "✓";
+            color: var(--success);
+        }
+
+        .doc-list.numbered {
+            counter-reset: item;
+        }
+
+        .doc-list.numbered li::before {
+            counter-increment: item;
+            content: counter(item) ".";
+            color: var(--accent);
+            font-weight: 700;
+            min-width: 20px;
+        }
+
+        /* ===== SPEC CARDS ===== */
+        .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .spec-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.2rem 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .spec-card:hover {
+            border-color: rgba(230, 57, 70, 0.3);
+        }
+
+        .spec-card-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .spec-card-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .spec-card-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+        }
+
+        /* ===== DIAGRAM ===== */
+        .diagram {
+            background: var(--bg-code);
+            border: 1px solid var(--border-code);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--text-code);
+            white-space: pre;
+        }
+
+        /* ===== STAT BAR ===== */
+        .stat-bar-group {
+            margin: 1rem 0;
+        }
+
+        .stat-bar-item {
+            margin-bottom: 0.8rem;
+        }
+
+        .stat-bar-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.3rem;
+            font-size: 0.85rem;
+        }
+
+        .stat-bar-label {
+            color: var(--text-secondary);
+        }
+
+        .stat-bar-value {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .stat-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            background: var(--gradient-1);
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+
+        /* ===== WEAPON DETAIL CARD ===== */
+        .weapon-detail {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .weapon-detail-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .weapon-detail-category {
+            font-size: 0.7rem;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .weapon-detail-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .weapon-detail-stat {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .weapon-detail-stat span:last-child {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ===== PERK GRID ===== */
+        .perk-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .perk-slot {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .perk-slot-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .perk-item {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .perk-item:last-child {
+            border-bottom: none;
+        }
+
+        .perk-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .perk-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== KILLSTREAK TIMELINE ===== */
+        .killstreak-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .killstreak-item {
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            gap: 1rem;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .killstreak-kills {
+            text-align: center;
+        }
+
+        .killstreak-kills-num {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--accent);
+        }
+
+        .killstreak-kills-label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .killstreak-name {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .killstreak-desc {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== ARCHITECTURE BLOCK ===== */
+        .arch-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .arch-block-header {
+            padding: 1rem 1.5rem;
+            background: rgba(230, 57, 70, 0.05);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .arch-block-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            background: rgba(230, 57, 70, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .arch-block-title {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .arch-block-body {
+            padding: 1.5rem;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            margin: 1.5rem 0;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 0.7rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-secondary);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== FOOTER ===== */
+        .doc-footer {
+            padding: 3rem 4rem;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        .doc-footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .doc-footer-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .doc-footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .doc-footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .doc-footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 900;
+                height: auto;
+            }
+
+            .sidebar.active {
+                display: block;
+            }
+
+            .doc-content {
+                padding: 2rem;
+            }
+
+            .spec-grid { grid-template-columns: 1fr; }
+            .perk-grid { grid-template-columns: 1fr; }
+            .weapon-detail { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-burger { display: flex; }
+
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 15, 0.98);
+                padding: 1rem;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .doc-content {
+                padding: 1.5rem;
+            }
+
+            .doc-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .doc-footer {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">not found</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="nav-back">← Питч</a></li>
+                <li><a href="#gdd" class="active">GDD</a></li>
+                <li><a href="#tech">Тех. архитектура</a></li>
+                <li><a href="#weapons">Оружие</a></li>
+                <li><a href="#multiplayer">Мультиплеер</a></li>
+                <li><a href="#ai-systems">ИИ</a></li>
+                <li><a href="#networking">Сеть</a></li>
+            </ul>
+            <div class="nav-burger" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== LAYOUT ===== -->
+    <div class="doc-layout">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Часть 1 — GDD</div>
+                <a href="#overview" class="sidebar-link active">Обзор проекта</a>
+                <a href="#pillars" class="sidebar-link sub">Столпы дизайна</a>
+                <a href="#core-mechanics" class="sidebar-link">Основные механики</a>
+                <a href="#movement" class="sidebar-link sub">Передвижение</a>
+                <a href="#shooting" class="sidebar-link sub">Стрельба</a>
+                <a href="#health" class="sidebar-link sub">Здоровье и урон</a>
+                <a href="#weapons" class="sidebar-link">Система оружия</a>
+                <a href="#weapon-categories" class="sidebar-link sub">Категории</a>
+                <a href="#gunsmith" class="sidebar-link sub">Модификации</a>
+                <a href="#perks" class="sidebar-link">Перки</a>
+                <a href="#killstreaks" class="sidebar-link">Killstreaks</a>
+                <a href="#multiplayer" class="sidebar-link">Мультиплеер</a>
+                <a href="#mp-modes" class="sidebar-link sub">Режимы</a>
+                <a href="#mp-maps" class="sidebar-link sub">Карты</a>
+                <a href="#mp-progression" class="sidebar-link sub">Прогрессия</a>
+                <a href="#campaign" class="sidebar-link">Кампания</a>
+                <a href="#ai-systems" class="sidebar-link sub">ИИ врагов</a>
+                <a href="#ui-ux" class="sidebar-link">Интерфейс</a>
+                <a href="#audio" class="sidebar-link">Звук</a>
+                <a href="#visual" class="sidebar-link">Визуальный стиль</a>
+                <a href="#monetization" class="sidebar-link">Монетизация</a>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Часть 2 — Тех. архитектура</div>
+                <a href="#tech" class="sidebar-link">Обзор стека</a>
+                <a href="#engine" class="sidebar-link sub">Движок UE5</a>
+                <a href="#code-arch" class="sidebar-link">Архитектура кода</a>
+                <a href="#module-structure" class="sidebar-link sub">Модульная структура</a>
+                <a href="#weapon-system-code" class="sidebar-link sub">Система оружия (код)</a>
+                <a href="#damage-system" class="sidebar-link sub">Система урона</a>
+                <a href="#networking" class="sidebar-link">Сетевая архитектура</a>
+                <a href="#replication" class="sidebar-link sub">Репликация</a>
+                <a href="#lag-comp" class="sidebar-link sub">Lag Compensation</a>
+                <a href="#spawn-system" class="sidebar-link sub">Система респауна</a>
+                <a href="#server-infra" class="sidebar-link">Серверная инфраструктура</a>
+                <a href="#backend" class="sidebar-link sub">Бэкенд</a>
+                <a href="#eos" class="sidebar-link sub">EOS</a>
+                <a href="#dedicated" class="sidebar-link sub">Dedicated Servers</a>
+                <a href="#pipeline" class="sidebar-link">Пайплайн ассетов</a>
+                <a href="#optimization" class="sidebar-link">Оптимизация</a>
+                <a href="#anticheat" class="sidebar-link">Античит</a>
+                <a href="#cicd" class="sidebar-link">CI/CD</a>
+            </div>
+        </aside>
+
+        <!-- ===== CONTENT ===== -->
+        <main class="doc-content">
+
+            <!-- DOC HERO -->
+            <div class="doc-hero">
+                <div class="doc-hero-badge"> Внутренняя документация</div>
+                <h1>Game Design Document &<br><span>Техническая архитектура</span></h1>
+                <div class="doc-hero-meta">
+                    <span> Версия 0.1.0 — 23 марта 2026</span>
+                    <span> Полная документация проекта</span>
+                    <span> Конфиденциально</span>
+                </div>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- ЧАСТЬ 1: GDD -->
+            <!-- ============================================ -->
+
+            <!-- OVERVIEW -->
+            <div class="doc-section" id="overview">
+                <h2><span class="section-icon"></span> 1. Обзор проекта</h2>
+
+                <div class="spec-grid">
+                    <div class="spec-card">
+                        <div class="spec-card-label">Название</div>
+                        <div class="spec-card-value">not found</div>
+                        <div class="spec-card-desc">Название проекта</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Жанр</div>
+                        <div class="spec-card-value">FPS</div>
+                        <div class="spec-card-desc">Сингплеер + Мультиплеер</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Движок</div>
+                        <div class="spec-card-value">UE 4.27/5.4+</div>
+                        <div class="spec-card-desc">Unreal Engine</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Платформы</div>
+                        <div class="spec-card-value">PC</div>
+                        <div class="spec-card-desc">Steam</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Рейтинг</div>
+                        <div class="spec-card-value">16+</div>
+                        <div class="spec-card-desc">PEGI 16</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Цена</div>
+                        <div class="spec-card-value">999–1499₽</div>
+                        <div class="spec-card-desc">$14.99–$19.99</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Команда</div>
+                        <div class="spec-card-value">5–7 чел</div>
+                        <div class="spec-card-desc">Core + аутсорс</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Срок</div>
+                        <div class="spec-card-value">18–20 мес</div>
+                        <div class="spec-card-desc">С момента финансирования</div>
+                    </div>
+                </div>
+
+                <div class="info-box note">
+                    <div class="info-box-title"> Elevator Pitch</div>
+                    <p><strong>«not found»</strong> — тактический сингплеер/мультиплеер шутер от первого лица в сеттинге современных локальных конфликтов. Духовный наследник классических Call of Duty (CoD4, MW2, Black Ops) для российской аудитории: кинематографичная кампания на 3–4 часа и соревновательный мультиплеер 6v6 с системой прогрессии, создания классов и killstreaks.</p>
+                </div>
+
+                <h4>Референсы</h4>
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Элемент</th><th>Референс</th><th>Что берём</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Кампания</td><td>CoD4: Modern Warfare</td><td>Линейные миссии, скриптовые моменты, смена темпа</td></tr>
+                            <tr><td>Мультиплеер</td><td>CoD: MW2 / Black Ops 2</td><td>Создание классов, killstreaks, карты с тремя линиями</td></tr>
+                            <tr><td>Атмосфера</td><td>Insurgency: Sandstorm</td><td>Реалистичный звук, «грязная» война</td></tr>
+                            <tr><td>Масштаб</td><td>Counter-Strike 2</td><td>Компактные карты, быстрые матчи</td></tr>
+                            <tr><td>Визуал</td><td>World War 3</td><td>Реалистичный, но не фотореалистичный стиль</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PILLARS -->
+            <div class="doc-section" id="pillars">
+                <h3> Столпы дизайна (Design Pillars)</h3>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Design Pillars</span>
+                    </div>
+                    <div class="code-body"><span class="accent">1. ОЩУЩЕНИЕ СТРЕЛЬБЫ</span> — каждый выстрел должен чувствоваться:
+   отдача, звук, хитмаркеры, реакция врагов
+
+<span class="accent">2. КИНЕМАТОГРАФИЧНОСТЬ</span> — скриптовые моменты, постановка,
+   ощущение «боевика» даже при малом бюджете
+
+<span class="accent">3. «ЕЩЁ ОДИН МАТЧ»</span> — мультиплеер с короткими раундами,
+   быстрым прогрессом, затягивающим геймплей-лупом
+
+<span class="accent">4. ДОСТУПНОСТЬ</span> — низкий порог входа, понятные механики,
+   работает на средних ПК</div>
+                </div>
+            </div>
+
+            <!-- CORE MECHANICS -->
+            <div class="doc-section" id="core-mechanics">
+                <h2><span class="section-icon"></span> 2. Основные механики</h2>
+
+                <h3 id="movement"> Передвижение</h3>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Movement System</span>
+                    </div>
+                    <div class="code-body"><span class="accent">Базовое:</span>
+├── Ходьба (тихая, точная стрельба)
+├── Бег (спринт — быстро, нельзя стрелять)
+├── Приседание (меньше хитбокс, тише, точнее)
+├── Положение лёжа (prone — минимальный профиль)
+└── Прыжок (невысокий, реалистичный)
+
+<span class="accent">Продвинутое:</span>
+├── Перелезание через препятствия (mantle/vault)
+├── Скольжение (slide) — из спринта в присед
+├── Наклоны (lean) — Q/E, выглядывание из-за угла
+└── Тактический спринт (короткий ускоренный рывок, кулдаун)</div>
+                </div>
+
+                <h4>Параметры передвижения</h4>
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Тип</th><th>Скорость</th><th>Примечание</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Ходьба</td><td>4.5 м/с</td><td>Базовая скорость</td></tr>
+                            <tr><td>Спринт</td><td>6.5 м/с</td><td>Нельзя стрелять</td></tr>
+                            <tr><td>Тактический спринт</td><td>7.5 м/с</td><td>3 сек, кулдаун 5 сек</td></tr>
+                            <tr><td>Приседание</td><td>2.5 м/с</td><td>Меньше хитбокс</td></tr>
+                            <tr><td>Лёжа (prone)</td><td>1.0 м/с</td><td>Минимальный профиль</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="shooting"> Система стрельбы (КЛЮЧЕВАЯ)</h3>
+
+                <div class="info-box danger">
+                    <div class="info-box-title">️ КРИТИЧЕСКИ ВАЖНО</div>
+                    <p>Стрельба — это ДНК игры. Если стрелять неприятно, ничто другое не спасёт проект. Каждый аспект системы стрельбы должен быть отполирован до идеала.</p>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="switchTab(event, 'tab-aiming')">Прицеливание</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'tab-recoil')">Отдача</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'tab-ballistics')">Баллистика</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'tab-hitfeedback')">Попадания</button>
+                    </div>
+
+                    <div class="tab-content active" id="tab-aiming">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">Aiming System</span></div>
+                            <div class="code-body"><span class="accent">Hip-fire</span> (от бедра) — большой разброс, быстрая реакция
+<span class="accent">ADS</span> (Aim Down Sights) — точно, но медленнее движение
+<span class="accent">Время входа в ADS</span> зависит от оружия (150–350ms)
+<span class="accent">Чувствительность ADS</span> отдельно настраивается</div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-recoil">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">Recoil System</span></div>
+                            <div class="code-body"><span class="accent">Визуальная отдача</span> — камера дёргается вверх и в стороны
+<span class="accent">Паттерн отдачи</span> — у каждого оружия свой уникальный рисунок
+<span class="accent">Первые 3–5 пуль</span> — предсказуемый паттерн (можно выучить)
+<span class="accent">Дальше</span> — нарастающий случайный разброс
+<span class="accent">Возврат прицела</span> после прекращения стрельбы (0.3–0.5 сек)
+
+Реализация: UCurveVector* RecoilPattern — кривая отдачи
+Каждый кадр стрельбы сэмплируется точка на кривой
++ случайный разброс, увеличивающийся со временем</div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-ballistics">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">Ballistics</span></div>
+                            <div class="code-body"><span class="accent">Hitscan</span> до 50 метров — мгновенное попадание (Line Trace)
+<span class="accent">Projectile</span> свыше 50 метров — для снайперских винтовок
+<span class="accent">Damage falloff</span> — урон падает с расстоянием (UCurveFloat)
+<span class="accent">Penetration</span> — пробитие тонких стен, зависит от калибра
+<span class="accent">Нет bullet drop</span> для автоматов/пистолетов (упрощение)</div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-hitfeedback">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">Hit Feedback</span></div>
+                            <div class="code-body"><span class="accent">Хитмаркер</span> — белый крестик + звуковой щелчок
+<span class="accent">Хитмаркер убийства</span> — красный крестик + другой звук
+<span class="accent">Хедшот</span> — увеличенный маркер + уникальный звук «дзинь»
+<span class="accent">Направление урона</span> — красные дуги на экране
+
+Hitzone множители:
+├── Голова:        <span class="warn">x1.5</span>
+├── Верхний торс:  x1.1
+├── Нижний торс:   x1.0
+├── Конечности:    x0.8
+└── Через стену:   x0.5–0.7</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="health"> Здоровье и урон</h3>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Health System</span></div>
+                    <div class="code-body"><span class="accent">100 HP</span> у всех игроков
+<span class="accent">Авторегенерация</span> — начало через 5 сек после последнего урона
+<span class="accent">Скорость регенерации:</span> 20 HP/сек
+<span class="accent">Визуальная индикация:</span> кровь на экране, звук сердцебиения
+<span class="accent">Направление урона:</span> красные дуги показывают откуда стреляют
+<span class="accent">Мгновенная смерть</span> при 0 HP (нет Last Stand)
+
+<span class="warn">TTK (Time to Kill) — КРИТИЧЕСКИ ВАЖНО:</span>
+├── Идеальный TTK: <span class="accent">200–400ms</span> (как в CoD4/MW2)
+├── Автоматы: 3–5 пуль для убийства
+├── Снайперки: 1 пуля (торс/голова)
+├── Дробовики: 1 выстрел вблизи, 2–3 на средней дистанции
+└── Пистолеты: 4–6 пуль</div>
+                </div>
+            </div>
+
+            <!-- WEAPONS -->
+            <div class="doc-section" id="weapons">
+                <h2><span class="section-icon"></span> 3. Система оружия</h2>
+
+                <h3 id="weapon-categories">Категории оружия (16 единиц на релизе)</h3>
+
+                <div class="tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="switchTab(event, 'tab-ar')">Штурмовые (4)</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'tab-smg')">ПП (3)</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'tab-sniper')">Снайперские (2)</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'tab-shotgun')">Дробовики (2)</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'tab-lmg')">Пулемёты (2)</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'tab-pistol')">Пистолеты (3)</button>
+                    </div>
+
+                    <div class="tab-content active" id="tab-ar">
+                        <div class="doc-table-container">
+                            <table class="doc-table">
+                                <thead>
+                                    <tr><th>Оружие</th><th>Урон</th><th>RPM</th><th>Магазин</th><th>ADS</th><th>Особенность</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>АК-15</td><td>38</td><td>600</td><td>30</td><td>250ms</td><td>Высокий урон, сильная отдача</td></tr>
+                                    <tr><td>АЕК-971</td><td>32</td><td>700</td><td>30</td><td>220ms</td><td>Низкая отдача, сбалансированный</td></tr>
+                                    <tr><td>М4А1</td><td>30</td><td>750</td><td>30</td><td>200ms</td><td>Быстрый ADS, универсальный</td></tr>
+                                    <tr><td>HK416</td><td>33</td><td>720</td><td>30</td><td>230ms</td><td>Контролируемая отдача</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="stat-bar-group">
+                            <h4>АК-15 — Характеристики</h4>
+                            <div class="stat-bar-item">
+                                <div class="stat-bar-header">
+                                    <span class="stat-bar-label">Урон</span>
+                                    <span class="stat-bar-value">85%</span>
+                                </div>
+                                <div class="stat-bar"><div class="stat-bar-fill" style="width:85%"></div></div>
+                            </div>
+                            <div class="stat-bar-item">
+                                <div class="stat-bar-header">
+                                    <span class="stat-bar-label">Скорострельность</span>
+                                    <span class="stat-bar-value">55%</span>
+                                </div>
+                                <div class="stat-bar"><div class="stat-bar-fill" style="width:55%"></div></div>
+                            </div>
+                            <div class="stat-bar-item">
+                                <div class="stat-bar-header">
+                                    <span class="stat-bar-label">Отдача</span>
+                                    <span class="stat-bar-value">75%</span>
+                                </div>
+                                <div class="stat-bar"><div class="stat-bar-fill" style="width:75%"></div></div>
+                            </div>
+                            <div class="stat-bar-item">
+                                <div class="stat-bar-header">
+                                    <span class="stat-bar-label">Дальность</span>
+                                    <span class="stat-bar-value">70%</span>
+                                </div>
+                                <div class="stat-bar"><div class="stat-bar-fill" style="width:70%"></div></div>
+                            </div>
+                            <div class="stat-bar-item">
+                                <div class="stat-bar-header">
+                                    <span class="stat-bar-label">Мобильность</span>
+                                    <span class="stat-bar-value">50%</span>
+                                </div>
+                                <div class="stat-bar"><div class="stat-bar-fill" style="width:50%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-smg">
+                        <div class="doc-table-container">
+                            <table class="doc-table">
+                                <thead>
+                                    <tr><th>Оружие</th><th>Урон</th><th>RPM</th><th>Магазин</th><th>ADS</th><th>Особенность</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>ПП-19 «Витязь»</td><td>28</td><td>700</td><td>30</td><td>180ms</td><td>Сбалансированный</td></tr>
+                                    <tr><td>MP5</td><td>25</td><td>800</td><td>30</td><td>160ms</td><td>Высокий RPM, точный</td></tr>
+                                    <tr><td>UMP-45</td><td>35</td><td>600</td><td>25</td><td>200ms</td><td>Высокий урон, медленный</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-sniper">
+                        <div class="doc-table-container">
+                            <table class="doc-table">
+                                <thead>
+                                    <tr><th>Оружие</th><th>Урон</th><th>RPM</th><th>Магазин</th><th>ADS</th><th>Особенность</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>СВД</td><td>80</td><td>Semi</td><td>10</td><td>300ms</td><td>Полуавтомат, 1 выстрел в торс/голову</td></tr>
+                                    <tr><td>ОРСИС Т-5000</td><td>110</td><td>Bolt</td><td>5</td><td>350ms</td><td>Болтовка, 1 выстрел в любую часть</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-shotgun">
+                        <div class="doc-table-container">
+                            <table class="doc-table">
+                                <thead>
+                                    <tr><th>Оружие</th><th>Урон</th><th>RPM</th><th>Магазин</th><th>ADS</th><th>Особенность</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Сайга-12</td><td>120</td><td>Semi</td><td>8</td><td>250ms</td><td>Полуавтомат, быстрые выстрелы</td></tr>
+                                    <tr><td>МР-133</td><td>150</td><td>Pump</td><td>6</td><td>280ms</td><td>Помповый, больше урона за выстрел</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-lmg">
+                        <div class="doc-table-container">
+                            <table class="doc-table">
+                                <thead>
+                                    <tr><th>Оружие</th><th>Урон</th><th>RPM</th><th>Магазин</th><th>ADS</th><th>Особенность</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>ПКП «Печенег»</td><td>40</td><td>650</td><td>100</td><td>350ms</td><td>Высокий урон, огромная обойма</td></tr>
+                                    <tr><td>РПК-16</td><td>33</td><td>700</td><td>60</td><td>280ms</td><td>Гибрид AR/LMG, мобильнее</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-pistol">
+                        <div class="doc-table-container">
+                            <table class="doc-table">
+                                <thead>
+                                    <tr><th>Оружие</th><th>Урон</th><th>RPM</th><th>Магазин</th><th>ADS</th><th>Особенность</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>ПЯ «Грач»</td><td>30</td><td>Semi</td><td>18</td><td>120ms</td><td>Стандартный, надёжный</td></tr>
+                                    <tr><td>АПС «Стечкин»</td><td>22</td><td>Auto</td><td>20</td><td>130ms</td><td>Автоматический режим</td></tr>
+                                    <tr><td>Glock 17</td><td>25</td><td>Semi</td><td>17</td><td>110ms</td><td>Быстрая стрельба</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="gunsmith"> Система модификаций (Gunsmith Lite)</h3>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Attachment Slots</span></div>
+                    <div class="code-body"><span class="accent">5 слотов модификаций на каждое оружие:</span>
+
+<span class="info">ПРИЦЕЛ:</span>
+├── Коллиматор (x1, быстрый ADS)
+├── Голографический (x1, чистая картинка)
+├── ACOG (x4, средняя дистанция)
+└── Снайперский (x6–x12, дальняя дистанция)
+
+<span class="info">СТВОЛ:</span>
+├── Удлинитель (+15% дальность, -5% мобильность)
+├── Глушитель (скрытность на мини-карте, -10% дальность)
+└── Компенсатор (-15% вертикальная отдача, +5% горизонтальная)
+
+<span class="info">ЦЕВЬЁ:</span>
+├── Тактическая рукоять (-10% разброс ADS, +5% ADS время)
+└── ЛЦУ (-20% hip-fire разброс, виден врагам)
+
+<span class="info">МАГАЗИН:</span>
+├── Увеличенный (+50% патронов, +10% время перезарядки)
+└── Быстросъёмный (-20% время перезарядки, без доп. патронов)
+
+<span class="info">ПРИКЛАД:</span>
+├── Тяжёлый (-15% отдача, -10% мобильность)
+└── Лёгкий (+10% мобильность, -10% ADS время)
+
+<span class="warn">Каждая модификация имеет trade-off (плюсы и минусы)</span></div>
+                </div>
+            </div>
+
+            <!-- PERKS -->
+            <div class="doc-section" id="perks">
+                <h2><span class="section-icon"></span> 4. Система перков</h2>
+
+                <p>3 слота перков, как в классических CoD. Каждый слот — своя категория. Игрок выбирает по одному перку из каждого слота.</p>
+
+                <div class="perk-grid">
+                    <div class="perk-slot">
+                        <div class="perk-slot-title">Перк 1 — Снаряжение</div>
+                        <div class="perk-item">
+                            <div class="perk-name">Сапёр</div>
+                            <div class="perk-desc">2 летальных гранаты вместо 1</div>
+                        </div>
+                        <div class="perk-item">
+                            <div class="perk-name">Бронежилет</div>
+                            <div class="perk-desc">+25 HP (125 итого)</div>
+                        </div>
+                        <div class="perk-item">
+                            <div class="perk-name">Марафонец</div>
+                            <div class="perk-desc">Бесконечный спринт</div>
+                        </div>
+                        <div class="perk-item">
+                            <div class="perk-name">Подрывник</div>
+                            <div class="perk-desc">+25% радиус взрыва гранат</div>
+                        </div>
+                    </div>
+
+                    <div class="perk-slot">
+                        <div class="perk-slot-title">Перк 2 — Боевой</div>
+                        <div class="perk-item">
+                            <div class="perk-name">Ловкач</div>
+                            <div class="perk-desc">-15% время входа в ADS</div>
+                        </div>
+                        <div class="perk-item">
+                            <div class="perk-name">Холоднокровный</div>
+                            <div class="perk-desc">Невидим для UAV и тепловизоров</div>
+                        </div>
+                        <div class="perk-item">
+                            <div class="perk-name">Двуручный</div>
+                            <div class="perk-desc">Быстрая смена оружия</div>
+                        </div>
+                        <div class="perk-item">
+                            <div class="perk-name">Снайпер</div>
+                            <div class="perk-desc">Задержка дыхания при прицеливании</div>
+                        </div>
+                    </div>
+
+                    <div class="perk-slot">
+                        <div class="perk-slot-title">Перк 3 — Тактический</div>
+                        <div class="perk-item">
+                            <div class="perk-name">Коммандо</div>
+                            <div class="perk-desc">+50% дальность ближнего боя</div>
+                        </div>
+                        <div class="perk-item">
+                            <div class="perk-name">Ниндзя</div>
+                            <div class="perk-desc">Бесшумные шаги</div>
+                        </div>
+                        <div class="perk-item">
+                            <div class="perk-name">Тактик</div>
+                            <div class="perk-desc">2 тактических гранаты вместо 1</div>
+                        </div>
+                        <div class="perk-item">
+                            <div class="perk-name">Наблюдатель</div>
+                            <div class="perk-desc">Увеличенная мини-карта</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KILLSTREAKS -->
+            <div class="doc-section" id="killstreaks">
+                <h2><span class="section-icon"></span> 5. Killstreaks</h2>
+
+                <div class="info-box note">
+                    <div class="info-box-title"> Система</div>
+                    <p>Killstreaks набираются убийствами БЕЗ смерти (классическая система CoD4). Игрок выбирает 3 killstreak'а перед матчем.</p>
+                </div>
+
+                <div class="killstreak-list">
+                    <div class="killstreak-item">
+                        <div class="killstreak-kills">
+                            <div class="killstreak-kills-num">3</div>
+                            <div class="killstreak-kills-label">убийства</div>
+                        </div>
+                        <div>
+                            <div class="killstreak-name"> БПЛА (UAV)</div>
+                            <div class="killstreak-desc">Показывает врагов на мини-карте на 30 сек. Можно сбить 1 выстрелом из гранатомёта.</div>
+                        </div>
+                    </div>
+                    <div class="killstreak-item">
+                        <div class="killstreak-kills">
+                            <div class="killstreak-kills-num">4</div>
+                            <div class="killstreak-kills-label">убийства</div>
+                        </div>
+                        <div>
+                            <div class="killstreak-name"> Контр-БПЛА</div>
+                            <div class="killstreak-desc">Глушит вражеский UAV на 30 сек. Помехи на мини-карте противника.</div>
+                        </div>
+                    </div>
+                    <div class="killstreak-item">
+                        <div class="killstreak-kills">
+                            <div class="killstreak-kills-num">5</div>
+                            <div class="killstreak-kills-label">убийств</div>
+                        </div>
+                        <div>
+                            <div class="killstreak-name"> Артиллерийский удар</div>
+                            <div class="killstreak-desc">Игрок выбирает точку на карте. 3 снаряда с разбросом, задержка 2 сек. Убивает в радиусе 5 метров.</div>
+                        </div>
+                    </div>
+                    <div class="killstreak-item">
+                        <div class="killstreak-kills">
+                            <div class="killstreak-kills-num">6</div>
+                            <div class="killstreak-kills-label">убийств</div>
+                        </div>
+                        <div>
+                            <div class="killstreak-name"> Авиаудар</div>
+                            <div class="killstreak-desc">Линейный проход по карте. Игрок выбирает направление. Полоса поражения ~10м шириной.</div>
+                        </div>
+                    </div>
+                    <div class="killstreak-item">
+                        <div class="killstreak-kills">
+                            <div class="killstreak-kills-num">7</div>
+                            <div class="killstreak-kills-label">убийств</div>
+                        </div>
+                        <div>
+                            <div class="killstreak-name"> Ударный вертолёт</div>
+                            <div class="killstreak-desc">Автоматически патрулирует карту 45 сек. Стреляет по врагам. Можно сбить 2 выстрелами из гранатомёта.</div>
+                        </div>
+                    </div>
+                    <div class="killstreak-item">
+                        <div class="killstreak-kills">
+                            <div class="killstreak-kills-num">9</div>
+                            <div class="killstreak-kills-label">убийств</div>
+                        </div>
+                        <div>
+                            <div class="killstreak-name"> Тяжёлый дрон</div>
+                            <div class="killstreak-desc">Игрок управляет вручную 30 сек. Пулемёт + ракеты. Уязвим для стрелкового оружия.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MULTIPLAYER -->
+            <div class="doc-section" id="multiplayer">
+                <h2><span class="section-icon"></span> 6. Мультиплеер</h2>
+
+                <h3 id="mp-modes">Режимы</h3>
+
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Режим</th><th>Игроки</th><th>Лимит</th><th>Респаун</th><th>Описание</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Team Deathmatch</td><td>6v6</td><td>75 убийств / 10 мин</td><td>Мгновенный</td><td>Классический командный бой</td></tr>
+                            <tr><td>Domination</td><td>6v6</td><td>200 очков / 10 мин</td><td>Мгновенный</td><td>3 точки захвата (A, B, C)</td></tr>
+                            <tr><td>Search & Destroy</td><td>6v6</td><td>До 6 побед</td><td>Нет</td><td>Бомба, 2 мин на раунд</td></tr>
+                            <tr><td>Free-for-All</td><td>8</td><td>30 убийств / 10 мин</td><td>Мгновенный</td><td>Каждый сам за себя</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="mp-maps">Карты мультиплеера</h3>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Map Design Philosophy</span></div>
+                    <div class="code-body"><span class="accent">КАРТА 1: «ЗАВОД»</span> (средняя, все режимы)
+├── Заброшенный промышленный комплекс
+├── Классические 3 линии:
+│   ├── Левая: открытая, длинные дистанции (снайперы)
+│   ├── Центральная: здание завода, CQB
+│   └── Правая: переулки, средняя дистанция
+├── Вертикальность: 2 уровня (крыши, лестницы)
+└── Референс: Crash (CoD4) + Firing Range (Black Ops)
+
+<span class="accent">КАРТА 2: «ПОСОЛЬСТВО»</span> (малая, TDM/S&D)
+├── Городской квартал, посольство в центре
+├── Симметричная, плотная
+├── Много дверей, окон, углов
+├── Вертикальность: 3 уровня (подвал, этаж, крыша)
+└── Референс: Vacant (CoD4) + Nuketown (Black Ops)
+
+<span class="accent">КАРТА 3: «ПЕРЕВАЛ»</span> (большая, Domination/Hardpoint)
+├── Горная дорога, блокпосты, деревня
+├── Асимметричная, разнообразный рельеф
+├── Открытые зоны + здания деревни
+├── Вертикальность: естественная (холмы, скалы)
+└── Референс: Overgrown (CoD4) + Afghan (MW2)
+
+<span class="accent">КАРТА 4: «ПОРТ»</span> (средняя, все режимы)
+├── Ночной грузовой порт, контейнеры
+├── Лабиринт контейнеров + открытые причалы
+├── Динамическое освещение (прожекторы, неон)
+├── Вертикальность: контейнеры как платформы, краны
+└── Референс: Shipment (CoD4, но больше) + Terminal (MW2)</div>
+                </div>
+
+                <h3 id="mp-progression">Система прогрессии</h3>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Progression System</span></div>
+                    <div class="code-body"><span class="accent">УРОВНИ ИГРОКА: 1–55</span>
+├── Каждый уровень разблокирует оружие/перк/killstreak
+├── XP: убийства (100), победы (500), задачи (200)
+├── Prestige: после 55 → сброс + значок
+└── 5 уровней Prestige
+
+<span class="accent">УРОВНИ ОРУЖИЯ: 1–30</span> (для каждого оружия)
+├── Разблокировка модификаций
+├── XP за убийства этим оружием
+├── Камуфляжи за достижения:
+│   ├── 50 убийств — базовый камуфляж
+│   ├── 100 хедшотов — золотой
+│   ├── Все задания — платиновый
+│   └── Все оружия платиновые — «not found» (уникальный)
+└── Визуальные счётчики убийств на оружии
+
+<span class="accent">СОЗДАНИЕ КЛАССОВ:</span>
+├── 5 кастомных классов + 5 предустановленных
+├── Основное оружие + модификации
+├── Вторичное оружие
+├── Летальное снаряжение (граната, мина, C4)
+├── Тактическое снаряжение (дымовая, светошумовая, сенсор)
+├── Перк 1 + Перк 2 + Перк 3
+└── Killstreak 1 + Killstreak 2 + Killstreak 3</div>
+                </div>
+            </div>
+
+            <!-- CAMPAIGN -->
+            <div class="doc-section" id="campaign">
+                <h2><span class="section-icon"></span> 7. WORK IN PROGRESS</h2>
+
+
+                <h3 id="ai-systems">ИИ врагов</h3>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">AI Behavior</span></div>
+                    <div class="code-body"><span class="accent">Поведение (Behavior Trees):</span>
+├── Укрытия (cover system) — враги прячутся за объектами
+├── Фланговые манёвры (если игрок стоит на месте >10 сек)
+├── Гранаты (бросают, если игрок долго за укрытием >15 сек)
+├── Отступление (при потере 70% отряда)
+├── Подавление (стреляют очередями, не давая высунуться)
+└── Коммуникация (кричат команды друг другу)
+
+<span class="accent">Типы врагов:</span>
+├── <span class="info">Боевик</span> (базовый) — АК, средняя точность
+├── <span class="warn">Снайпер</span> — стоит далеко, лазерный прицел виден
+├── <span class="accent">Штурмовик</span> — бежит на игрока, дробовик/SMG
+├── <span class="success">Пулемётчик</span> — стационарная позиция, подавление
+├── <span class="warn">Гранатомётчик</span> — RPG, стреляет по укрытиям
+└── <span class="accent">Элита</span> — больше HP, лучшая тактика
+
+<span class="accent">Сложность:</span>
+├── Лёгкая: неточная стрельба, мало HP, медленная реакция
+├── Нормальная: базовый баланс
+├── Сложная: точная стрельба, больше врагов, фланги
+└── Реализм: 1–2 пули убивают, нет HUD, нет регенерации</div>
+                </div>
+            </div>
+
+            <!-- UI/UX -->
+            <div class="doc-section" id="ui-ux">
+                <h2><span class="section-icon"></span> 8. Интерфейс (UI/UX)</h2>
+
+                <h3>HUD в бою</h3>
+
+                <div class="diagram">┌─────────────────────────────────────────────────┐
+│  [Мини-карта]                    [Килл-фид]     │
+│   ┌───────┐                     Player1 ⊕ Bot3  │
+│   │ . . . │                     Player2 ⊕ Bot1  │
+│   │  .☆.  │                                     │
+│   │ . . . │                                     │
+│   └───────┘                                     │
+│                                                 │
+│                                                 │
+│                    +                            │
+│                  (прицел)                       │
+│                                                 │
+│                                                 │
+│  [Компас с направлениями]                       │
+│                                                 │
+│  [Стойка]          ┌──────────────┐  [Гранаты]  │
+│   стоя            │ AK-15  30/90 │  ⊙ x1  ◎ x1 │
+│                    │ ▓▓▓▓▓▓▓▓░░░  │             │
+│                    └──────────────┘             │
+└─────────────────────────────────────────────────┘</div>
+            </div>
+
+            <!-- AUDIO -->
+            <div class="doc-section" id="audio">
+                <h2><span class="section-icon"></span> 9. Звуковой дизайн</h2>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Audio Priority</span></div>
+                    <div class="code-body"><span class="accent">ПРИОРИТЕТ 1: Звуки выстрелов</span> — КРИТИЧЕСКИ ВАЖНО
+├── Каждое оружие — уникальный звук
+├── Разница между «от себя» и «в тебя» (incoming vs outgoing)
+├── Эхо зависит от окружения (помещение/улица)
+├── Глушитель кардинально меняет звук
+└── Референс: Insurgency Sandstorm, Escape from Tarkov
+
+<span class="accent">ПРИОРИТЕТ 2: Шаги</span> — важны для геймплея
+├── Разные поверхности (бетон, металл, грунт, вода)
+├── Громкость зависит от скорости
+├── Перк «Ниндзя» снижает громкость
+└── 3D-позиционирование (HRTF)
+
+<span class="accent">ПРИОРИТЕТ 3: Окружение</span> — атмосфера
+├── Далёкие взрывы, стрельба
+├── Ветер, птицы, техника
+└── Радиопереговоры (кампания)
+
+<span class="accent">Музыка:</span>
+├── Кампания: оркестровая + электронная
+├── Мультиплеер: минимальная (начало/конец раунда)
+└── Главное меню: атмосферная тема
+
+<span class="accent">Озвучка:</span>
+├── Кампания: полная озвучка на русском
+├── Мультиплеер: голосовые команды
+│   «Перезарядка!», «Граната!», «Враг замечен!»
+└── 2 набора голосов (своя команда / противник)</div>
+                </div>
+            </div>
+
+            <!-- VISUAL -->
+            <div class="doc-section" id="visual">
+                <h2><span class="section-icon"></span> 10. Визуальный стиль</h2>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Visual Direction</span></div>
+                    <div class="code-body"><span class="accent">Общий стиль:</span>
+├── Реалистичный, но не фотореалистичный
+├── Слегка повышенная контрастность (читаемость)
+├── Враги хорошо различимы на фоне (game > realism)
+├── Цветовая палитра: приглушённые тона, акценты красного/оранжевого
+└── Пост-обработка: лёгкий bloom, виньетка, motion blur (отключаемый)
+
+<span class="accent">Целевая производительность:</span>
+├── 1080p @ 60 FPS на GTX 1060 / RX 580 (минимум)
+├── 1440p @ 60 FPS на RTX 3060 (рекомендуемые)
+├── 4K @ 60 FPS на RTX 4070+ (ультра)
+├── FSR 2.0 / DLSS поддержка
+└── Nanite для окружения, Lumen для освещения</div>
+                </div>
+            </div>
+
+            <!-- MONETIZATION -->
+            <div class="doc-section" id="monetization">
+                <h2><span class="section-icon"></span> 11. Монетизация</h2>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Monetization Model</span></div>
+                    <div class="code-body"><span class="accent">БАЗОВАЯ МОДЕЛЬ: Premium</span> (купи и играй)
+├── Цена: 999–1499 руб. / $14.99–$19.99
+├── Весь контент доступен сразу
+├── Все будущие карты — <span class="success">БЕСПЛАТНО</span>
+└── <span class="success">Нет pay-to-win</span>
+
+<span class="accent">ДОПОЛНИТЕЛЬНАЯ МОНЕТИЗАЦИЯ</span> (пост-релиз):
+├── Battle Pass (сезонный, 4 сезона в год)
+│   ├── Бесплатная ветка (базовые награды)
+│   └── Платная ветка (499 руб.) — только косметика
+├── Скины оружия: 149–299 руб.
+├── Наборы операторов: 499 руб.
+└── <span class="accent">НИКАКИХ лутбоксов, НИКАКОГО P2W</span></div>
+                </div>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- РАЗДЕЛИТЕЛЬ -->
+            <!-- ============================================ -->
+
+            <div style="text-align: center; padding: 4rem 0; border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); margin: 4rem 0;">
+                <div style="font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;">Часть 2</div>
+                <h2 style="font-size: 2rem; font-weight: 800;">Техническая архитектура</h2>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Движок, код, сеть, серверы, оптимизация</p>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- ЧАСТЬ 2: ТЕХНИЧЕСКАЯ АРХИТЕКТУРА -->
+            <!-- ============================================ -->
+
+            <!-- TECH OVERVIEW -->
+            <div class="doc-section" id="tech">
+                <h2><span class="section-icon"></span> 12. Технологический стек</h2>
+
+                <div class="diagram">┌─────────────────────────────────────────────────────────┐
+│                    КЛИЕНТ (ИГРА)                        │
+│  ┌─────────────────────────────────────────────────┐    │
+│  │              UNREAL ENGINE 4.27/5.4+            │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────────────┐ │    │
+│  │  │ Gameplay │ │ Rendering│ │    Networking    │ │    │
+│  │  │  (C++)   │ │ (Nanite, │ │  (EOS / Steam)   │ │    │
+│  │  │          │ │  Lumen)  │ │                  │ │    │
+│  │  └──────────┘ └──────────┘ └──────────────────┘ │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────────────┐ │    │
+│  │  │  Audio   │ │   UI     │ │   Animation      │ │    │
+│  │  │ (MetaS.) │ │  (UMG)   │ │  (Anim BP)       │ │    │
+│  │  └──────────┘ └──────────┘ └──────────────────┘ │    │
+│  └─────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────┐
+│                  СЕРВЕРНАЯ ИНФРАСТРУКТУРА               │
+│  ┌──────────────┐  ┌──────────┐  ┌──────────────────┐   │
+│  │  Dedicated   │  │ Matchma- │  │   Backend API    │   │
+│  │  Servers     │  │  king    │  │  (аккаунты,      │   │
+│  │  (UE5 DS)    │  │  (EOS)   │  │   прогрессия)    │   │
+│  └──────────────┘  └──────────┘  └──────────────────┘   │
+│  ┌──────────────┐  ┌──────────┐  ┌──────────────────┐   │
+│  │  PostgreSQL  │  │  Anti-   │  │   Analytics      │   │
+│  │  + Redis     │  │  Cheat   │  │  (телеметрия)    │   │
+│  │              │  │  (EAC)   │  │                  │   │
+│  └──────────────┘  └──────────┘  └──────────────────┘   │
+└─────────────────────────────────────────────────────────┘</div>
+
+                <h3 id="engine">Почему Unreal Engine</h3>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Engine Choice</span></div>
+                    <div class="code-body"><span class="success"> ПРЕИМУЩЕСТВА:</span>
+├── Nanite — виртуальная геометрия без ручной оптимизации LOD
+├── Lumen — глобальное освещение в реальном времени
+├── Quixel Megascans — тысячи бесплатных фотосканов
+├── Marketplace — огромная библиотека ассетов
+├── Встроенная сетевая репликация для мультиплеера
+├── Dedicated Server из коробки
+├── C++ + Blueprints (быстрое прототипирование)
+├── Бесплатно до $1M выручки
+└── Лучший в индустрии для FPS
+
+<span class="warn"> РИСКИ:</span>
+├── Высокие системные требования (нужна оптимизация)
+├── Крутая кривая обучения C++
+├── Большой размер билда
+└── 5% роялти после $1M (но это хорошая проблема)
+
+<span class="info">Используемые модули UE5:</span>
+├── Enhanced Input System
+├── Gameplay Ability System (GAS) — перки
+├── Common UI — кроссплатформенный интерфейс
+├── Niagara — частицы (дым, огонь, гильзы)
+├── MetaSounds — процедурный звук
+├── Chaos Physics — разрушаемость
+├── Online Subsystem (Steam / EOS)
+└── Dedicated Server Target</div>
+                </div>
+            </div>
+
+            <!-- CODE ARCHITECTURE -->
+            <div class="doc-section" id="code-arch">
+                <h2><span class="section-icon"></span> 13. Архитектура кода</h2>
+
+                <h3 id="module-structure">Модульная структура проекта</h3>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Project Structure</span>
+                        <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-body">/Source/
+├── /Core/                    — Базовые классы, утилиты
+│   ├── RubezhGameInstance.cpp
+│   ├── RubezhGameMode.cpp
+│   ├── RubezhPlayerController.cpp
+│   └── RubezhTypes.h         — Общие enum, struct
+│
+├── /Character/               — Всё о персонаже
+│   ├── RubezhCharacter.cpp
+│   ├── RubezhMovement.cpp    — Кастомный CMC
+│   ├── HealthComponent.cpp
+│   └── /Animation/
+│       ├── RubezhAnimInstance.cpp
+│       └── AnimNotifies/
+│
+├── /Weapons/                 — Система оружия
+│   ├── WeaponBase.cpp
+│   ├── WeaponComponent.cpp
+│   ├── ProjectileBase.cpp
+│   ├── HitscanTrace.cpp
+│   ├── RecoilComponent.cpp
+│   ├── WeaponDataAsset.cpp   — Data Asset с параметрами
+│   └── /Attachments/
+│
+├── /Combat/                  — Боевые системы
+│   ├── DamageSystem.cpp
+│   ├── KillstreakManager.cpp
+│   ├── PerkSystem.cpp        — GAS
+│   ├── GrenadeBase.cpp
+│   └── /Killstreaks/
+│
+├── /AI/                      — ИИ для кампании
+│   ├── EnemyAIController.cpp
+│   ├── /BehaviorTrees/
+│   └── /Tasks/
+│
+├── /Multiplayer/             — Мультиплеерные системы
+│   ├── MPGameMode_TDM.cpp
+│   ├── MPGameMode_Domination.cpp
+│   ├── MPGameMode_SND.cpp
+│   ├── SpawnSystem.cpp
+│   ├── LoadoutSystem.cpp
+│   └── MatchmakingSubsystem.cpp
+│
+├── /Campaign/                — Системы кампании
+│   ├── CampaignGameMode.cpp
+│   ├── MissionManager.cpp
+│   ├── ScriptedEventManager.cpp
+│   └── CheckpointSystem.cpp
+│
+├── /UI/                      — Интерфейс
+│   ├── HUDWidget.cpp
+│   ├── MinimapWidget.cpp
+│   ├── ScoreboardWidget.cpp
+│   └── LoadoutMenuWidget.cpp
+│
+├── /Progression/             — Прогрессия
+│   ├── PlayerProgressionSubsystem.cpp
+│   ├── WeaponProgressionData.cpp
+│   └── UnlockManager.cpp
+│
+└── /Online/                  — Онлайн-сервисы
+    ├── OnlineSubsystemManager.cpp
+    ├── SessionManager.cpp
+    └── AnalyticsManager.cpp</div>
+                </div>
+
+                <h3 id="weapon-system-code">Система оружия — Data-Driven подход</h3>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">C++ — WeaponDataAsset.h</span>
+                        <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-body"><span class="comment">// WeaponDataAsset.h — Все параметры оружия в Data Asset</span>
+<span class="keyword">UCLASS</span>()
+<span class="keyword">class</span> <span class="type">UWeaponDataAsset</span> : <span class="keyword">public</span> <span class="type">UPrimaryDataAsset</span>
+{
+    <span class="comment">// === Основные параметры ===</span>
+    <span class="macro">UPROPERTY</span>() <span class="type">FName</span> WeaponName;
+    <span class="macro">UPROPERTY</span>() <span class="type">EWeaponCategory</span> Category;
+    <span class="macro">UPROPERTY</span>() <span class="type">USkeletalMesh</span>* WeaponMesh;
+    <span class="macro">UPROPERTY</span>() <span class="type">UAnimMontage</span>* FireMontage_FP;
+    <span class="macro">UPROPERTY</span>() <span class="type">UAnimMontage</span>* ReloadMontage;
+
+    <span class="comment">// === Стрельба ===</span>
+    <span class="macro">UPROPERTY</span>() <span class="type">EFireMode</span> FireMode;     <span class="comment">// Auto, Semi, Burst</span>
+    <span class="macro">UPROPERTY</span>() <span class="type">float</span> FireRate;         <span class="comment">// выстрелов в минуту</span>
+    <span class="macro">UPROPERTY</span>() <span class="type">float</span> BaseDamage;
+    <span class="macro">UPROPERTY</span>() <span class="type">float</span> HeadshotMultiplier;
+    <span class="macro">UPROPERTY</span>() <span class="type">float</span> Range;
+    <span class="macro">UPROPERTY</span>() <span class="type">UCurveFloat</span>* DamageFalloffCurve;
+    <span class="macro">UPROPERTY</span>() <span class="type">bool</span> bIsHitscan;
+
+    <span class="comment">// === Отдача ===</span>
+    <span class="macro">UPROPERTY</span>() <span class="type">UCurveVector</span>* RecoilPattern;
+    <span class="macro">UPROPERTY</span>() <span class="type">float</span> RecoilRecoverySpeed;
+    <span class="macro">UPROPERTY</span>() <span class="type">float</span> HipFireSpread;
+    <span class="macro">UPROPERTY</span>() <span class="type">float</span> ADSSpread;
+
+    <span class="comment">// === Обойма ===</span>
+    <span class="macro">UPROPERTY</span>() <span class="type">int32</span> MagazineSize;
+    <span class="macro">UPROPERTY</span>() <span class="type">int32</span> MaxAmmo;
+    <span class="macro">UPROPERTY</span>() <span class="type">float</span> ReloadTime;
+
+    <span class="comment">// === Мобильность ===</span>
+    <span class="macro">UPROPERTY</span>() <span class="type">float</span> ADSTime;
+    <span class="macro">UPROPERTY</span>() <span class="type">float</span> MovementSpeedMult;
+
+    <span class="comment">// === Пробитие ===</span>
+    <span class="macro">UPROPERTY</span>() <span class="type">float</span> PenetrationPower;  <span class="comment">// 0-1</span>
+
+    <span class="comment">// === Звуки ===</span>
+    <span class="macro">UPROPERTY</span>() <span class="type">USoundCue</span>* FireSound;
+    <span class="macro">UPROPERTY</span>() <span class="type">USoundCue</span>* FireSound_Silenced;
+
+    <span class="comment">// === Модификации ===</span>
+    <span class="macro">UPROPERTY</span>() <span class="type">TArray</span>&lt;<span class="type">EAttachmentSlot</span>&gt; AvailableSlots;
+};</div>
+                </div>
+
+                <h3 id="damage-system">Система урона</h3>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">C++ — DamageSystem</span>
+                        <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-body"><span class="comment">// DamageSystem — расчёт урона с учётом всех факторов</span>
+
+<span class="type">float</span> <span class="function">CalculateDamage</span>(
+    <span class="keyword">const</span> <span class="type">FHitResult</span>& HitResult,
+    <span class="keyword">const</span> <span class="type">UWeaponDataAsset</span>* Weapon,
+    <span class="type">float</span> Distance,
+    <span class="type">bool</span> bThroughWall
+)
+{
+    <span class="comment">// 1. Базовый урон</span>
+    <span class="type">float</span> Damage = Weapon->BaseDamage;
+
+    <span class="comment">// 2. Falloff по дистанции (из кривой)</span>
+    Damage *= Weapon->DamageFalloffCurve->GetFloatValue(Distance);
+
+    <span class="comment">// 3. Множитель хитзоны (Physical Material)</span>
+    <span class="comment">// PM_Head = 1.5, PM_UpperBody = 1.1,</span>
+    <span class="comment">// PM_LowerBody = 1.0, PM_Limbs = 0.8</span>
+    Damage *= GetHitzoneMultiplier(HitResult.PhysMaterial);
+
+    <span class="comment">// 4. Пробитие стен</span>
+    <span class="keyword">if</span> (bThroughWall)
+        Damage *= Weapon->PenetrationPower;
+
+    <span class="keyword">return</span> Damage;
+}</div>
+                </div>
+            </div>
+
+            <!-- NETWORKING -->
+            <div class="doc-section" id="networking">
+                <h2><span class="section-icon"></span> 14. Сетевая архитектура</h2>
+
+                <div class="spec-grid">
+                    <div class="spec-card">
+                        <div class="spec-card-label">Модель</div>
+                        <div class="spec-card-value">Client-Server</div>
+                        <div class="spec-card-desc">Dedicated Server (авторитарный)</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Tick Rate</div>
+                        <div class="spec-card-value">60 Hz</div>
+                        <div class="spec-card-desc">Сервер обновляется 60 раз/сек</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Interpolation</div>
+                        <div class="spec-card-value">100ms</div>
+                        <div class="spec-card-desc">Задержка интерполяции</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Max Ping</div>
+                        <div class="spec-card-value">150ms</div>
+                        <div class="spec-card-desc">Выше — кик из матча</div>
+                    </div>
+                </div>
+
+                <h3 id="replication">Репликация данных</h3>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Network Replication</span></div>
+                    <div class="code-body"><span class="success">РЕПЛИЦИРУЕТСЯ (сервер → клиенты):</span>
+├── Позиция и поворот всех игроков
+├── Состояние оружия (стрельба, перезарядка)
+├── HP игроков (своё — полное, чужое — жив/мёртв)
+├── Счёт матча, таймеры
+├── Killstreaks (активация, позиция)
+├── Гранаты (позиция, взрыв)
+└── Игровые события (убийства, захват точек)
+
+<span class="warn">НЕ РЕПЛИЦИРУЕТСЯ (только локально):</span>
+├── Визуальные эффекты (частицы, декали)
+├── Звуки (воспроизводятся по событиям)
+├── UI
+├── Настройки камеры
+└── Косметика (загружается из данных)
+
+<span class="accent">СЕРВЕРНАЯ АВТОРИТАРНОСТЬ:</span>
+├── Сервер проверяет ВСЕ попадания
+├── Клиент: «выстрелил из X в направлении Y в момент T»
+├── Сервер: rewind (lag compensation) на момент T
+├── Сервер подтверждает или отклоняет попадание
+└── Предотвращает большинство читов</div>
+                </div>
+
+                <h3 id="lag-comp">Lag Compensation</h3>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Lag Compensation Algorithm</span></div>
+                    <div class="code-body"><span class="accent">АЛГОРИТМ (стандарт индустрии):</span>
+
+<span class="number">1.</span> Клиент стреляет в момент <span class="type">T_client</span>
+<span class="number">2.</span> Клиент отправляет: {timestamp, origin, direction}
+<span class="number">3.</span> Сервер получает в момент <span class="type">T_server</span>
+<span class="number">4.</span> Сервер «отматывает» позиции всех игроков на <span class="type">T_client - RTT/2</span>
+<span class="number">5.</span> Сервер делает line trace в «прошлом»
+<span class="number">6.</span> Если попадание — применяет урон
+<span class="number">7.</span> Отправляет подтверждение клиенту
+
+<span class="info">Используется в: CS2, CoD, Overwatch, Valorant</span>
+<span class="info">UE5: Network Prediction Plugin + кастомная реализация</span></div>
+                </div>
+
+                <h3 id="spawn-system">Система респауна</h3>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Spawn Algorithm</span></div>
+                    <div class="code-body"><span class="accent">Для каждой точки рассчитывается Score:</span>
+
+Score = W_safety * <span class="type">SafetyScore</span>
+      + W_team   * <span class="type">TeamProximityScore</span>
+      + W_enemy  * <span class="type">EnemyDistanceScore</span>
+      + W_obj    * <span class="type">ObjectiveScore</span>
+      + W_recent * <span class="type">RecentDeathPenalty</span>
+
+<span class="info">SafetyScore:</span>     нет прямой видимости врагов (raycast)
+<span class="info">TeamProximity:</span>   рядом с союзниками (но не слишком)
+<span class="info">EnemyDistance:</span>   далеко от врагов
+<span class="info">ObjectiveScore:</span>  рядом с активными целями
+<span class="info">RecentDeath:</span>     не спаунить где только что убили
+
+Точка с <span class="accent">максимальным Score</span> выбирается.</div>
+                </div>
+            </div>
+
+            <!-- SERVER INFRASTRUCTURE -->
+            <div class="doc-section" id="server-infra">
+                <h2><span class="section-icon"></span> 15. Серверная инфраструктура</h2>
+
+                <h3 id="backend">Архитектура бэкенда</h3>
+
+                <div class="diagram">┌─────────────────────────────────────────────────┐
+│                   КЛИЕНТ ИГРЫ                   │
+└──────────┬──────────────────┬───────────────────┘
+           │                  │
+           ▼                  ▼
+┌──────────────────┐  ┌──────────────────┐
+│   EOS (Epic      │  │   REST API       │
+│   Online         │  │   (Backend)      │
+│   Services)      │  │   FastAPI / Go   │
+│                  │  │                  │
+│  • Matchmaking   │  │  • Аккаунты      │
+│  • Lobbies       │  │  • Прогрессия    │
+│  • Voice Chat    │  │  • Инвентарь     │
+│  • Anti-Cheat    │  │  • Статистика    │
+│  • Leaderboards  │  │  • Магазин       │
+└────────┬─────────┘  └────────┬─────────┘
+         │                     │
+         ▼                     ▼
+┌──────────────────┐  ┌──────────────────┐
+│  Dedicated       │  │   PostgreSQL     │
+│  Game Servers    │  │   + Redis (кэш)  │
+│  UE5 DS, Linux   │  │                  │
+│  Selectel/VK     │  │                  │
+└──────────────────┘  └──────────────────┘</div>
+
+                <h3 id="eos">Почему EOS (Epic Online Services)</h3>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">EOS Benefits</span></div>
+                    <div class="code-body"><span class="success"> Бесплатно</span> (полностью, без ограничений)
+<span class="success"> Matchmaking</span> из коробки
+<span class="success"> Easy Anti-Cheat</span> (EAC) включён бесплатно
+<span class="success"> Voice chat</span>
+<span class="success"> Lobbies и sessions</span>
+<span class="success"> Leaderboards + Achievements</span>
+<span class="success"> Кроссплатформенность</span> (на будущее)
+<span class="success"> Не требует Epic Games Store</span> (работает со Steam)</div>
+                </div>
+
+                <h3 id="dedicated">Dedicated Servers</h3>
+
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Параметр</th><th>Значение</th><th>Примечание</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>CPU на матч</td><td>1–2 ядра</td><td>UE5 Dedicated Server</td></tr>
+                            <tr><td>RAM на матч</td><td>1–2 GB</td><td>6v6 матч</td></tr>
+                            <tr><td>Bandwidth</td><td>~600 KB/s</td><td>~50 KB/s на игрока</td></tr>
+                            <tr><td>Tick Rate</td><td>60 Hz</td><td>Стандарт для FPS</td></tr>
+                            <tr><td>ОС</td><td>Ubuntu 22.04</td><td>Linux для серверов</td></tr>
+                            <tr><td>Матчей на сервер</td><td>4–8</td><td>8 ядер, 32 GB RAM</td></tr>
+                            <tr><td>Хостинг РФ</td><td>Selectel / VK Cloud</td><td>Низкий пинг для РФ</td></tr>
+                            <tr><td>Стоимость</td><td>30–50K₽/мес</td><td>На старте (10 серверов)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PIPELINE -->
+            <div class="doc-section" id="pipeline">
+                <h2><span class="section-icon"></span> 16. Пайплайн ассетов</h2>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Asset Pipeline</span></div>
+                    <div class="code-body"><span class="accent">ОКРУЖЕНИЕ:</span>
+Quixel Megascans (бесплатно) → Blender (доработка) → UE5 (Nanite)
+Marketplace ассеты → доработка → интеграция
+
+<span class="accent">ОРУЖИЕ:</span>
+Референсы → Blender (high-poly) → Blender (low-poly + UV)
+→ Substance Painter (текстуры) → UE5 (материалы, анимация)
+
+<span class="accent">ПЕРСОНАЖИ:</span>
+Концепт → Blender → Mixamo (базовый rig) → Blender (доработка)
+→ UE5 (Animation Blueprint)
+
+<span class="accent">УРОВНИ:</span>
+Greybox (BSP) → Плейтест → Замена на финальные ассеты
+→ Lumen освещение → Оптимизация → Финал
+
+<span class="accent">ИНСТРУМЕНТЫ:</span>
+├── Unreal Engine (движок)
+├── Blender 4.x (3D, анимация)
+├── Substance Painter ($20/мес indie)
+├── GIMP / Krita (2D)
+├── Reaper ($60) — DAW для звука
+├── Git + Git LFS (контроль версий)
+├── Notion / Jira (управление)
+└── AI: Copilot, Midjourney, Suno</div>
+                </div>
+            </div>
+
+            <!-- OPTIMIZATION -->
+            <div class="doc-section" id="optimization">
+                <h2><span class="section-icon"></span> 17. Оптимизация</h2>
+
+                <h3>Целевые системные требования</h3>
+
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Компонент</th><th>Минимальные</th><th>Рекомендуемые</th><th>Ультра</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>CPU</td><td>i5-8400 / R5 2600</td><td>i7-10700 / R5 5600X</td><td>i7-12700K+</td></tr>
+                            <tr><td>GPU</td><td>GTX 1060 6GB</td><td>RTX 3060</td><td>RTX 4070+</td></tr>
+                            <tr><td>RAM</td><td>16 GB</td><td>16 GB</td><td>32 GB</td></tr>
+                            <tr><td>Хранилище</td><td>SSD 30 GB</td><td>SSD 30 GB</td><td>SSD 30 GB</td></tr>
+                            <tr><td>Цель</td><td>1080p 60 FPS Low</td><td>1440p 60 FPS High</td><td>4K 60 FPS + DLSS</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Optimization Strategy</span></div>
+                    <div class="code-body"><span class="accent">РЕНДЕРИНГ:</span>
+├── Nanite: автоматический LOD
+├── Lumen: Software RT (не Hardware — совместимость)
+├── FSR 2.0 / DLSS: обязательная поддержка
+├── Occlusion Culling: агрессивный
+└── Instanced Static Meshes для повторяющихся объектов
+
+<span class="accent">СЕТЬ:</span>
+├── Relevancy: не реплицировать далёких игроков
+├── NetUpdateFrequency: 60 для персонажей, 10 для статики
+├── FVector → FVector_NetQuantize (компрессия)
+└── Bandwidth budget: &lt;50 KB/s на клиента
+
+<span class="accent">ПАМЯТЬ:</span>
+├── Texture Streaming: автоматический
+├── Level Streaming: для кампании
+├── Бюджет: &lt;4 GB VRAM на средних настройках
+└── Asset Manager: предзагрузка
+
+<span class="accent">ПРОФИЛИРОВАНИЕ:</span>
+├── Unreal Insights — основной профайлер
+├── RenderDoc — GPU
+├── stat fps, stat unit, stat net
+└── Еженедельные проверки</div>
+                </div>
+            </div>
+
+            <!-- ANTICHEAT -->
+            <div class="doc-section" id="anticheat">
+                <h2><span class="section-icon"></span> 18. Античит</h2>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Anti-Cheat Layers</span></div>
+                    <div class="code-body"><span class="accent">УРОВЕНЬ 1: Easy Anti-Cheat (EAC)</span>
+├── Бесплатно через EOS
+├── Kernel-level защита
+├── Обнаружение инъекций, модификации памяти
+└── Используется в Fortnite, Apex Legends, Rust
+
+<span class="accent">УРОВЕНЬ 2: Серверная валидация</span>
+├── Все попадания проверяются сервером
+├── Speed hack detection (проверка скорости)
+├── Rate of fire validation (нельзя быстрее RPM)
+├── Teleport detection (аномальные перемещения)
+└── Statistical anomaly detection (% хедшотов)
+
+<span class="accent">УРОВЕНЬ 3: Система репортов</span>
+├── Игроки могут репортить подозрительных
+├── Killcam помогает определить читера
+├── Автоматический флаг при множественных репортах
+└── Ручная проверка (пост-релиз)</div>
+                </div>
+            </div>
+
+            <!-- CI/CD -->
+            <div class="doc-section" id="cicd">
+                <h2><span class="section-icon"></span> 19. CI/CD Pipeline</h2>
+
+                <div class="diagram">Git Push → Jenkins/GitHub Actions → Build (Win64 + Linux Server)
+                                         │
+                    ┌────────────────────┼────────────────────┐
+                    ▼                    ▼                    ▼
+              Client Build        Server Build          QA Build
+              (Shipping)          (Linux DS)           (Development)
+                    │                    │                    │
+                    ▼                    ▼                    ▼
+              Steam Upload        Docker Image          Internal
+                                   → Registry            Testing
+                                  → K8s Deploy</div>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Git Branching</span></div>
+                    <div class="code-body"><span class="accent">Ветки Git:</span>
+├── <span class="success">main</span>      — стабильная, только через PR
+├── <span class="info">develop</span>   — основная разработка
+├── <span class="warn">feature/*</span> — фичи (feature/weapon-system)
+├── <span class="accent">hotfix/*</span>  — срочные исправления
+└── release/* — подготовка к релизу</div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="doc-footer">
+                <div class="doc-footer-content">
+                    <div class="doc-footer-text">
+                         2025 [Название студии] • not found — Game Design Document & Technical Architecture • v1.0
+                    </div>
+                    <div class="doc-footer-links">
+                        <a href="index.html">← Вернуться к питчу</a>
+                        <a href="#">Скачать PDF</a>
+                        <a href="#">Связаться</a>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // Mobile nav
+        function toggleNav() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Tab switching
+        function switchTab(event, tabId) {
+            const tabGroup = event.target.closest('.tabs');
+            tabGroup.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            tabGroup.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            tabGroup.querySelector('#' + tabId).classList.add('active');
+        }
+
+        // Copy code
+        function copyCode(button) {
+            const codeBody = button.closest('.code-block').querySelector('.code-body');
+            navigator.clipboard.writeText(codeBody.textContent).then(() => {
+                button.textContent = '✓ Скопировано';
+                setTimeout(() => { button.textContent = 'Копировать'; }, 2000);
+            });
+        }
+
+        // Sidebar active state on scroll
+        const sections = document.querySelectorAll('.doc-section');
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    sidebarLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, {
+            rootMargin: '-20% 0px -70% 0px'
+        });
+
+        sections.forEach(section => {
+            if (section.id) sectionObserver.observe(section);
+        });
+
+        // Back to top button
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            if (window.scrollY > 500) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+
+        // Sidebar toggle for mobile
+        const sidebarToggle = document.createElement('button');
+        sidebarToggle.innerHTML = '';
+        sidebarToggle.style.cssText = 'position:fixed;bottom:2rem;left:2rem;width:45px;height:45px;border-radius:50%;background:var(--gradient-1);color:white;border:none;font-size:1.2rem;cursor:pointer;z-index:999;display:none;box-shadow:0 4px 15px var(--accent-glow);';
+        document.body.appendChild(sidebarToggle);
+
+        if (window.innerWidth <= 1024) {
+            sidebarToggle.style.display = 'flex';
+            sidebarToggle.style.alignItems = 'center';
+            sidebarToggle.style.justifyContent = 'center';
+        }
+
+        sidebarToggle.addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 1024) {
+                sidebarToggle.style.display = 'flex';
+                sidebarToggle.style.alignItems = 'center';
+                sidebarToggle.style.justifyContent = 'center';
+            } else {
+                sidebarToggle.style.display = 'none';
+                document.getElementById('sidebar').classList.remove('active');
+            }
+        });
+
+        // Close sidebar on link click (mobile)
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    document.getElementById('sidebar').classList.remove('active');
+                }
+            });
+        });
+
+        // Animate stat bars on scroll
+        const statBarObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const fills = entry.target.querySelectorAll('.stat-bar-fill');
+                    fills.forEach(fill => {
+                        const width = fill.style.width;
+                        fill.style.width = '0%';
+                        setTimeout(() => { fill.style.width = width; }, 200);
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.stat-bar-group').forEach(group => {
+            statBarObserver.observe(group);
+        });
+    </script>
+
+</body>
+</html>
