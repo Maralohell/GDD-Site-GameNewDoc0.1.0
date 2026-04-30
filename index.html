@@ -3201,15 +3201,12 @@
                 });
             }
 
-            /* Build an ASCII banner row with amber (left half) / cyan (right half) per-char coloring */
+            /* Build an ASCII banner row in red */
             function asciiRow(text) {
-                const mid = Math.floor(text.length / 2);
                 let html = '';
                 for (let i = 0; i < text.length; i++) {
-                    const ch  = text[i].replace(/&/g,'&amp;').replace(/</g,'&lt;');
-                    const cls = i < mid ? 'ls-amber' : 'ls-cyan';
-                    /* spaces stay unstyled for performance */
-                    html += (ch === ' ') ? ch : '<span class="' + cls + '">' + ch + '</span>';
+                    const ch = text[i].replace(/&/g,'&amp;').replace(/</g,'&lt;');
+                    html += (ch === ' ') ? ch : '<span class="ls-red">' + ch + '</span>';
                 }
                 return html;
             }
