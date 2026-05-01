@@ -282,12 +282,19 @@
         .tbl tbody tr.hl td { background: var(--accent-soft); color: var(--ink); }
         .tbl tbody tr.hl td:first-child { box-shadow: inset 2px 0 0 var(--accent); color: var(--accent); font-weight: 600; }
 
-        .tbl .check { color: var(--ok); }
-        .tbl .cross { color: var(--bad); }
-        .tbl .warn  { color: var(--warn); }
+        .tbl thead th:nth-child(2),
+        .tbl tbody td:nth-child(2) {
+            border-left: 2px solid var(--accent-cyan);
+            border-right: 2px solid var(--accent-cyan);
+            background: rgba(0, 224, 255, 0.04);
+        }
+        .tbl thead th:nth-child(2) { color: var(--accent-cyan); }
+        .tbl .check { color: var(--ink); }
+        .tbl .cross { color: var(--ink-dim); }
+        .tbl .warn  { color: var(--ink-dim); }
         .tbl .check::before { content: '✓ '; font-family: var(--ff-mono); margin-right: 2px; }
-        .tbl .cross::before { content: '✕ '; font-family: var(--ff-mono); margin-right: 2px; }
-        .tbl .warn::before  { content: '! '; font-family: var(--ff-mono); margin-right: 2px; }
+        .tbl .cross::before { content: '✗ '; font-family: var(--ff-mono); margin-right: 2px; }
+        .tbl .warn::before  { content: '~ '; font-family: var(--ff-mono); margin-right: 2px; }
 
         /* ===== NAV ===== */
         .nav {
@@ -1155,6 +1162,119 @@
         }
         .breakeven strong { color: var(--ink); font-weight: 600; }
 
+        /* ===== GTM ===== */
+        .gtm-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .gtm-phase { padding: 2rem; }
+        .gtm-phase-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.4rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--rule);
+        }
+        .gtm-num {
+            font-family: var(--ff-mono);
+            font-size: 0.78rem;
+            letter-spacing: .12em;
+            color: var(--accent);
+        }
+
+        /* ===== TRACTION / MILESTONES ===== */
+        .milestone-rail {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .milestone {
+            padding: 1.6rem;
+            border: 1px solid var(--rule);
+            position: relative;
+        }
+        .milestone.done { border-color: var(--ok); }
+        .milestone.wip  { border-color: var(--accent-amber); }
+        .ms-status {
+            display: inline-block;
+            font-family: var(--ff-mono);
+            font-size: 0.72rem;
+            letter-spacing: .1em;
+            padding: .2rem .6rem;
+            margin-bottom: 1rem;
+        }
+        .done-badge   { color: var(--ok);          border: 1px solid var(--ok); }
+        .wip-badge    { color: var(--accent-amber); border: 1px solid var(--accent-amber); }
+        .future-badge { color: var(--ink-mute);     border: 1px solid var(--rule); }
+        .ms-title {
+            font-family: var(--ff-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: .6rem;
+        }
+        .ms-desc {
+            font-size: 0.9rem;
+            color: var(--ink-dim);
+            line-height: 1.6;
+        }
+
+        /* ===== MONETIZATION STREAMS ===== */
+        .mono-streams {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .mono-stream { padding: 2rem 1.6rem; }
+        .mono-label {
+            font-family: var(--ff-mono);
+            font-size: 0.74rem;
+            letter-spacing: .12em;
+            color: var(--ink-mute);
+            margin-bottom: .8rem;
+        }
+        .mono-price {
+            font-family: var(--ff-display);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: .8rem;
+        }
+        .mono-desc { font-size: 0.88rem; color: var(--ink-dim); line-height: 1.6; }
+
+        /* ===== EXIT / ROI ===== */
+        .exit-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .exit-card { padding: 2rem; }
+        .exit-scenario {
+            font-family: var(--ff-mono);
+            font-size: 0.72rem;
+            letter-spacing: .12em;
+            color: var(--ink-mute);
+            margin-bottom: .6rem;
+        }
+        .exit-title {
+            font-family: var(--ff-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: .4rem;
+        }
+        .exit-copies {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-family: var(--ff-mono);
+        }
+        .exit-desc { font-size: 0.88rem; color: var(--ink-dim); line-height: 1.6; margin-bottom: 1.2rem; }
+        .exit-roi  { font-family: var(--ff-mono); font-size: 0.8rem; letter-spacing: .06em; }
+
         /* ===== TECH ===== */
         .tech-grid {
             display: grid;
@@ -1573,12 +1693,15 @@
             border-bottom: 1px solid var(--rule);
             border-left: 1px solid var(--rule);
             display: grid;
-            grid-template-columns: 1fr auto;
-            grid-template-rows: auto auto;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto 1fr;
             gap: 0.5rem 1.5rem;
         }
         .risk:nth-child(odd) { border-left: 0; }
         .risk-name {
+            grid-column: 1;
+            grid-row: 1 / -1;
+            align-self: center;
             font-family: var(--ff-display);
             font-size: 1.1rem;
             font-weight: 600;
@@ -1586,20 +1709,22 @@
             color: var(--ink);
         }
         .risk-badge {
+            grid-column: 2;
             grid-row: 1;
+            justify-self: start;
             font-family: var(--ff-mono);
             font-size: 0.66rem;
             letter-spacing: 0.16em;
             text-transform: uppercase;
             padding: 0.25rem 0.6rem;
             border: 1px solid currentColor;
-            justify-self: end;
         }
         .risk-badge.low { color: var(--ok); }
         .risk-badge.medium { color: var(--accent-amber); }
         .risk-badge.high { color: var(--bad); }
         .risk-mit {
-            grid-column: 1 / -1;
+            grid-column: 2;
+            grid-row: 2;
             font-size: 0.9rem;
             color: var(--ink-dim);
             line-height: 1.55;
@@ -1705,6 +1830,7 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
+            .gtm-grid, .milestone-rail, .mono-streams, .exit-grid { grid-template-columns: 1fr; }
             .pillars-grid, .reasons-grid, .tech-grid { grid-template-columns: repeat(2, 1fr) !important; }
             .tech-item { border-right: 1px solid var(--rule) !important; border-bottom: 1px solid var(--rule) !important; }
             .tech-item:nth-child(2n) { border-right: 0 !important; }
@@ -1737,9 +1863,10 @@
             .container, .nav-container, .hero-container { padding: 0 1.2rem; }
             .section, .section-dark { padding: 4rem 0; }
             .section-header h2 { font-size: 2rem; }
-            .prob-grid, .features-grid, .maps-grid, .finance-grid, .ask-grid, .risks-grid, .status-grid { grid-template-columns: 1fr; gap: 0; }
+            .prob-grid, .features-grid, .finance-grid, .ask-grid, .risks-grid, .status-grid { grid-template-columns: 1fr; gap: 0; }
+            .gtm-grid, .milestone-rail, .mono-streams, .exit-grid { grid-template-columns: 1fr; gap: 1rem; }
             .prob-grid { gap: 2.5rem; }
-            .features-grid, .maps-grid { gap: 1rem; }
+            .features-grid { gap: 1rem; }
             .ask-grid { gap: 1.5rem; }
             .pillars-grid, .reasons-grid, .tech-grid, .weapons-grid, .team-grid { grid-template-columns: 1fr !important; }
             .tech-item, .pillar, .reason { border-left: 0 !important; border-bottom: 1px solid var(--rule); }
@@ -1875,9 +2002,11 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#problem">Проблема</a></li>
                 <li><a href="#product">Продукт</a></li>
+                <li><a href="#moat">Преимущества</a></li>
+                <li><a href="#traction">Прогресс</a></li>
+                <li><a href="#monetization">Монетизация</a></li>
                 <li><a href="#market">Рынок</a></li>
-                <li><a href="#finance">Финансы</a></li>
-                <li><a href="#timeline">План</a></li>
+                <li><a href="#exit">ROI</a></li>
                 <li><a href="#team">Команда</a></li>
                 <li><a href="docs.html">Документация</a></li>
                 <li><a href="#ask" class="nav-cta">Предложение</a></li>
@@ -2126,269 +2255,11 @@
         </div>
     </section>
 
-    <!-- ===== CAMPAIGN ===== -->
-    <section class="section-dark" id="campaign">
-        <div class="container">
-            <div class="section-header fade-in">
-                <div class="eyebrow">02.1 // Кампания</div>
-                <h2>7 миссий. Две стороны. Одна история.</h2>
-                <p class="lead">Параллельные арки двух протагонистов: оператор ЧВК действует в интересах государства, нетраннер защищает информацию и подрывает систему изнутри. Миссии одной стороны зеркалят и переворачивают миссии другой.</p>
-            </div>
-
-            <div class="campaign-toggle fade-in" id="campaignToggle">
-                <button data-faction="pmc" class="is-active">[ ЧВК / PMC ]</button>
-                <button data-faction="net">[ Нетраннеры / NET ]</button>
-            </div>
-
-            <div class="mission-rail fade-in" id="missionRail" data-faction="pmc">
-                <div class="mission-card" data-faction="pmc">
-                    <div class="num"><span>M01 // Брифинг</span><span class="faction-tag" style="color: var(--accent-amber); border-color: var(--accent-amber);">PMC</span></div>
-                    <h4>«Первый контакт»</h4>
-                    <p>Тренировочная база → боевая операция. Обучение механикам. Взрыв стены, вход через пролом.</p>
-                    <div class="mtype" style="color: var(--accent-amber);">Штурм / Обучение</div>
-                </div>
-                <div class="mission-card" data-faction="pmc">
-                    <div class="num"><span>M02 // Полевая</span><span class="faction-tag" style="color: var(--accent-amber); border-color: var(--accent-amber);">PMC</span></div>
-                    <h4>«Конвой»</h4>
-                    <p>Горная дорога, деревня. Провести конвой через засаду. IED взрывает головную машину.</p>
-                    <div class="mtype" style="color: var(--accent-amber);">Сопровождение</div>
-                </div>
-                <div class="mission-card" data-faction="net">
-                    <div class="num"><span>M03 // Глубокая</span><span class="faction-tag" style="color: var(--accent-cyan); border-color: var(--accent-cyan);">NET</span></div>
-                    <h4>«Тихая охота»</h4>
-                    <p>Ночной город, порт. Разведка и ликвидация. Глушитель, ПНВ. Референс: «All Ghillied Up».</p>
-                    <div class="mtype" style="color: var(--accent-cyan);">Стелс</div>
-                </div>
-                <div class="mission-card" data-faction="pmc">
-                    <div class="num"><span>M04 // Эскалация</span><span class="faction-tag" style="color: var(--accent-amber); border-color: var(--accent-amber);">PMC</span></div>
-                    <h4>«Шторм»</h4>
-                    <p>Нефтеперерабатывающий завод. Масштабный штурм при поддержке авиации. Обрушение трубы.</p>
-                    <div class="mtype" style="color: var(--accent-amber);">Масштабный штурм</div>
-                </div>
-                <div class="mission-card" data-faction="pmc">
-                    <div class="num"><span>M05 // Удержание</span><span class="faction-tag" style="color: var(--accent-amber); border-color: var(--accent-amber);">PMC</span></div>
-                    <h4>«Осада»</h4>
-                    <p>Посольство в городе. Удержать позицию до эвакуации. Вертолёт эвакуации подбит.</p>
-                    <div class="mtype" style="color: var(--accent-amber);">Оборона</div>
-                </div>
-                <div class="mission-card" data-faction="net">
-                    <div class="num"><span>M06 // Подрыв</span><span class="faction-tag" style="color: var(--accent-cyan); border-color: var(--accent-cyan);">NET</span></div>
-                    <h4>«Глубина»</h4>
-                    <p>Подземный бункер. Обнаружить и обезвредить оружие. Обратный отсчёт, побег.</p>
-                    <div class="mtype" style="color: var(--accent-cyan);">Инфильтрация</div>
-                </div>
-                <div class="mission-card" data-faction="net">
-                    <div class="num"><span>M07 // Финал</span><span class="faction-tag" style="color: var(--accent-cyan); border-color: var(--accent-cyan);">NET</span></div>
-                    <h4>«not_found»</h4>
-                    <p>Столица. Финальная кульминация. Погоня, противостояние с лидером «Серпа». Эпилог.</p>
-                    <div class="mtype" style="color: var(--accent-cyan);">Финал</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== MAPS ===== -->
-    <section class="section" id="maps">
-        <div class="container">
-            <div class="section-header fade-in">
-                <div class="eyebrow">02.2 // Карты мультиплеера</div>
-                <h2>4 карты на релизе</h2>
-                <p class="lead">Классическая структура с тремя линиями. Каждая карта — отдельный город-узел и уникальный опыт.</p>
-            </div>
-
-            <div class="maps-grid fade-in">
-                <div class="map-card">
-                    <div class="map-tile">
-                        <span class="coords">N 55°45′ // E 37°37′</span>
-                        <span class="coords r">SECTOR_01</span>
-                        <span class="crosshair">// ZAVOD //</span>
-                    </div>
-                    <div class="map-info">
-                        <div class="map-name">«Завод»</div>
-                        <div class="map-type">Средняя • Все режимы</div>
-                        <div class="map-desc">Заброшенный промышленный комплекс. Классические 3 линии: открытая для снайперов, CQB в здании, переулки на средней дистанции.</div>
-                        <div class="map-tags">
-                            <span class="map-tag">3 линии</span>
-                            <span class="map-tag">2 уровня</span>
-                            <span class="map-tag">Все дистанции</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="map-card">
-                    <div class="map-tile">
-                        <span class="coords">N 55°44′ // E 37°36′</span>
-                        <span class="coords r">SECTOR_02</span>
-                        <span class="crosshair">// EMBASSY //</span>
-                    </div>
-                    <div class="map-info">
-                        <div class="map-name">«Посольство»</div>
-                        <div class="map-type">Малая • TDM, S&amp;D</div>
-                        <div class="map-desc">Городской квартал с посольством в центре. Симметричная, плотная. Много дверей, окон, углов. Динамичные перестрелки.</div>
-                        <div class="map-tags">
-                            <span class="map-tag">CQB</span>
-                            <span class="map-tag">3 уровня</span>
-                            <span class="map-tag">Симметричная</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="map-card">
-                    <div class="map-tile">
-                        <span class="coords">N 43°22′ // E 42°44′</span>
-                        <span class="coords r">SECTOR_03</span>
-                        <span class="crosshair">// PEREVAL //</span>
-                    </div>
-                    <div class="map-info">
-                        <div class="map-name">«Перевал»</div>
-                        <div class="map-type">Большая • Domination, Hardpoint</div>
-                        <div class="map-desc">Горная дорога, блокпосты, деревня. Асимметричная, разнообразный рельеф. Открытые зоны + здания.</div>
-                        <div class="map-tags">
-                            <span class="map-tag">Открытые зоны</span>
-                            <span class="map-tag">Холмы</span>
-                            <span class="map-tag">Снайперы</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="map-card">
-                    <div class="map-tile">
-                        <span class="coords">N 59°56′ // E 30°18′</span>
-                        <span class="coords r">SECTOR_04</span>
-                        <span class="crosshair">// PORT //</span>
-                    </div>
-                    <div class="map-info">
-                        <div class="map-name">«Порт»</div>
-                        <div class="map-type">Средняя • Все режимы</div>
-                        <div class="map-desc">Ночной грузовой порт. Лабиринт контейнеров + открытые причалы. Динамическое освещение, прожекторы.</div>
-                        <div class="map-tags">
-                            <span class="map-tag">Ночная</span>
-                            <span class="map-tag">Контейнеры</span>
-                            <span class="map-tag">Вертикальность</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== ARSENAL ===== -->
-    <section class="section-dark" id="arsenal" data-faction="pmc">
-        <div class="container">
-            <div class="section-header fade-in">
-                <div class="eyebrow">02.3 // Арсенал</div>
-                <h2>16 единиц оружия</h2>
-                <p class="lead">Каждое оружие уникально. 5 слотов модификаций. Камуфляжи за достижения. Отдельная ветка инструментов нетраннера готовится в DLC.</p>
-            </div>
-
-            <div class="weapons-grid fade-in">
-                <div class="weapon-card">
-                    <div class="weapon-head"><span class="cat">RIFLE / AR</span><span>RU</span></div>
-                    <div class="weapon-name">АК-15</div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Урон</span><span>85</span></span>
-                        <div class="weapon-stat-bar" data-fill="85"></div>
-                    </div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Отдача</span><span>75</span></span>
-                        <div class="weapon-stat-bar" data-fill="75"></div>
-                    </div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Скорострельность</span><span>55</span></span>
-                        <div class="weapon-stat-bar" data-fill="55"></div>
-                    </div>
-                </div>
-                <div class="weapon-card">
-                    <div class="weapon-head"><span class="cat">RIFLE / AR</span><span>US</span></div>
-                    <div class="weapon-name">М4А1</div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Урон</span><span>65</span></span>
-                        <div class="weapon-stat-bar" data-fill="65"></div>
-                    </div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Отдача</span><span>50</span></span>
-                        <div class="weapon-stat-bar" data-fill="50"></div>
-                    </div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Скорострельность</span><span>75</span></span>
-                        <div class="weapon-stat-bar" data-fill="75"></div>
-                    </div>
-                </div>
-                <div class="weapon-card">
-                    <div class="weapon-head"><span class="cat">SMG</span><span>RU</span></div>
-                    <div class="weapon-name">ПП-19 «Витязь»</div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Урон</span><span>50</span></span>
-                        <div class="weapon-stat-bar" data-fill="50"></div>
-                    </div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Отдача</span><span>35</span></span>
-                        <div class="weapon-stat-bar" data-fill="35"></div>
-                    </div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Скорострельность</span><span>80</span></span>
-                        <div class="weapon-stat-bar" data-fill="80"></div>
-                    </div>
-                </div>
-                <div class="weapon-card">
-                    <div class="weapon-head"><span class="cat">SNIPER</span><span>RU</span></div>
-                    <div class="weapon-name">ОРСИС Т-5000</div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Урон</span><span>100</span></span>
-                        <div class="weapon-stat-bar" data-fill="100"></div>
-                    </div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Отдача</span><span>90</span></span>
-                        <div class="weapon-stat-bar" data-fill="90"></div>
-                    </div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Скорострельность</span><span>15</span></span>
-                        <div class="weapon-stat-bar" data-fill="15"></div>
-                    </div>
-                </div>
-                <div class="weapon-card">
-                    <div class="weapon-head"><span class="cat">SHOTGUN</span><span>RU</span></div>
-                    <div class="weapon-name">Сайга-12</div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Урон</span><span>95</span></span>
-                        <div class="weapon-stat-bar" data-fill="95"></div>
-                    </div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Отдача</span><span>80</span></span>
-                        <div class="weapon-stat-bar" data-fill="80"></div>
-                    </div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Скорострельность</span><span>40</span></span>
-                        <div class="weapon-stat-bar" data-fill="40"></div>
-                    </div>
-                </div>
-                <div class="weapon-card">
-                    <div class="weapon-head"><span class="cat">LMG</span><span>RU</span></div>
-                    <div class="weapon-name">ПКП «Печенег»</div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Урон</span><span>80</span></span>
-                        <div class="weapon-stat-bar" data-fill="80"></div>
-                    </div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Отдача</span><span>70</span></span>
-                        <div class="weapon-stat-bar" data-fill="70"></div>
-                    </div>
-                    <div class="weapon-stat">
-                        <span class="weapon-stat-label"><span>Скорострельность</span><span>65</span></span>
-                        <div class="weapon-stat-bar" data-fill="65"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="arsenal-foot fade-in">
-                <span>// + <strong>NETRUNNER TOOLKIT</strong> · quickhacks · cyberdeck — TBD</span>
-                <span style="color: var(--ink-mute);">DLC / POST-RELEASE</span>
-            </div>
-        </div>
-    </section>
-
     <!-- ===== COMPARISON ===== -->
     <section class="section" id="comparison">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="eyebrow">02.4 // Сравнение</div>
+                <div class="eyebrow">03 // Сравнение</div>
                 <h2>Наш проект vs Конкуренты</h2>
             </div>
 
@@ -2467,11 +2338,221 @@
         </div>
     </section>
 
+    <!-- ===== COMPETITIVE MOAT ===== -->
+    <section class="section-dark" id="moat">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="eyebrow">04 // Конкурентное преимущество</div>
+                <h2>Почему именно мы?</h2>
+                <p class="lead">Четыре структурных преимущества, которые сложно скопировать — и которые напрямую влияют на конверсию и удержание.</p>
+            </div>
+            <div class="pillars-grid fade-in">
+                <div class="pillar">
+                    <span class="num">01 / Нарратив</span>
+                    <h4>Параллельная кампания</h4>
+                    <p>Две зеркальные сюжетные арки в одной игре — механика, которой нет ни у одного аркадного инди-FPS. Это не просто фича: это причина пройти игру дважды и обсуждать её онлайн.</p>
+                </div>
+                <div class="pillar">
+                    <span class="num">02 / Культура</span>
+                    <h4>Российский сеттинг и озвучка</h4>
+                    <p>Знакомый контекст: города, оружие, слэнг, актёры. Ни CoD, ни CS2 не дают российскому игроку ощущения «своего» продукта. Мы даём. Это прямой удар по аудитории с неудовлетворённым спросом.</p>
+                </div>
+                <div class="pillar">
+                    <span class="num">03 / Цена</span>
+                    <h4>999 ₽ — честный барьер входа</h4>
+                    <p>В 5–7 раз дешевле CoD. Не F2P с агрессивной монетизацией. Разовый платёж — честная сделка. На рынке, где игрок устал от P2W, это позиционирование само продаёт.</p>
+                </div>
+                <div class="pillar">
+                    <span class="num">04 / Команда</span>
+                    <h4>Знание рынка изнутри</h4>
+                    <p>Мы — игроки в этом жанре с многолетним стажем. Мы знаем, что раздражает в Warface, чего не хватает в Caliber, и за что любят классические CoD. Продукт строится из боли пользователя, а не из технического ТЗ.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== GO-TO-MARKET ===== -->
+    <section class="section" id="gtm">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="eyebrow">05 // Выход на рынок</div>
+                <h2>Путь на рынок</h2>
+                <p class="lead">Трёхфазная стратегия: сначала сообщество, потом медиа, потом монетизация. Каждая фаза готовит следующую.</p>
+            </div>
+            <div class="gtm-grid fade-in">
+                <div class="gtm-phase card">
+                    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+                    <div class="gtm-phase-head">
+                        <span class="gtm-num">PRE-LAUNCH</span>
+                        <span class="tag">–6 мес. до EA</span>
+                    </div>
+                    <ul class="feat-list">
+                        <li>Steam-страница + Wishlist-кампания</li>
+                        <li>Telegram-канал и Discord-сообщество</li>
+                        <li>Devlog-серия: «как мы делаем игру»</li>
+                        <li>Работа с инфлюенсерами 50k+ (Twitch/YouTube РФ)</li>
+                        <li>Тизер-трейлер + геймплейный ролик</li>
+                        <li>Закрытое бета-тестирование для сообщества</li>
+                    </ul>
+                </div>
+                <div class="gtm-phase card faction" data-faction="pmc">
+                    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+                    <div class="gtm-phase-head">
+                        <span class="gtm-num">LAUNCH</span>
+                        <span class="tag">Early Access</span>
+                    </div>
+                    <ul class="feat-list">
+                        <li>Steam Early Access — мультиплеер + 3 миссии</li>
+                        <li>Ключи стримерам с аудиторией 100k+</li>
+                        <li>PR-рассылка в StopGame, GameGuru, DTF</li>
+                        <li>Платная реклама VK Ads (target: FPS-аудитория РФ)</li>
+                        <li>Launch-трейлер с двойной кампанией как крючком</li>
+                        <li>Специальная цена первой недели: 799 ₽</li>
+                    </ul>
+                </div>
+                <div class="gtm-phase card faction" data-faction="net">
+                    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+                    <div class="gtm-phase-head">
+                        <span class="gtm-num">POST-LAUNCH</span>
+                        <span class="tag">Полный релиз +</span>
+                    </div>
+                    <ul class="feat-list">
+                        <li>Полный релиз v1.0 — все миссии, все карты</li>
+                        <li>Season Pass #1 — новые скины, режим, ивент</li>
+                        <li>DLC «Netrunner Toolkit» — новая ветка геймплея</li>
+                        <li>Обновления по фидбеку раз в 6 недель</li>
+                        <li>Партнёрство с VK Play для дистрибуции в СНГ</li>
+                        <li>Переговоры с издателем о физическом издании</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TRACTION ===== -->
+    <section class="section-dark" id="traction">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="eyebrow">06 // Прогресс</div>
+                <h2>Что уже сделано</h2>
+                <p class="lead">Это не идея на салфетке — это проект с измеримым прогрессом и конкретными следующими шагами.</p>
+            </div>
+            <div class="milestone-rail fade-in">
+                <div class="milestone done">
+                    <span class="ms-status done-badge">✓ Готово</span>
+                    <div class="ms-title">Концепт и жанровый анализ</div>
+                    <div class="ms-desc">Проведён анализ конкурентов, выбраны референсы, утверждён уникальный угол параллельной кампании.</div>
+                </div>
+                <div class="milestone done">
+                    <span class="ms-status done-badge">✓ Готово</span>
+                    <div class="ms-title">GDD v1.0</div>
+                    <div class="ms-desc">Полная документация механик, нарратива, арсенала, карт, прогрессии и монетизации. Доступна по запросу.</div>
+                </div>
+                <div class="milestone done">
+                    <span class="ms-status done-badge">✓ Готово</span>
+                    <div class="ms-title">Прототип передвижения и стрельбы</div>
+                    <div class="ms-desc">Базовый feel стрельбы реализован в UE5. Хитмаркеры, звук, отдача — ощущение «правильного» FPS подтверждено плейтестами.</div>
+                </div>
+                <div class="milestone wip">
+                    <span class="ms-status wip-badge">→ В работе</span>
+                    <div class="ms-title">Steam-страница и первый трейлер</div>
+                    <div class="ms-desc">Запуск Steam-страницы запланирован на Q3 2026 для начала сбора Wishlist.</div>
+                </div>
+                <div class="milestone future">
+                    <span class="ms-status future-badge">◦ Далее</span>
+                    <div class="ms-title">Early Access — Q1 2027</div>
+                    <div class="ms-desc">Мультиплеер + 3 миссии кампании. Целевой Wishlist к EA: 10 000+.</div>
+                </div>
+                <div class="milestone future">
+                    <span class="ms-status future-badge">◦ Далее</span>
+                    <div class="ms-title">Полный релиз — Q4 2027</div>
+                    <div class="ms-desc">Все 7 миссий, 4 карты, полная русская озвучка. Выход на VK Play и партнёрские площадки.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MONETIZATION ===== -->
+    <section class="section" id="monetization">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="eyebrow">07 // Монетизация</div>
+                <h2>Как мы зарабатываем</h2>
+                <p class="lead">Многоуровневая монетизация без P2W. Базовый доход — продажа копий, долгосрочный — сезонный контент и DLC.</p>
+            </div>
+
+            <div class="mono-streams fade-in">
+                <div class="mono-stream card">
+                    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+                    <div class="mono-label">Базовая игра</div>
+                    <div class="mono-price">999 ₽</div>
+                    <div class="mono-desc">Разовая покупка. Весь сюжет + мультиплеер. Steam 70% revenue share → 699 ₽ с копии разработчику.</div>
+                </div>
+                <div class="mono-stream card faction" data-faction="pmc">
+                    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+                    <div class="mono-label">Season Pass</div>
+                    <div class="mono-price">499 ₽ <span style="font-size:0.8em;opacity:0.6">/ сезон</span></div>
+                    <div class="mono-desc">4 сезона в год = 1 996 ₽ ARPPU. Скины, ивенты, эксклюзивные режимы. Без влияния на баланс.</div>
+                </div>
+                <div class="mono-stream card">
+                    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+                    <div class="mono-label">Косметика</div>
+                    <div class="mono-price">от 99 ₽</div>
+                    <div class="mono-desc">Скины оружия, операторы, камуфляжи. Только внешний вид. Отдельная линейка для каждой фракции.</div>
+                </div>
+                <div class="mono-stream card faction" data-faction="net">
+                    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+                    <div class="mono-label">DLC «Netrunner»</div>
+                    <div class="mono-price">699 ₽</div>
+                    <div class="mono-desc">Новая ветка геймплея нетраннера: кибердек, quickhacks, уникальные миссии. Post-release расширение аудитории.</div>
+                </div>
+            </div>
+
+            <div class="sub-head fade-in">// Сценарии продаж — Год 1</div>
+            <div class="tbl-wrap fade-in">
+                <table class="tbl">
+                    <thead>
+                        <tr>
+                            <th>Сценарий</th>
+                            <th>Копий (Год 1)</th>
+                            <th>Выручка (базовая игра)</th>
+                            <th>+Season Pass 20%</th>
+                            <th>Итого (нетто)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="warn">Пессимистичный</span></td>
+                            <td>20 000</td>
+                            <td>14 млн ₽</td>
+                            <td>+2,8 млн ₽</td>
+                            <td>~16,8 млн ₽</td>
+                        </tr>
+                        <tr class="hl">
+                            <td><span class="check">Реалистичный</span></td>
+                            <td>50 000</td>
+                            <td>35 млн ₽</td>
+                            <td>+7 млн ₽</td>
+                            <td>~42 млн ₽</td>
+                        </tr>
+                        <tr>
+                            <td><span style="color:var(--accent-cyan)">Оптимистичный</span></td>
+                            <td>120 000</td>
+                            <td>83,9 млн ₽</td>
+                            <td>+16,8 млн ₽</td>
+                            <td>~100,7 млн ₽</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
     <!-- ===== MARKET ===== -->
     <section class="section-dark" id="market">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="eyebrow">03 // Рынок</div>
+                <div class="eyebrow">08 // Рынок</div>
                 <h2>Размер возможности</h2>
                 <p class="lead">FPS — самый популярный жанр в России. Ниша аркадного шутера с двумя враждующими сторонами свободна.</p>
             </div>
@@ -2553,7 +2634,7 @@
     <section class="section" id="finance">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="eyebrow">04 // Финансы</div>
+                <div class="eyebrow">09 // Финансы</div>
                 <h2>Бюджет и прогнозы</h2>
                 <p class="lead">Детальная финансовая модель с тремя сценариями.</p>
             </div>
@@ -2562,13 +2643,14 @@
                 <div class="ledger card">
                     <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
                     <h3>// Расходы (20 месяцев)</h3>
-                    <div class="ledger-row"><span class="lbl">Зарплаты (6 чел × 20 мес)</span><span class="val">14,400,000₽</span></div>
-                    <div class="ledger-row"><span class="lbl">Аутсорс (музыка, озвучка, QA)</span><span class="val">2,000,000₽</span></div>
-                    <div class="ledger-row"><span class="lbl">Инфраструктура (серверы, софт)</span><span class="val">600,000₽</span></div>
-                    <div class="ledger-row"><span class="lbl">Маркетинг</span><span class="val">2,000,000₽</span></div>
-                    <div class="ledger-row"><span class="lbl">Юридическое</span><span class="val">300,000₽</span></div>
-                    <div class="ledger-row"><span class="lbl">Буфер (15%)</span><span class="val">2,900,000₽</span></div>
-                    <div class="ledger-total"><span class="lbl">Итого</span><span class="val">22,200,000₽</span></div>
+                    <div class="ledger-row"><span class="lbl">Зарплаты (6 чел × 150k₽ × 20 мес)</span><span class="val">18,000,000₽</span></div>
+                    <div class="ledger-row"><span class="lbl">Аутсорс (музыка, озвучка, QA)</span><span class="val">3,000,000₽</span></div>
+                    <div class="ledger-row"><span class="lbl">Инфраструктура (серверы, софт)</span><span class="val">1,000,000₽</span></div>
+                    <div class="ledger-row"><span class="lbl">Маркетинг</span><span class="val">4,000,000₽</span></div>
+                    <div class="ledger-row"><span class="lbl">Юридическое</span><span class="val">500,000₽</span></div>
+                    <div class="ledger-row"><span class="lbl">Буфер (15%)</span><span class="val">4,000,000₽</span></div>
+                    <div class="ledger-total"><span class="lbl">Итого</span><span class="val">30,500,000₽</span></div>
+                    <div class="ledger-row" style="margin-top:0.8rem;font-size:0.8rem;color:var(--ink-mute)"><span>* Опция для ключевых специалистов: сниженный оклад + 2–5% от чистой прибыли проекта.</span></div>
                 </div>
 
                 <div class="ledger card">
@@ -2595,7 +2677,7 @@
                     <div class="scenario-row"><span class="l">Косметика</span><span class="v">2M₽</span></div>
                     <div class="scenario-row"><span class="l">Комиссии (30%)</span><span class="v" style="color: var(--bad);">−6.6M₽</span></div>
                     <div class="scenario-row"><span class="l">Чистая выручка</span><span class="v">15.4M₽</span></div>
-                    <div class="scenario-row profit"><span class="l">Прибыль</span><span class="v bad">−6.8M₽</span></div>
+                    <div class="scenario-row profit"><span class="l">Прибыль</span><span class="v bad">−12.3M₽</span></div>
                 </div>
 
                 <div class="scenario featured">
@@ -2606,8 +2688,8 @@
                     <div class="scenario-row"><span class="l">Косметика</span><span class="v">10M₽</span></div>
                     <div class="scenario-row"><span class="l">Комиссии + роялти</span><span class="v" style="color: var(--bad);">−22.5M₽</span></div>
                     <div class="scenario-row"><span class="l">Чистая выручка</span><span class="v">47.5M₽</span></div>
-                    <div class="scenario-row profit"><span class="l">Прибыль</span><span class="v">+25.3M₽</span></div>
-                    <div class="roi">ROI: +114% • Окупаемость: 8 мес</div>
+                    <div class="scenario-row profit"><span class="l">Прибыль</span><span class="v">+17.0M₽</span></div>
+                    <div class="roi">ROI: +56% • Окупаемость: 8 мес</div>
                 </div>
 
                 <div class="scenario">
@@ -2618,13 +2700,86 @@
                     <div class="scenario-row"><span class="l">Косметика</span><span class="v">30M₽</span></div>
                     <div class="scenario-row"><span class="l">Комиссии + роялти</span><span class="v" style="color: var(--bad);">−58.1M₽</span></div>
                     <div class="scenario-row"><span class="l">Чистая выручка</span><span class="v">115.9M₽</span></div>
-                    <div class="scenario-row profit"><span class="l">Прибыль</span><span class="v">+93.7M₽</span></div>
-                    <div class="roi" style="color: var(--ok);">ROI: +422% • Окупаемость: 3 мес</div>
+                    <div class="scenario-row profit"><span class="l">Прибыль</span><span class="v">+85.4M₽</span></div>
+                    <div class="roi" style="color: var(--ok);">ROI: +280% • Окупаемость: 3 мес</div>
                 </div>
             </div>
 
             <div class="breakeven fade-in">
-                <strong>Точка безубыточности:</strong> ~26,000 копий по средней цене 1,200₽
+                <strong>Точка безубыточности:</strong> ~36,000 копий по средней цене 1,200₽
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== USE OF FUNDS ===== -->
+    <section class="section" id="uof">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="eyebrow">10 // Использование средств</div>
+                <h2>Куда идут инвестиции</h2>
+                <p class="lead">Бюджет рассчитан на 20 месяцев разработки от текущей точки до полного релиза. Распределение — без лишних прослоек.</p>
+            </div>
+            <div class="pillars-grid fade-in">
+                <div class="pillar">
+                    <span class="num" style="color:var(--accent-amber)">69%</span>
+                    <h4>Разработка</h4>
+                    <p>Зарплаты команды разработки на весь производственный цикл: программирование, арт, левел-дизайн, звук, QA.</p>
+                </div>
+                <div class="pillar">
+                    <span class="num" style="color:var(--accent-cyan)">13%</span>
+                    <h4>Маркетинг</h4>
+                    <p>Трейлер, PR-кампания, работа с инфлюенсерами, таргетированная реклама VK Ads, участие в игровых выставках.</p>
+                </div>
+                <div class="pillar">
+                    <span class="num">3%</span>
+                    <h4>Инфраструктура</h4>
+                    <p>Выделенные серверы в РФ (60 Hz), Easy Anti-Cheat лицензия, Steam DevKit, CDN для патчей и контента.</p>
+                </div>
+                <div class="pillar">
+                    <span class="num" style="color:var(--ink-mute)">15%</span>
+                    <h4>Резерв</h4>
+                    <p>Буфер на овертайм, внеплановый QA, юридическое оформление, непредвиденные расходы производства.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EXIT / ROI ===== -->
+    <section class="section-dark" id="exit">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="eyebrow">11 // Потенциал возврата</div>
+                <h2>Что получает инвестор</h2>
+                <p class="lead">Три сценария возврата — от осторожного до стратегического. Каждый основан на реальных данных рынка инди-FPS.</p>
+            </div>
+            <div class="exit-grid fade-in">
+                <div class="exit-card card">
+                    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+                    <div class="exit-scenario">Сценарий A</div>
+                    <div class="exit-title">Безубыточность</div>
+                    <div class="exit-copies">~36 000 копий</div>
+                    <p class="exit-desc">Минимальный порог окупаемости при базовой цене 999 ₽ и Steam rev-share 70%. Достижимо без активного маркетинга при наличии органики от Steam Wishlist.</p>
+                    <div class="exit-roi" style="color:var(--ink-mute)">ROI: 0× — точка окупаемости</div>
+                </div>
+                <div class="exit-card card faction" data-faction="pmc">
+                    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+                    <div class="exit-scenario">Сценарий B</div>
+                    <div class="exit-title">Базовый возврат</div>
+                    <div class="exit-copies">~109 000 копий + Season Pass</div>
+                    <p class="exit-desc">При активном маркетинге и положительных отзывах. С учётом Season Pass и косметики — ROI 3× за 18 месяцев после релиза. Сопоставимо с показателями Bodycam, Trepang2.</p>
+                    <div class="exit-roi" style="color:var(--ok)">ROI: ~3× за 18 мес. после релиза</div>
+                </div>
+                <div class="exit-card card faction" data-faction="net">
+                    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+                    <div class="exit-scenario">Сценарий C</div>
+                    <div class="exit-title">Стратегический выход</div>
+                    <div class="exit-copies">IP-сделка / издатель</div>
+                    <p class="exit-desc">Успешный релиз открывает переговоры с российскими издателями (MY.GAMES, VK Play) или международным паблишером. IP с уникальным нарративом и аудиторией кратно увеличивает оценку актива.</p>
+                    <div class="exit-roi" style="color:var(--accent-cyan)">ROI: 5–10× при IP-сделке</div>
+                </div>
+            </div>
+            <div class="breakeven fade-in" style="margin-top:3rem;">
+                <strong>Справка:</strong> Steam берёт 30% с продаж. Indie FPS-аналоги (Trepang2, HROT, Bodycam) набрали 20–80k копий за первый год без крупного издателя.
             </div>
         </div>
     </section>
@@ -2633,7 +2788,7 @@
     <section class="section-dark" id="tech">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="eyebrow">05 // Технологии</div>
+                <div class="eyebrow">12 // Технологии</div>
                 <h2>Технологический стек</h2>
                 <p class="lead">Проверенные решения, минимизирующие риски и стоимость.</p>
             </div>
@@ -2687,7 +2842,7 @@
     <section class="section" id="timeline">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="eyebrow">06 // План разработки</div>
+                <div class="eyebrow">13 // План разработки</div>
                 <h2>18–20 месяцев до релиза</h2>
                 <p class="lead">Чёткие майлстоуны с измеримыми результатами.</p>
             </div>
@@ -2771,7 +2926,7 @@
     <section class="section-dark" id="team">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="eyebrow">07 // Команда</div>
+                <div class="eyebrow">14 // Команда</div>
                 <h2>Люди за проектом</h2>
                 <p class="lead">6 специалистов с опытом в геймдеве и страстью к шутерам.</p>
             </div>
@@ -2827,7 +2982,7 @@
     <section class="section" id="prototype">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="eyebrow">08 // Текущий статус</div>
+                <div class="eyebrow">15 // Текущий статус</div>
                 <h2>Прототип разрабатывается</h2>
                 <p class="lead">Текущий статус разработки проекта.</p>
             </div>
@@ -2886,7 +3041,7 @@
     <section class="section-dark" id="ask">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="eyebrow">09 // Предложение</div>
+                <div class="eyebrow">16 // Предложение</div>
                 <h2>Что мы просим</h2>
                 <p class="lead">Финансирование + издательская экспертиза для создания хита.</p>
             </div>
@@ -2894,13 +3049,13 @@
             <div class="ask-grid fade-in">
                 <div class="ask-amount-card">
                     <div class="ask-amount-label">// Запрос финансирования</div>
-                    <div class="ask-amount-value">22M ₽</div>
-                    <div class="ask-amount-sub">~$220,000 · 20 месяцев разработки</div>
+                    <div class="ask-amount-value">30.5M ₽</div>
+                    <div class="ask-amount-sub">~$305,000 · 20 месяцев разработки</div>
                     <div class="ask-tranches">
-                        <div class="ask-tranche"><span class="ask-tranche-name">Транш 1: Pre-production</span><span class="ask-tranche-value">4,000,000₽</span></div>
-                        <div class="ask-tranche"><span class="ask-tranche-name">Транш 2: Alpha</span><span class="ask-tranche-value">8,000,000₽</span></div>
-                        <div class="ask-tranche"><span class="ask-tranche-name">Транш 3: Beta</span><span class="ask-tranche-value">6,000,000₽</span></div>
-                        <div class="ask-tranche"><span class="ask-tranche-name">Транш 4: Release</span><span class="ask-tranche-value">4,000,000₽</span></div>
+                        <div class="ask-tranche"><span class="ask-tranche-name">Транш 1: Pre-production</span><span class="ask-tranche-value">5,000,000₽</span></div>
+                        <div class="ask-tranche"><span class="ask-tranche-name">Транш 2: Alpha</span><span class="ask-tranche-value">10,000,000₽</span></div>
+                        <div class="ask-tranche"><span class="ask-tranche-name">Транш 3: Beta</span><span class="ask-tranche-value">9,000,000₽</span></div>
+                        <div class="ask-tranche"><span class="ask-tranche-name">Транш 4: Release</span><span class="ask-tranche-value">6,500,000₽</span></div>
                     </div>
                 </div>
 
@@ -2919,7 +3074,7 @@
                     </div>
                     <div class="ask-offer-item">
                         <h4>// Потенциал возврата</h4>
-                        <p>Реалистичный сценарий: ROI +114%, прибыль 25M₽. При успехе — франшиза, сиквел, консольные порты.</p>
+                        <p>Реалистичный сценарий: ROI +56%, прибыль +17M₽. При успехе — франшиза, сиквел, консольные порты.</p>
                     </div>
                 </div>
             </div>
@@ -2930,7 +3085,7 @@
     <section class="section" id="reasons">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="eyebrow">10 // Почему мы</div>
+                <div class="eyebrow">17 // Почему мы</div>
                 <h2>5 причин инвестировать</h2>
             </div>
 
@@ -2968,7 +3123,7 @@
     <section class="section-dark" id="risks">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="eyebrow">11 // Риски</div>
+                <div class="eyebrow">18 // Риски</div>
                 <h2>Честно о рисках</h2>
                 <p class="lead">Мы знаем, что может пойти не так, и готовы к этому.</p>
             </div>
@@ -3012,7 +3167,7 @@
     <section class="section cta" id="cta">
         <div class="container">
             <div class="fade-in">
-                <div class="eyebrow" style="justify-content: center;">12 // Следующий шаг</div>
+                <div class="eyebrow" style="justify-content: center;">19 // Следующий шаг</div>
                 <h2>Давайте создадим историю</h2>
                 <p class="lead">
                     Российский рынок ждёт свой шутер. У нас есть видение, команда, прототип и план.
@@ -3232,33 +3387,12 @@
                     await delay(55);
                 }
 
-                /* blinking "Press any key" line with inline cursor */
-                const initLine = document.createElement('span');
-                initLine.className = 'ls-line ls-amber';
-                initLine.innerHTML = 'Press any key to initialize... <span class="ls-cursor"></span>';
-                terminal.appendChild(initLine);
-
-                /* wait for user gesture */
-                await new Promise(res => {
-                    function go() {
-                        document.removeEventListener('keydown', go);
-                        screen.removeEventListener('click', go);
-                        res();
-                    }
-                    document.addEventListener('keydown', go);
-                    screen.addEventListener('click', go);
-                });
-
-                /* request fullscreen on the user gesture */
-                document.documentElement.requestFullscreen().catch(() => {});
-
                 /* clear BIOS lines, leave a blank separator */
                 terminal.innerHTML = '';
                 addLine('');
             }
 
             /* ---- Phase 1 — kernel dmesg (64 lines, burst 15–50ms) ---- */
-            /* ---- Phase 1 — 256 kernel dmesg lines (JS generator) ---- */
             async function phase1() {
                 const d = s => `<span class="ls-dim">${s}</span>`;
                 const t = s => `<span class="ls-text">${s}</span>`;
@@ -3269,208 +3403,98 @@
                 lines.push(`${ts(0)} ${t('Linux version 6.8.0-not_found #1 SMP PREEMPT_DYNAMIC Thu Jan  1 00:00:00 UTC 2026')}`);
                 lines.push(`${ts(0)} ${t('Command line: BOOT_IMAGE=/vmlinuz-6.8.0 root=/dev/sda1 ro quiet splash')}`);
 
-                /* --- BIOS-e820 memory map (10) --- */
-                const e820 = [
-                    ['0x0000000000000000','0x000000000009fbff','usable'],
-                    ['0x000000000009fc00','0x000000000009ffff','reserved'],
-                    ['0x00000000000f0000','0x00000000000fffff','reserved'],
-                    ['0x0000000000100000','0x00000000bffdffff','usable'],
-                    ['0x00000000bfffe000','0x00000000bfffffff','reserved'],
-                    ['0x00000000feffc000','0x00000000feffffff','reserved'],
-                    ['0x00000000fffc0000','0x00000000ffffffff','reserved'],
-                    ['0x0000000100000000','0x000000023fffffff','usable'],
-                ];
+                /* --- BIOS-e820 memory map (4) --- */
                 lines.push(`${ts(0)} ${d('BIOS-provided physical RAM map:')}`);
-                e820.forEach(([s,e,type]) => lines.push(`${ts(0)} ${d(`BIOS-e820: [mem ${s}-${e}] ${type}`)}`));
+                lines.push(`${ts(0)} ${d('BIOS-e820: [mem 0x0000000000000000-0x000000000009fbff] usable')}`);
+                lines.push(`${ts(0)} ${d('BIOS-e820: [mem 0x0000000000100000-0x00000000bffdffff] usable')}`);
+                lines.push(`${ts(0)} ${d('BIOS-e820: [mem 0x0000000100000000-0x000000023fffffff] usable')}`);
 
-                /* --- Early init flags (8) --- */
+                /* --- Early init (5) --- */
                 lines.push(`${ts(0)} ${t('NX (Execute Disable) protection: active')}`);
-                lines.push(`${ts(0)} ${t('SMBIOS 2.8 present.')}`);
                 lines.push(`${ts(0)} ${t('DMI: NF-NODE Systems BIOS 4.27.1, 2026')}`);
                 lines.push(`${ts(0)} ${t('tsc: Detected 3800.000 MHz processor')}`);
-                lines.push(`${ts(0)} ${t('e820: remove [mem 0x000a0000-0x000fffff] usable')}`);
-                lines.push(`${ts(0)} ${t('last_pfn = 0x240000 max_arch_pfn = 0x400000000')}`);
                 lines.push(`${ts(0)} ${t('Kernel/User page tables isolation: enabled')}`);
                 lines.push(`${ts(0)} ${t('MTRR default type: uncachable')}`);
 
-                /* --- ACPI init (8) --- */
+                /* --- ACPI (4) --- */
                 lines.push(`${ts(4)} ${d('ACPI: RSDP 0x00000000000F0590 000014 (v00 NF   )')}`);
-                lines.push(`${ts(4)} ${d('ACPI: RSDT 0x0000000007FE19E9 000030 (v01 NF     NFPC  00000001 BXPC 00000001)')}`);
                 lines.push(`${ts(4)} ${d('ACPI: IRQ0 used by override.')}`);
-                lines.push(`${ts(4)} ${d('ACPI: IRQ5 used by override.')}`);
-                lines.push(`${ts(4)} ${d('ACPI: IRQ9 used by override.')}`);
                 lines.push(`${ts(4)} ${d('ACPI: IOAPIC (id[0x00] address[0xfec00000] gsi_base[0])')}`);
-                lines.push(`${ts(4)} ${d('ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)')}`);
                 lines.push(`${ts(4)} ${d('ACPI: Using IOAPIC for interrupt routing')}`);
 
-                /* --- PCI bus scan — 4 buses × 8 devices (32) --- */
+                /* --- PCI bus scan (8) --- */
                 const pciVendors = [
-                    ['8086','1237','0x060000'], ['8086','7000','0x060100'], ['8086','7010','0x010180'],
-                    ['8086','7113','0x068000'], ['8086','100e','0x020000'], ['8086','2415','0x040100'],
-                    ['1234','1111','0x030000'], ['1af4','1001','0x018000'],
+                    ['8086','1237','0x060000'], ['8086','7010','0x010180'],
+                    ['8086','100e','0x020000'], ['1234','1111','0x030000'],
+                    ['1af4','1001','0x018000'], ['8086','2415','0x040100'],
+                    ['8086','7113','0x068000'], ['8086','7000','0x060100'],
                 ];
                 let pciUs = 72412;
-                for (let bus = 0; bus < 4; bus++) {
-                    pciVendors.forEach(([v,d2,cl], i) => {
-                        const addr = `0000:${String(bus).padStart(2,'0')}:${String(i).padStart(2,'0')}.0`;
-                        lines.push(`${ts(pciUs)} ${d(`pci ${addr}: [${v}:${d2}] type 00 class ${cl}`)}`);
-                        pciUs += 1;
-                    });
-                }
-
-                /* --- PCI MMIO region claims (24) --- */
-                const mmioBase = ['0xe0000000','0xfe000000','0xfed00000','0xfec00000',
-                                  '0xfebf0000','0xfebe0000','0xfebd0000','0xfea00000'];
-                let mmioUs = 185000;
-                for (let i = 0; i < 24; i++) {
-                    const addr = `0000:${String(i%4).padStart(2,'0')}:${String(i%8).padStart(2,'0')}.0`;
-                    const base = mmioBase[i % mmioBase.length];
-                    const size = [4096,8192,16384,65536,131072][i%5];
-                    lines.push(`${ts(mmioUs)} ${d(`pci ${addr}: reg 0x${(0x10+i*4).toString(16)}: [mem ${base}+0x${size.toString(16)} 64bit]`)}`);
-                    mmioUs += 3;
-                }
-
-                /* --- PCI config (6) --- */
-                lines.push(`${ts(195002)} ${t('PCI: Using configuration type 1 for base access')}`);
-                lines.push(`${ts(195441)} ${t('PCI: Setting latency timer of device 0000:00:01.0 to 64')}`);
-                lines.push(`${ts(196001)} ${t('PCI-DMA: Using software bounce buffering for IO (SWIOTLB)')}`);
-                lines.push(`${ts(197112)} ${t('PCI: CLS 0 bytes, default 64')}`);
-                lines.push(`${ts(198001)} ${t('Checking aperture...')}`);
-                lines.push(`${ts(198441)} ${t('No AGP bridge found')}`);
-
-                /* --- IRQ routing (16) --- */
-                const irqNs = [0,1,2,3,4,5,6,7,8,9,10,11,12,14,15,16];
-                let irqUs = 200000;
-                irqNs.forEach(n => {
-                    lines.push(`${ts(irqUs)} ${d(`genirq: Setting trigger for IRQ${n} (${['level','edge'][n%2]} ${['high','low'][n%2]})`)}` );
-                    irqUs += 2;
+                pciVendors.forEach(([v,d2,cl], i) => {
+                    const addr = `0000:00:${String(i).padStart(2,'0')}.0`;
+                    lines.push(`${ts(pciUs)} ${d(`pci ${addr}: [${v}:${d2}] type 00 class ${cl}`)}`);
+                    pciUs += 8;
                 });
 
-                /* --- Clocksource & timers (8) --- */
-                lines.push(`${ts(201341)} ${t('clocksource: acpi_pm: mask: 0x00ffffff max_cycles: 0x00ffffff, max_idle_ns: 2085701024')}`);
-                lines.push(`${ts(202001)} ${t('clocksource: tsc-early: mask: 0xffffffffffffffff max_cycles: 0x36c85f9d5b3')}`);
-                lines.push(`${ts(203441)} ${t('clocksource: hpet: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 133484873504')}`);
+                /* --- PCI config (3) --- */
+                lines.push(`${ts(195002)} ${t('PCI: Using configuration type 1 for base access')}`);
+                lines.push(`${ts(196001)} ${t('PCI-DMA: Using software bounce buffering for IO (SWIOTLB)')}`);
+                lines.push(`${ts(198001)} ${t('No AGP bridge found')}`);
+
+                /* --- IRQ routing (6) --- */
+                [0,1,4,9,12,14].forEach((n, i) => {
+                    lines.push(`${ts(200000 + i*4)} ${d(`genirq: Setting trigger for IRQ${n} (${['level','edge'][n%2]} ${['high','low'][n%2]})`)}`);
+                });
+
+                /* --- Clocksource (4) --- */
+                lines.push(`${ts(201341)} ${t('clocksource: acpi_pm: mask: 0x00ffffff max_cycles: 0x00ffffff')}`);
                 lines.push(`${ts(204001)} ${t('tsc: Refined TSC clocksource calibration: 3799.998 MHz')}`);
-                lines.push(`${ts(204551)} ${t('clocksource: tsc: mask: 0xffffffffffffffff max_cycles: 0x36c85cf2a18')}`);
                 lines.push(`${ts(205001)} ${t('clocksource: Switched to clocksource tsc')}`);
-                lines.push(`${ts(206112)} ${t('HPET: 3 timers in total, 0 timers will be used for per-cpu timer')}`);
                 lines.push(`${ts(207001)} ${t('HPET0: at MMIO 0xfed00000, IRQ9')}`);
 
-                /* --- Memory & allocator (8) --- */
-                lines.push(`${ts(208001)} ${t('Memory: 7842036K/8388608K available (14812K kernel code, 3476K rwdata, 4280K rodata, 2512K init)')}`);
+                /* --- Memory (4) --- */
+                lines.push(`${ts(208001)} ${t('Memory: 7842036K/8388608K available (14812K kernel code, 3476K rwdata)')}`);
                 lines.push(`${ts(208441)} ${t('SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=8, Nodes=1')}`);
-                lines.push(`${ts(209001)} ${t('ftrace: allocating 47312 entries in 186 pages')}`);
-                lines.push(`${ts(209551)} ${t('NR_IRQS: 4352, nr_irqs: 72, preallocated irqs: 16')}`);
                 lines.push(`${ts(210001)} ${t('Console: colour VGA+ 80x25')}`);
-                lines.push(`${ts(210441)} ${t('printk: console [tty0] enabled')}`);
-                lines.push(`${ts(211001)} ${t('printk: bootconsole [earlyser0] disabled')}`);
-                lines.push(`${ts(211551)} ${t('Calibrating delay loop (skipped), value calculated using timer frequency... 7599.99 BogoMIPS')}`);
+                lines.push(`${ts(211551)} ${t('Calibrating delay loop... 7599.99 BogoMIPS')}`);
 
-                /* --- RCU (8) --- */
+                /* --- RCU + random (3) --- */
                 lines.push(`${ts(212001)} ${t('rcu: Hierarchical RCU implementation.')}`);
-                lines.push(`${ts(212441)} ${t('rcu:     RCU event tracing is enabled.')}`);
-                lines.push(`${ts(212881)} ${t('rcu:     RCU restricting CPUs from NR_CPUS=512 to nr_cpu_ids=8.')}`);
-                lines.push(`${ts(213001)} ${t('rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.')}`);
                 lines.push(`${ts(213441)} ${t('rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=8')}`);
-                lines.push(`${ts(214001)} ${t('NR_IRQS: 4352, nr_irqs: 72, preallocated irqs: 16')}`);
                 lines.push(`${ts(214441)} ${t('random: get_random_u64 called from start_kernel+0x367/0x5a0')}`);
-                lines.push(`${ts(215001)} ${t('ACPI: Core revision 20231013')}`);
 
-                /* --- ACPI subsystem (8) --- */
+                /* --- ACPI subsystem (3) --- */
                 lines.push(`${ts(215441)} ${t('ACPI: Interpreter enabled')}`);
                 lines.push(`${ts(215881)} ${t('ACPI: PM: (supports S0 S3 S4 S5)')}`);
-                lines.push(`${ts(216001)} ${d('ACPI: \\SB.PCI0 [PCI0] (bus 0 bus_entry 0x1e) IOAPIC 0')}`);
-                lines.push(`${ts(216441)} ${d('ACPI: \\SB.PCI0.ISA0 [ISA0] ISABUS')}`);
-                lines.push(`${ts(216881)} ${d('ACPI: \\SB.PCI0.PIDE [IDE0] (* IRQ)')}`);
-                lines.push(`${ts(217001)} ${d('ACPI: \\SB.PCI0.VGA0 [VGA0] DEVICE')}`);
-                lines.push(`${ts(217441)} ${d('ACPI: \\SB.PCI0.NET0 [NET0] DEVICE')}`);
                 lines.push(`${ts(218001)} ${d('ACPI: \\SB.RTC0 [RTC0] DEVICE')}`);
 
-                /* --- NET protocol families (14) --- */
-                const pfs = [1,2,3,4,6,8,10,11,15,16,17,19,21,31];
-                let netUs = 218500;
-                pfs.forEach(n => {
-                    lines.push(`${ts(netUs)} ${t(`NET: Registered PF_${['','UNIX/LOCAL','INET','AX25','IPX','','ATMPVC','','ROUTE','','PACKET','','NETLINK','','ECONET','ASH','INET6'][n] || n} protocol family`)}`);
-                    netUs += 3;
-                });
+                /* --- NET + crypto (5) --- */
+                lines.push(`${ts(218500)} ${t('NET: Registered PF_UNIX/LOCAL protocol family')}`);
+                lines.push(`${ts(218510)} ${t('NET: Registered PF_INET protocol family')}`);
+                lines.push(`${ts(218520)} ${t('NET: Registered PF_INET6 protocol family')}`);
+                lines.push(`${ts(219000)} ${t('alg: self-tests for aes (128) passed')}`);
+                lines.push(`${ts(219020)} ${t('alg: self-tests for sha256 (generic) passed')}`);
 
-                /* --- Crypto modules (10) --- */
-                const cryptos = ['aes','sha256','sha512','md5','hmac','ecb','cbc','gcm','ccm','rng'];
-                let cryptoUs = 219000;
-                cryptos.forEach(name => {
-                    lines.push(`${ts(cryptoUs)} ${t(`alg: self-tests for ${name} (${name === 'aes' ? '128' : name === 'rng' ? 'drbg' : 'generic'}) passed`)}`);
-                    cryptoUs += 4;
-                });
-
-                /* --- Subsystem / driver probes (28) --- */
+                /* --- Drivers (6) --- */
                 lines.push(`${ts(220001)} ${t('SCSI subsystem initialized')}`);
-                lines.push(`${ts(220441)} ${t('ACPI: bus type USB registered')}`);
-                lines.push(`${ts(220881)} ${t('usbcore: registered new interface driver usbfs')}`);
-                lines.push(`${ts(221001)} ${t('usbcore: registered new interface driver hub')}`);
-                lines.push(`${ts(221441)} ${t('usbcore: registered new device driver usb')}`);
-                lines.push(`${ts(221881)} ${t('PCI: Using ACPI for IRQ routing')}`);
+                lines.push(`${ts(220441)} ${t('usbcore: registered new device driver usb')}`);
                 lines.push(`${ts(222001)} ${t('PCI: pci_cache_line_size set to 64 bytes')}`);
-                lines.push(`${ts(222441)} ${t('e820: reserve RAM buffer [mem 0x0009fc00-0x0009ffff]')}`);
-                lines.push(`${ts(222881)} ${t('thermal_sys: Registered thermal governor \'step_wise\'')}`);
-                lines.push(`${ts(223001)} ${t('thermal_sys: Registered thermal governor \'fair_share\'')}`);
-                lines.push(`${ts(223441)} ${t('cpuidle: using governor ladder')}`);
-                lines.push(`${ts(223881)} ${t('cpuidle: using governor menu')}`);
-                lines.push(`${ts(224001)} ${t('ACPI: AC Adapter [AC0] (on-line)')}`);
-                lines.push(`${ts(224441)} ${t('input: Power Button as /devices/LNXSYSTM:00/LNXPWRBN:00/input/input0')}`);
-                lines.push(`${ts(225001)} ${t('ACPI: Power Button [PWRF]')}`);
-                lines.push(`${ts(225441)} ${t('ACPI: Lid Switch [LID0]')}`);
                 lines.push(`${ts(226001)} ${t('Advanced Linux Sound Architecture Driver Initialized.')}`);
-                lines.push(`${ts(226441)} ${t('PNP: PS/2 Controller [PNP0303:KBD,PNP0f13:MOU] at 0x60,0x64 irq 1,12')}`);
-                lines.push(`${ts(226881)} ${t('serio: i8042 KBD port at 0x60,0x64 irq 1')}`);
-                lines.push(`${ts(227001)} ${t('serio: i8042 AUX port at 0x60,0x64 irq 12')}`);
-                lines.push(`${ts(227441)} ${t('mousedev: PS/2 mouse device common for all mice')}`);
                 lines.push(`${ts(228001)} ${t('Unpacking initramfs...')}`);
-                lines.push(`${ts(228441)} ${t('Freeing initrd memory: 35940K freed')}`);
-                lines.push(`${ts(228881)} ${t('platform rtc_cmos: registered platform RTC device (no PNP device found)')}`);
-                lines.push(`${ts(229001)} ${t('NET: Registered PF_NETLINK/PF_ROUTE protocol family')}`);
-                lines.push(`${ts(229441)} ${t('Registered protocol family 16')}`);
                 lines.push(`${ts(230001)} ${t('AppArmor: AppArmor initialized')}`);
-                lines.push(`${ts(230441)} ${t('audit: initializing netlink subsys (disabled)')}`);
 
-                /* --- GPU / display (8) --- */
+                /* --- GPU (4) --- */
                 lines.push(`${ts(244001)} ${t('loaded driver i915')}`);
-                lines.push(`${ts(244441)} ${t('i915 0000:00:02.0: vgaarb: deactivate vga console')}`);
                 lines.push(`${ts(245001)} ${t('[drm] Initialized i915 1.6.0 20200918 for 0000:00:02.0 on minor 0')}`);
                 lines.push(`${ts(245441)} ${t('fbcon: i915drmfb (fb0) is primary device')}`);
                 lines.push(`${ts(246001)} ${t('Console: switching to colour frame buffer device 200x56')}`);
-                lines.push(`${ts(246441)} ${t('i915 0000:00:02.0: fb0: i915drmfb frame buffer device')}`);
-                lines.push(`${ts(247001)} ${t('input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input0')}`);
-                lines.push(`${ts(247441)} ${t('input: ImExPS/2 Generic Explorer Mouse as /devices/platform/i8042/serio1/input/input2')}`);
 
-                /* --- Storage / FS (10) --- */
+                /* --- Storage / FS (5) --- */
                 lines.push(`${ts(250001)} ${t('virtio_blk virtio0: [vda] 104857600 512-byte logical blocks (53.7 GB/50.0 GiB)')}`);
                 lines.push(`${ts(250441)} ${t('vda: vda1 vda2 vda3')}`);
-                lines.push(`${ts(251001)} ${t('rtc_cmos 00:00: RTC can wake from S4')}`);
-                lines.push(`${ts(251441)} ${t('rtc_cmos 00:00: registered as rtc0')}`);
-                lines.push(`${ts(252001)} ${t('rtc_cmos 00:00: alarms up to one day, 242 bytes nvram, hpet irqs')}`);
                 lines.push(`${ts(252441)} ${t('EXT4-fs (sda1): mounted filesystem with ordered data mode. Quota mode: none.')}`);
                 lines.push(`${ts(253001)} ${t('VFS: Mounted root (ext4 filesystem) readonly on device 8:1.')}`);
-                lines.push(`${ts(253441)} ${t('Freeing unused kernel image (initmem) memory: 2512K')}`);
-                lines.push(`${ts(254001)} ${t('Write protecting the kernel read-only data: 26624k')}`);
                 lines.push(`${ts(254441)} ${t('Run /sbin/init as init process')}`);
-
-                /* --- Pad to exactly 256 --- */
-                while (lines.length < 256) {
-                    const us = 254500 + (lines.length - 246) * 2;
-                    const pads = [
-                        `${ts(us)} ${d('cpufreq: cpufreq_online: CPU0: Running at unlisted freq: 800000 KHz')}`,
-                        `${ts(us)} ${d('cpufreq: cpufreq_online: CPU0: Remapping to freq 800000 KHz')}`,
-                        `${ts(us)} ${t('NET: Registered PF_PACKET protocol family')}`,
-                        `${ts(us)} ${d('audit: type=2000 audit(0.0:1): state=initialized audit_enabled=0 res=1')}`,
-                        `${ts(us)} ${t('Freeing unused kernel image (text/rodata gap) memory: 2044K')}`,
-                        `${ts(us)} ${d('x86/mm: Checked W+X mappings: passed, no W+X pages found.')}`,
-                        `${ts(us)} ${d('Run /usr/lib/systemd/systemd as init process')}`,
-                        `${ts(us)} ${t('systemd[1]: Detected virtualization kvm.')}`,
-                        `${ts(us)} ${t('systemd[1]: Detected architecture x86-64.')}`,
-                        `${ts(us)} ${d('systemd[1]: Set hostname to nf-node.')}`,
-                    ];
-                    lines.push(pads[lines.length % pads.length]);
-                }
 
                 for (const html of lines) {
                     addLine(html);
@@ -3588,6 +3612,7 @@
 
             /* ---- Glitch-slice exit ---- */
             function exitScreen() {
+                sessionStorage.setItem('nf_boot_seen', '1');
                 screen.classList.add('ls-exit');
                 screen.addEventListener('animationend', () => {
                     screen.remove();
@@ -3597,6 +3622,11 @@
 
             /* ---- Run all phases (auto-exits at end of phase4) ---- */
             (async () => {
+                if (sessionStorage.getItem('nf_boot_seen')) {
+                    screen.remove();
+                    document.body.classList.remove('ls-locked');
+                    return;
+                }
                 await phase0();
                 await phase1();
                 await phase2();
