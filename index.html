@@ -108,6 +108,90 @@
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
         ::selection { background: var(--accent-cyan); color: var(--bg-0); }
 
+        /* ===== AUDIO PLAYER ===== */
+        #audio-widget {
+            position: fixed;
+            bottom: 1.6rem;
+            right: 1.6rem;
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.55rem 0.85rem;
+            background: rgba(10, 12, 17, 0.88);
+            border: 1px solid var(--rule-strong);
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: border-color 160ms var(--easing), opacity 200ms;
+            font-family: var(--ff-mono);
+        }
+        #audio-widget:hover { border-color: var(--accent-cyan); }
+
+        #audio-mute-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.8rem;
+            height: 1.8rem;
+            border: 1px solid var(--rule-strong);
+            background: transparent;
+            color: var(--accent-cyan);
+            cursor: pointer;
+            padding: 0;
+            transition: color 160ms var(--easing), border-color 160ms var(--easing), background 160ms var(--easing);
+            flex-shrink: 0;
+        }
+        #audio-mute-btn:hover { border-color: var(--accent-cyan); background: rgba(77,226,255,0.08); }
+        #audio-mute-btn.muted { color: var(--ink-mute); border-color: var(--ink-mute); }
+        #audio-mute-btn svg { width: 1rem; height: 1rem; display: block; }
+
+        #audio-vol-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.6rem;
+            letter-spacing: 0.12em;
+            color: var(--ink-mute);
+            text-transform: uppercase;
+        }
+
+        #audio-volume {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 72px;
+            height: 3px;
+            background: var(--rule-strong);
+            outline: none;
+            border: none;
+            cursor: pointer;
+        }
+        #audio-volume::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-cyan);
+            cursor: pointer;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+        #audio-volume::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            background: var(--accent-cyan);
+            border: none;
+            cursor: pointer;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+        #audio-label {
+            font-size: 0.58rem;
+            letter-spacing: 0.14em;
+            color: var(--ink-mute);
+            text-transform: uppercase;
+            white-space: nowrap;
+            user-select: none;
+        }
+
         a { color: inherit; text-decoration: none; }
         button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
         ul { list-style: none; }
@@ -1986,13 +2070,153 @@
             animation: ls-glitch-exit .55s ease forwards;
         }
 
+        /* ===== ENTER SCREEN (pre-boot gate) ===== */
+        #ls-enter {
+            position: fixed;
+            inset: 0;
+            z-index: 99998;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+            transition: opacity 0.5s ease;
+        }
+        #ls-enter .enter-title {
+            font-size: clamp(9px, 1.5vw, 16px);
+            color: #c8102e;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            margin-bottom: 3.5rem;
+            line-height: 1.2;
+            text-align: center;
+        }
+        #ls-enter .enter-sub {
+            font-size: 0.68rem;
+            color: #4a4540;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        #ls-enter .enter-cta {
+            font-size: 0.75rem;
+            color: #c8c0b8;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            border: 1px solid #2a0d12;
+            padding: 0.7rem 2rem;
+            margin-top: 2.5rem;
+            animation: ls-blink 1.1s step-end infinite;
+        }
+        #ls-enter.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* ===== SPLASH SCREEN (phase 4) ===== */
+        .ls-splash {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+
+        .ls-logo {
+            font-size: clamp(6px, 1.05vw, 12px);
+            line-height: 1.2;
+            color: #c8102e;
+            text-align: center;
+            letter-spacing: 0;
+            margin: 0;
+            font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+        }
+
+        .ls-os-label {
+            color: #c8c0b8;
+            font-size: 0.78rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            margin-top: 1.8rem;
+            font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+        }
+
+        .ls-os-version {
+            color: #4a4540;
+            font-size: 0.62rem;
+            letter-spacing: 0.16em;
+            margin-top: 0.35rem;
+            font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+        }
+
+        .ls-progress-wrap {
+            width: min(260px, 70vw);
+            height: 2px;
+            background: #1a1010;
+            margin-top: 2.4rem;
+            position: relative;
+        }
+
+        .ls-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #c8102e;
+            transition: width 3s cubic-bezier(.25, 0, .1, 1);
+        }
+
+        /* ===== GLITCH BARS ===== */
+        .ls-glitch-bar {
+            position: absolute;
+            left: 0; right: 0;
+            pointer-events: none;
+            z-index: 20;
+            mix-blend-mode: screen;
+        }
+
+        /* ===== FADE-TO-BLACK OVERLAY ===== */
+        .ls-blackout {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: #000;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+
     </style>
 </head>
 <body class="ls-locked">
 
+    <!-- ===== BACKGROUND AUDIO ===== -->
+    <audio id="site-audio" src="website_not_found.mp3" loop preload="auto"></audio>
+
+    <!-- ===== ENTER GATE ===== -->
+    <div id="ls-enter">
+        <pre class="enter-title">&#x2593;&#x2593; NOT_FOUND &#x2593;&#x2593;
+&#x2593;&#x2593; SYSTEMS  &#x2593;&#x2593;</pre>
+        <div class="enter-sub">NF-NODE  ·  v4.27.1  ·  CLASSIFIED BUILD</div>
+        <div class="enter-cta">[ CLICK ANYWHERE TO ENTER ]</div>
+    </div>
+
     <!-- ===== LOADING SCREEN ===== -->
     <div class="ls-screen" id="lsScreen">
         <div class="ls-terminal" id="lsTerminal"></div>
+        <div class="ls-splash" id="lsSplash">
+            <pre class="ls-logo" id="lsLogo"></pre>
+            <div class="ls-os-label">NOT_FOUND SYSTEMS</div>
+            <div class="ls-os-version">NF-NODE  ·  v4.27.1  ·  CLASSIFIED BUILD</div>
+            <div class="ls-progress-wrap">
+                <div class="ls-progress-bar" id="lsProgressBar"></div>
+            </div>
+        </div>
     </div>
 
     <!-- ===== NAVIGATION ===== -->
@@ -3578,55 +3802,155 @@
                 await delay(600);
             }
 
-            /* ---- Phase 4 — ASCII MOTD banner + auto-launch ---- */
+            /* ---- Phase 4 — OS splash screen + auto-launch ---- */
             async function phase4() {
-                addLine('');
+                const splash     = document.getElementById('lsSplash');
+                const logo       = document.getElementById('lsLogo');
+                const progressBar = document.getElementById('lsProgressBar');
 
-                const ROWS = [
-                    '  _   _  ___ _____   _____  ___  _   _ _   _ ____  ',
-                    ' | \\ | |/ _ \\_   _| |  ___|/ _ \\| | | | \\ | |  _ \\ ',
-                    ' |  \\| | | | || |   | |_  | | | | | | |  \\| | | | |',
-                    ' | |\\  | |_| || |   |  _| | |_| | |_| | |\\  | |_| |',
-                    ' |_| \\_|\\___/ |_|   |_|    \\___/ \\___/|_| \\_|____/ ',
-                ];
-                for (const row of ROWS) {
-                    const span = document.createElement('span');
-                    span.className = 'ls-ascii';
-                    span.innerHTML = asciiRow(row);
-                    terminal.appendChild(span);
-                    await delay(38);
-                }
+                /* Fade out terminal */
+                terminal.style.transition = 'opacity 0.5s ease';
+                terminal.style.opacity    = '0';
+                await delay(520);
+                terminal.innerHTML = '';
 
-                const tag = document.createElement('span');
-                tag.className = 'ls-tagline';
-                tag.textContent = '  // ЧВК × NETRUNNER · ПАРАЛЛЕЛЬНАЯ КАМПАНИЯ · 2026 //';
-                terminal.appendChild(tag);
-                await delay(400);
+                /* Set OS block-character logo */
+                logo.textContent = [
+                    '  ██╗  ██╗ ██████╗ ████████╗    ███████╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗  ',
+                    '  ███╗ ██║██╔═══██╗╚══██╔══╝    ██╔════╝██╔═══██╗██║   ██║████╗  ██║██╔══██╗ ',
+                    '  ██╔██╗██║██║   ██║   ██║       █████╗  ██║   ██║██║   ██║██╔██╗ ██║██║  ██║ ',
+                    '  ██║╚████║██║   ██║   ██║       ██╔══╝  ██║   ██║██║   ██║██║╚██╗██║██║  ██║ ',
+                    '  ██║ ╚███║╚██████╔╝   ██║       ██║     ╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝ ',
+                    '  ╚═╝  ╚══╝ ╚═════╝    ╚═╝       ╚═╝      ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝  ',
+                ].join('\n');
 
-                /* Auto-launch */
-                addLine('');
-                await typeLine('>  LAUNCHING not_found...', 'ls-bright');
-                await delay(1200);
+                /* Fade in splash */
+                splash.style.opacity      = '1';
+                splash.style.pointerEvents = 'auto';
+                await delay(200);
+
+                /* Trigger progress bar fill (2 s CSS transition) */
+                progressBar.style.width = '100%';
+
+                /* Wait for bar (3 s) + short pause, then auto-exit */
+                await delay(3800);
                 exitScreen();
             }
 
-            /* ---- Glitch-slice exit ---- */
+            /* ---- Ambient glitch loop ---- */
+            let glitchRunning = false;
+
+            async function ambientGlitch() {
+                glitchRunning = true;
+                while (glitchRunning) {
+                    /* Random quiet interval between glitches */
+                    await delay(900 + Math.random() * 3200);
+                    if (!glitchRunning) break;
+
+                    /* 2–5 rapid distortion frames per glitch burst */
+                    const frames = 2 + Math.floor(Math.random() * 4);
+                    for (let f = 0; f < frames; f++) {
+                        if (!glitchRunning) break;
+
+                        const tx    = (Math.random() - 0.5) * 18;
+                        const skewX = (Math.random() - 0.5) * 1.4;
+                        const useChroma = Math.random() > 0.35;
+
+                        screen.style.transform = `translateX(${tx}px) skewX(${skewX}deg)`;
+                        if (useChroma) {
+                            const rx = (Math.random() - 0.5) * 8;
+                            const cx = (Math.random() - 0.5) * 8;
+                            screen.style.filter = `drop-shadow(${rx}px 0 0 rgba(200,16,46,.7)) drop-shadow(${cx}px 0 0 rgba(77,226,255,.55))`;
+                        }
+
+                        /* Horizontal bar on ~60 % of frames */
+                        let bar = null;
+                        if (Math.random() > 0.4) {
+                            bar = document.createElement('div');
+                            bar.className = 'ls-glitch-bar';
+                            const isRed = Math.random() > 0.5;
+                            bar.style.cssText =
+                                `top:${(Math.random() * 94).toFixed(1)}%;` +
+                                `height:${(Math.random() * 22 + 1).toFixed(1)}px;` +
+                                `opacity:${(Math.random() * 0.4 + 0.05).toFixed(2)};` +
+                                `background:${isRed ? 'rgba(200,16,46,0.25)' : 'rgba(255,255,255,0.07)'};` +
+                                `transform:translateX(${((Math.random() - 0.5) * 24).toFixed(1)}px)`;
+                            screen.appendChild(bar);
+                        }
+
+                        await delay(16 + Math.random() * 60);
+
+                        screen.style.transform = '';
+                        screen.style.filter    = '';
+                        if (bar) bar.remove();
+                    }
+                }
+            }
+
+            /* ---- Fade-to-black exit ---- */
             function exitScreen() {
+                glitchRunning = false;
                 sessionStorage.setItem('nf_boot_seen', '1');
-                screen.classList.add('ls-exit');
-                screen.addEventListener('animationend', () => {
+
+                const blackout = document.createElement('div');
+                blackout.className = 'ls-blackout';
+                document.body.appendChild(blackout);
+
+                /* Force reflow so transition fires */
+                void blackout.offsetHeight;
+                blackout.style.opacity = '1';
+
+                blackout.addEventListener('transitionend', () => {
                     screen.remove();
                     document.body.classList.remove('ls-locked');
+
+                    requestAnimationFrame(() => {
+                        blackout.style.opacity = '0';
+                        blackout.addEventListener('transitionend', () => {
+                            blackout.remove();
+                        }, { once: true });
+                    });
                 }, { once: true });
             }
 
+
             /* ---- Run all phases (auto-exits at end of phase4) ---- */
             (async () => {
+                const enterEl = document.getElementById('ls-enter');
+
+                /* If boot already seen this session, skip everything */
                 if (sessionStorage.getItem('nf_boot_seen')) {
+                    if (enterEl) enterEl.remove();
                     screen.remove();
                     document.body.classList.remove('ls-locked');
                     return;
                 }
+
+                /* Wait for the user to click/tap the enter screen */
+                await new Promise(resolve => {
+                    if (!enterEl) { resolve(); return; }
+                    const go = () => {
+                        /* Fullscreen + audio — both need same user gesture */
+                        const fsEl = document.documentElement;
+                        if (fsEl.requestFullscreen)             fsEl.requestFullscreen().catch(() => {});
+                        else if (fsEl.webkitRequestFullscreen)  fsEl.webkitRequestFullscreen();
+
+                        if (typeof window.startBGM === 'function') window.startBGM();
+
+                        enterEl.classList.add('fade-out');
+                        enterEl.addEventListener('transitionend', () => {
+                            enterEl.remove();
+                            resolve();
+                        }, { once: true });
+                    };
+                    enterEl.addEventListener('click',    go, { once: true });
+                    enterEl.addEventListener('keydown',  go, { once: true });
+                    document.addEventListener('keydown', go, { once: true });
+                });
+
+                /* Start ambient glitch — runs until exitScreen() stops it */
+                ambientGlitch();
+
                 await phase0();
                 await phase1();
                 await phase2();
@@ -3634,6 +3958,108 @@
                 await phase3();
                 await phase4();
             })();
+        })();
+    </script>
+
+    <div id="audio-widget">
+        <button id="audio-mute-btn" title="Toggle mute" aria-label="Toggle mute">
+            <!-- speaker icon — swapped by JS -->
+            <svg id="icon-sound" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 7.5H6.5L11 4V16L6.5 12.5H3V7.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                <path d="M13.5 7C14.5 8 15 9 15 10C15 11 14.5 12 13.5 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <path d="M15.5 5C17 6.5 17.8 8.2 17.8 10C17.8 11.8 17 13.5 15.5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            <svg id="icon-muted" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+                <path d="M3 7.5H6.5L11 4V16L6.5 12.5H3V7.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                <line x1="13" y1="7" x2="18" y2="13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <line x1="18" y1="7" x2="13" y2="13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+        </button>
+        <div id="audio-vol-wrap">
+            <span id="audio-label">BGM</span>
+            <input id="audio-volume" type="range" min="0" max="1" step="0.01" value="0.18" title="Volume">
+        </div>
+    </div>
+
+    <script>
+        /* ===== GLOBAL AUDIO CONTROLLER ===== */
+        (function () {
+            const audio   = document.getElementById('site-audio');
+            const btn     = document.getElementById('audio-mute-btn');
+            const slider  = document.getElementById('audio-volume');
+            const iconOn  = document.getElementById('icon-sound');
+            const iconOff = document.getElementById('icon-muted');
+
+            audio.volume = 0.18;
+            slider.value = '0.18';
+
+            function syncIcons() {
+                const m = audio.muted;
+                btn.classList.toggle('muted', m);
+                iconOn.style.display  = m ? 'none'  : 'block';
+                iconOff.style.display = m ? 'block' : 'none';
+            }
+
+            /* Global startBGM — called from the enter-gate click handler */
+            window.startBGM = function () {
+                if (!audio.paused) return; // already playing
+                audio.volume = 0.18;
+
+                /* Step 1: try unmuted play (works if browser has prior engagement) */
+                audio.muted = false;
+                audio.play().then(() => {
+                    syncIcons();
+                }).catch(() => {
+                    /* Step 2: muted play then unmute — Chrome/Firefox always allow this */
+                    audio.muted = true;
+                    audio.play().then(() => {
+                        audio.muted = false;
+                        syncIcons();
+                    }).catch(() => {
+                        /* Step 3: Safari — wait for ANY interaction, then play */
+                        audio.muted = false;
+                        const unlock = () => {
+                            if (!audio.paused) return;
+                            audio.play().catch(() => {});
+                            syncIcons();
+                            ['pointerdown','keydown','scroll','touchstart'].forEach(ev =>
+                                document.removeEventListener(ev, unlock, true));
+                        };
+                        ['pointerdown','keydown','scroll','touchstart'].forEach(ev =>
+                            document.addEventListener(ev, unlock, { capture: true }));
+                    });
+                });
+            };
+
+            /* startBGM is called by the enter-gate click, not on page load */
+
+            /* Keep fullscreen flag in sync so docs.html can restore it instantly */
+            document.addEventListener('fullscreenchange', () => {
+                sessionStorage.setItem('nf_was_fullscreen', document.fullscreenElement ? '1' : '0');
+            });
+            /* Snapshot on any outbound navigation as a reliable fallback */
+            window.addEventListener('pagehide', () => {
+                sessionStorage.setItem('nf_was_fullscreen', document.fullscreenElement ? '1' : '0');
+            });
+
+            btn.addEventListener('click', () => {
+                if (audio.paused) {
+                    window.startBGM();
+                } else {
+                    audio.muted = !audio.muted;
+                }
+                syncIcons();
+            });
+
+            slider.addEventListener('input', () => {
+                audio.volume = parseFloat(slider.value);
+                if (audio.muted && audio.volume > 0) {
+                    audio.muted = false;
+                    syncIcons();
+                }
+            });
+
+            syncIcons();
         })();
     </script>
 </body>

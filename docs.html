@@ -2,6 +2,14 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <!-- Restore fullscreen immediately — the click that brought us here is still an active gesture -->
+    <script>
+        if (sessionStorage.getItem('nf_was_fullscreen') === '1') {
+            var _fsEl = document.documentElement;
+            if (_fsEl.requestFullscreen)            _fsEl.requestFullscreen().catch(function(){});
+            else if (_fsEl.webkitRequestFullscreen) _fsEl.webkitRequestFullscreen();
+        }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>not_found — GDD &amp; Tech Architecture · CLASSIFIED</title>
     <meta name="description" content="Внутренняя документация: Game Design Document и техническая архитектура проекта not_found.">
@@ -2920,6 +2928,7 @@ Greybox (BSP) → Плейтест → Замена на финальные ас
             input.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
         })();
     </script>
+
 
 </body>
 </html>
