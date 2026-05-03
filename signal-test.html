@@ -605,28 +605,28 @@
 
         <div class="badge" data-i18n="badge">multi-layer test · not for redistribution</div>
         <h1 data-i18n="h1">Intercept: NF-NODE</h1>
-        <p class="sub">session_id: <span id="sid">—</span> · node_ref: EU-WEST/STAGING · operator: NULL</p>
+        <p class="sub"><span data-i18n="sub_pre">session_id:</span> <span id="sid">—</span> <span data-i18n="sub_after">· node_ref: EU-WEST/STAGING · operator: NULL</span></p>
 
         <div class="doc">
             <div class="label"><span class="pulse-dot"></span><span data-i18n="memo_label">MEMO // INTERNAL ONLY // COPY 0 OF 1</span></div>
-            <p>Subject: routing drift at <span class="redact">████████████████</span> after incident «Frontier» (RUBEZH).</p>
-            <p>Status: PMC contracts <span class="redact">████</span> and NET cells <span class="redact">██████</span> are out of sync. Conflicting accounts of events.</p>
-            <p>Vector: duplicate <strong>handshake</strong> on subchannel 7 — possible false responder or mirrored contour.</p>
-            <p>Action: peripheral nodes hold «observe until sync». Do not open attachments below L2.</p>
+            <p data-i18n-html="memo_p1_html">Subject: routing drift at <span class="redact">████████████████</span> after incident «Frontier» (RUBEZH).</p>
+            <p data-i18n-html="memo_p2_html">Status: PMC contracts <span class="redact">████</span> and NET cells <span class="redact">██████</span> are out of sync. Conflicting accounts of events.</p>
+            <p data-i18n-html="memo_p3_html">Vector: duplicate <strong>handshake</strong> on subchannel 7 — possible false responder or mirrored contour.</p>
+            <p data-i18n-html="memo_p4_html">Action: peripheral nodes hold «observe until sync». Do not open attachments below L2.</p>
             <p style="margin-top:0.85rem;color:#6b7280;font-size:0.74rem;" data-i18n="morse_line">RF spill (idle ∘ stripped): ·∘·−∘·−··∘−··∘·· — remove lone ∘ fences; ITU Morse; yields callsign fragment.</p>
         </div>
 
         <div class="lore-extra" id="ambient-lore">
-            <strong>Context (test canon):</strong> «not_found» is the working name for intercepting covert comms between state-side circuits and the netrunner mesh.
+            <div data-i18n-html="lore_html"><strong>Context (test canon):</strong> «not_found» is the working name for intercepting covert comms between state-side circuits and the netrunner mesh.
             NF-NODE officially does not exist; unofficially it caches traffic shards for later audit.
             This page simulates a leak from such a cache — no external APIs, only local session and the browser console.
-            <span style="display:block;margin-top:0.75rem;">In the wider fiction, netrunner cells try to <strong>preserve and mirror</strong> what institutions would erase; contractors, PMCs, and corporate stacks <strong>leak, resell, or bury</strong> the same material when it serves them, cutting common access to truth. The campaign treats that asymmetry as an open <strong>declaration of war</strong> on who gets to know what — this channel is a small, local echo of that fight.</span>
+            <span style="display:block;margin-top:0.75rem;">In the wider fiction, netrunner cells try to <strong>preserve and mirror</strong> what institutions would erase; contractors, PMCs, and corporate stacks <strong>leak, resell, or bury</strong> the same material when it serves them, cutting common access to truth. The campaign treats that asymmetry as an open <strong>declaration of war</strong> on who gets to know what — this channel is a small, local echo of that fight.</span></div>
         </div>
 
         <div class="puzzle-l0" id="puzzle-l0">
             <div class="head" data-i18n="grid_head">Grid shift · L0 gate</div>
             <p style="color:var(--dim);font-size:0.74rem;line-height:1.55;" data-i18n="grid_instr">Toggle cells on the 3×3 grid; verify when ready.</p>
-            <div class="grid-l0" id="grid-l0" role="group" aria-label="3 by 3 grid"></div>
+            <div class="grid-l0" id="grid-l0" role="group" data-i18n-aria-label="grid_aria_label" aria-label="3 by 3 grid"></div>
             <div class="sync-actions">
                 <button type="button" id="l0-check" data-i18n="btn_l0_check">verify pattern</button>
                 <button type="button" id="l0-reset" data-i18n="btn_l0_reset">reset</button>
@@ -661,106 +661,106 @@
                 <button type="button" id="go" data-i18n="btn_go">apply</button>
             </div>
             <div class="msg" id="msg" aria-live="polite"></div>
-            <div class="reveal" id="reveal-l0-guide">
+            <div class="reveal" id="reveal-l0-guide" data-i18n-html="reveal_l0_html">
                 <strong>L0 — open buffer fragment</strong><br><br>
                 You are on intercept without attestation. Treat every line as potentially planted.
                 Complete the grid gate above first, then get the token from the console: <code>nf.access("leak")</code> → enter it here.<br><br>
                 Shell: <a href="nf-shell.html" style="color:var(--cyan)">nf-shell.html</a> · main site: <a href="index.html" style="color:var(--cyan)">index.html</a>
             </div>
-            <div class="reveal reveal-l1" id="reveal-l1">
+            <div class="reveal reveal-l1" id="reveal-l1" data-i18n-html="reveal_l1_html">
                 <strong>L1 — «Frontier» fragment</strong><br><br>
                 Incident «Frontier» (RUBEZH): loss of sync between a PMC field unit and dispatch. In sampled traffic, a packet shares session_id but carries a different geographic stamp — as if the answer arrived before the request.<br><br>
                 Internal batch name: <strong>RUBEZH-7</strong>. Page key — <code>RUBEZH7</code>: prefix after phase A sync + suffix from <code>cat INCIDENT_0314.txt</code>; see also <code>nf.access("ledger")</code>.<br><br>
                 // Beyond this — only after reconciling the NET-side fragment (L2).
             </div>
-            <div class="reveal reveal-l2" id="reveal-l2">
+            <div class="reveal reveal-l2" id="reveal-l2" data-i18n-html="reveal_l2_html">
                 <strong>L2 — NET fragment (handshake mirror)</strong><br><br>
                 Cell «NULL HANDSHAKE» claims: subchannel 7 is not a «mirror» but an <em>answer from a peer node</em>, left deliberately with a wrong signature to flag passive taps.
                 If true, NF-NODE becomes a detector, not just an archive.<br><br>
                 L2 key: <code>HANDSHAKE7</code> — after phase B and <code>cat WITNESS.stub</code> / <code>TRANSMISSION_LOG.fragment</code> in shell. After L2, production-ready archive stubs unlock.<br><br>
                 // End of tier-2 test bundle. Local logging discouraged.
             </div>
-            <div class="reveal reveal-l3" id="reveal-l3">
+            <div class="reveal reveal-l3" id="reveal-l3" data-i18n-html="reveal_l3_html">
                 <strong>L3 — witness archive · two truths</strong><br><br>
                 NF-NODE deliberately keeps both incident versions: PMC and NET are not mutually exclusive until all phases sync and the Witness log order is fixed.<br><br>
                 The final token is not in README: assemble tag <code>PM7NULL</code> after ordering logs and cross-checking shell (<code>ROUTES.sleeping_stub</code>, <code>WITNESS.stub</code>). Curator P-12 stays faceless — only an internal memo quote in Appendix G at full clearance.
             </div>
 
             <div class="dec-tool" id="dec-tool">
-                <div class="label" style="margin-bottom:0.5rem;color:var(--cyan);font-size:0.68rem;">DEC · TOOL sandbox (after L0)</div>
-                <label for="dec-in">input</label>
-                <textarea id="dec-in" rows="2" placeholder="paste ciphertext"></textarea>
+                <div class="label" style="margin-bottom:0.5rem;color:var(--cyan);font-size:0.68rem;" data-i18n="dec_tool_title">DEC · TOOL sandbox (after L0)</div>
+                <label for="dec-in" data-i18n="dec_lbl_input">input</label>
+                <textarea id="dec-in" rows="2" data-i18n-placeholder="dec_in_ph" placeholder="paste ciphertext"></textarea>
                 <div class="dec-row">
-                    <label for="dec-shift" style="margin:0;">Caesar shift</label>
+                    <label for="dec-shift" style="margin:0;" data-i18n="dec_lbl_shift">Caesar shift</label>
                     <input type="range" id="dec-shift" min="0" max="25" value="13" style="flex:1;min-width:120px;">
                     <span id="dec-shift-v">13</span>
                 </div>
                 <div class="dec-row">
-                    <label for="dec-vig-key" style="margin:0;font-size:0.68rem;">Vigenère key</label>
-                    <input type="text" id="dec-vig-key" maxlength="32" placeholder="key" autocomplete="off" spellcheck="false" style="flex:1;min-width:140px;font-family:var(--mono);font-size:0.78rem;padding:0.35rem 0.5rem;background:#0a0c11;border:1px solid var(--rule);color:var(--ink);">
+                    <label for="dec-vig-key" style="margin:0;font-size:0.68rem;" data-i18n="dec_lbl_vig">Vigenère key</label>
+                    <input type="text" id="dec-vig-key" maxlength="32" data-i18n-placeholder="dec_vig_ph" placeholder="key" autocomplete="off" spellcheck="false" style="flex:1;min-width:140px;font-family:var(--mono);font-size:0.78rem;padding:0.35rem 0.5rem;background:#0a0c11;border:1px solid var(--rule);color:var(--ink);">
                 </div>
                 <div class="dec-row">
-                    <button type="button" class="sm" id="dec-rot13">ROT13</button>
-                    <button type="button" class="sm" id="dec-vig">Vigenère decode</button>
+                    <button type="button" class="sm" id="dec-rot13" data-i18n="dec_btn_rot13">ROT13</button>
+                    <button type="button" class="sm" id="dec-vig" data-i18n="dec_btn_vig">Vigenère decode</button>
                 </div>
-                <label for="dec-out">output</label>
+                <label for="dec-out" data-i18n="dec_lbl_output">output</label>
                 <textarea id="dec-out" rows="2" readonly></textarea>
 
                 <div id="hard-dec-panel" style="margin-top:1rem;padding-top:1rem;border-top:1px dashed var(--rule);display:none;">
-                    <div class="label" style="margin-bottom:0.5rem;color:var(--amber);font-size:0.65rem;">HARD TRACK · DEC checkpoints</div>
-                    <p style="font-size:0.72rem;color:var(--dim);margin-bottom:0.65rem;line-height:1.5;">
+                    <div class="label" style="margin-bottom:0.5rem;color:var(--amber);font-size:0.65rem;" data-i18n="hard_dec_title">HARD TRACK · DEC checkpoints</div>
+                    <p style="font-size:0.72rem;color:var(--dim);margin-bottom:0.65rem;line-height:1.5;" data-i18n-html="hard_dec_help_html">
                         <strong>A:</strong> Paste letters-only ciphertext from <code>nf.access("leak")</code> when hard track is enabled. Use the Caesar slider in DEC, then verify.<br>
                         <strong>B:</strong> Paste challenge material from nf-shell into DEC; supply the Vigenère key from your notes, then verify.
                     </p>
                     <div class="dec-row">
-                        <button type="button" class="sm" id="verify-hard-a" style="border-color:var(--cyan);color:var(--cyan);">Verify checkpoint A</button>
+                        <button type="button" class="sm" id="verify-hard-a" style="border-color:var(--cyan);color:var(--cyan);" data-i18n="verify_hard_a">Verify checkpoint A</button>
                         <span id="hard-a-msg" style="font-size:0.7rem;color:var(--dim);"></span>
                     </div>
                     <div class="dec-row" id="hard-b-row" style="margin-top:0.5rem;display:none;">
-                        <button type="button" class="sm" id="verify-hard-b" style="border-color:var(--cyan);color:var(--cyan);">Verify checkpoint B</button>
+                        <button type="button" class="sm" id="verify-hard-b" style="border-color:var(--cyan);color:var(--cyan);" data-i18n="verify_hard_b">Verify checkpoint B</button>
                         <span id="hard-b-msg" style="font-size:0.7rem;color:var(--dim);"></span>
                     </div>
                 </div>
             </div>
 
-            <div class="reveal" id="reveal-hard-a" style="border-left-color:#9ae6b4;background:rgba(154,230,180,0.06);">
+            <div class="reveal" id="reveal-hard-a" style="border-left-color:#9ae6b4;background:rgba(154,230,180,0.06);" data-i18n-html="reveal_hard_a_html">
                 <strong>Hard track · checkpoint A</strong><br><br>
                 Codeword recovered: internal label <code>NODELEAK</code> — not a substitute for <code>NODE404</code>; it confirms you can operate the DEC sandbox. PMC dispatch noise mentions a parallel logging lane for «Frontier» duplicates.
             </div>
-            <div class="reveal" id="reveal-hard-b" style="border-left-color:#90cdf4;background:rgba(144,205,244,0.07);">
+            <div class="reveal" id="reveal-hard-b" style="border-left-color:#90cdf4;background:rgba(144,205,244,0.07);" data-i18n-html="reveal_hard_b_html">
                 <strong>Hard track · checkpoint B</strong><br><br>
                 Plaintext <code>AUDITOPEN</code> matches the black-line audit hook. In nf-shell run <code>cat AUDIT.blackline.txt</code> for the memorandum stub. Cross-reference Appendix G columns when you reach L3.
             </div>
 
             <div class="witness-block" id="witness-block">
-                <div class="head">Witness · log order (L3)</div>
-                <p style="color:var(--dim);font-size:0.74rem;line-height:1.55;">Select lines to establish chronological order for witness clearance.</p>
+                <div class="head" data-i18n="witness_head">Witness · log order (L3)</div>
+                <p style="color:var(--dim);font-size:0.74rem;line-height:1.55;" data-i18n="witness_help">Select lines to establish chronological order for witness clearance.</p>
                 <div class="witness-items" id="witness-items"></div>
                 <div class="sync-actions">
-                    <button type="button" id="witness-clear">clear selection</button>
+                    <button type="button" id="witness-clear" data-i18n="witness_clear">clear selection</button>
                 </div>
                 <div class="status" id="witness-msg" style="margin-top:0.5rem;font-size:0.72rem;color:var(--dim);"></div>
             </div>
 
             <div id="dev-panel">
-                <strong>#dev</strong> — debug: reset ARG — <code>nf.resetProgress()</code> or button below.
-                <button type="button" class="sm" id="dev-reset" style="margin-left:0.5rem;">reset</button>
+                <span data-i18n-html="dev_intro_html"><strong>#dev</strong> — debug: reset ARG — <code>nf.resetProgress()</code> or button below.</span>
+                <button type="button" class="sm" id="dev-reset" style="margin-left:0.5rem;" data-i18n="dev_reset">reset</button>
             </div>
         </div>
 
         <div class="archive-wrap" id="archive-wrap">
             <div class="doc" style="margin-bottom:0.85rem;">
-                <div class="label">EXPANDED ARCHIVE [PRODUCTION PLACEHOLDERS]</div>
-                Below: stubs for future iterations — dossiers, media, timeline, outbound channels. Swap content without breaking layout.
+                <div class="label" data-i18n="arch_title">EXPANDED ARCHIVE [PRODUCTION PLACEHOLDERS]</div>
+                <p data-i18n="arch_intro">Below: stubs for future iterations — dossiers, media, timeline, outbound channels. Swap content without breaking layout.</p>
             </div>
             <div class="tabs" role="tablist">
-                <button type="button" class="tab active" data-tab="intel" role="tab" aria-selected="true">Intel</button>
-                <button type="button" class="tab" data-tab="media" role="tab">Media</button>
-                <button type="button" class="tab" data-tab="time" role="tab">Timeline</button>
-                <button type="button" class="tab" data-tab="channels" role="tab">Channels</button>
+                <button type="button" class="tab active" data-tab="intel" role="tab" aria-selected="true" data-i18n="arch_tab_intel">Intel</button>
+                <button type="button" class="tab" data-tab="media" role="tab" data-i18n="arch_tab_media">Media</button>
+                <button type="button" class="tab" data-tab="time" role="tab" data-i18n="arch_tab_time">Timeline</button>
+                <button type="button" class="tab" data-tab="channels" role="tab" data-i18n="arch_tab_channels">Channels</button>
             </div>
             <div class="tab-panel active" id="panel-intel" role="tabpanel">
-                <div class="stub-grid">
+                <div data-i18n-html="arch_intel_html"><div class="stub-grid">
                     <div class="stub-card">
                         <div class="t">Dossier: field mesh operator</div>
                         Callsign, role, faction (PMC / NET), trust status. Biometrics and photo — TBD.
@@ -776,10 +776,10 @@
                         HEX / base64 dump, link to decrypt in GDD or standalone PDF.
                         <span class="stub-badge">MEDIA+TEXT</span>
                     </div>
-                </div>
+                </div></div>
             </div>
             <div class="tab-panel" id="panel-media" role="tabpanel">
-                <div class="stub-grid">
+                <div data-i18n-html="arch_media_html"><div class="stub-grid">
                     <div class="stub-card">
                         <div class="media-placeholder">VIDEO · concept trailer / glitch reel</div>
                         <div class="t">Video insert</div>
@@ -798,10 +798,10 @@
                         Static assets from /assets or CDN; alt text for lore detail.
                         <span class="stub-badge">PNG/SVG</span>
                     </div>
-                </div>
+                </div></div>
             </div>
             <div class="tab-panel" id="panel-time" role="tabpanel">
-                <div class="timeline">
+                <div data-i18n-html="arch_time_html"><div class="timeline">
                     <div class="timeline-item">
                         <div class="when">2031-03-14 · 02:17 UTC</div>
                         <div class="what">Primary «Frontier» log: session_id desync (test date).</div>
@@ -814,10 +814,10 @@
                         <div class="when">[SLOT]</div>
                         <div class="what">Milestone: new channel or intercept page opens.</div>
                     </div>
-                </div>
+                </div></div>
             </div>
             <div class="tab-panel" id="panel-channels" role="tabpanel">
-                <div class="stub-grid">
+                <div data-i18n-html="arch_channels_html"><div class="stub-grid">
                     <div class="stub-card">
                         <div class="t">Social / community</div>
                         Discord, investigation tracker, bot links — TBD.
@@ -833,16 +833,16 @@
                         IPFS files, broken links with 404 stubs — for future phases.
                         <span class="stub-badge">OPTIONAL</span>
                     </div>
-                </div>
+                </div></div>
             </div>
         </div>
 
         <div class="doc layer-lock" id="panel-deep-lore" style="margin-top: 1.5rem;">
-            <div class="label">APPENDIX G · VERSION MERGE</div>
-            <div id="deep-stub">
+            <div class="label" data-i18n="appendix_label">APPENDIX G · VERSION MERGE</div>
+            <div id="deep-stub" data-i18n-html="deep_stub_html">
                 <p>After L2, Appendix G draft unlocks; at L3 it expands (two columns and Curator quote).</p>
             </div>
-            <div id="deep-full" style="display:none;">
+            <div id="deep-full" style="display:none;" data-i18n-html="deep_full_top_html">
                 <p style="margin-bottom:0.85rem;color:var(--dim);font-size:0.8rem;"><strong>Double responder:</strong> two legitimate contours answered one request with different geo stamps — until L2 sync NF-NODE cannot tell NET «mirror» from live PMC; both answers stay in cache as equal candidates.</p>
                 <div class="deep-columns">
                     <div class="deep-col pmc">
@@ -895,9 +895,9 @@
             <h3 id="modal-a-title" data-i18n="modal_a_title">Phase A · sequence sync</h3>
             <p style="color:var(--dim);font-size:0.74rem;" data-i18n="modal_a_help">Repeat the demonstrated sequence. Abort with Esc or the button.</p>
             <div class="simon-row" id="simon-btns">
-                <button type="button" class="sym" data-i="0">PMC</button>
-                <button type="button" class="sym" data-i="1">NET</button>
-                <button type="button" class="sym" data-i="2">NULL</button>
+                <button type="button" class="sym" data-i="0" data-i18n="simon_pmc">PMC</button>
+                <button type="button" class="sym" data-i="1" data-i18n="simon_net">NET</button>
+                <button type="button" class="sym" data-i="2" data-i18n="simon_null">NULL</button>
             </div>
             <div class="modal-foot">
                 <span id="phase-a-hint"></span>
@@ -1752,10 +1752,10 @@
                     if (pathWalls.has(i)) b.classList.add('wall');
                     if (i === 0) {
                         b.classList.add('start');
-                        b.textContent = 'S';
+                        b.textContent = NFSignalT('path_cell_s');
                     } else if (i === 24) {
                         b.classList.add('goal');
-                        b.textContent = 'G';
+                        b.textContent = NFSignalT('path_cell_g');
                     } else if (!pathWalls.has(i)) b.textContent = '.';
                     else b.textContent = '█';
                     if (!pathWalls.has(i)) {
@@ -1870,7 +1870,7 @@
                     var b = document.createElement('button');
                     b.type = 'button';
                     b.className = 'wit';
-                    b.textContent = ev.text;
+                    b.textContent = NFSignalT('wit_ev_' + ev.id) || ev.text;
                     b.setAttribute('data-id', String(ev.id));
                     b.addEventListener('click', function () {
                         var id = parseInt(b.getAttribute('data-id'), 10);
@@ -1893,6 +1893,16 @@
                         }
                     });
                     box.appendChild(b);
+                });
+            }
+
+            function retextWitnessButtons() {
+                document.querySelectorAll('#witness-items .wit').forEach(function (btn) {
+                    var id = parseInt(btn.getAttribute('data-id'), 10);
+                    if (!isNaN(id)) {
+                        var t = NFSignalT('wit_ev_' + id);
+                        if (t) btn.textContent = t;
+                    }
                 });
             }
 
@@ -1982,6 +1992,13 @@
                     if (!h || h.indexOf(':') >= 0) return;
                     var base = h.split('?')[0];
                     a.setAttribute('href', base + q);
+                });
+                retextWitnessButtons();
+                document.querySelectorAll('#path-grid .pcell.start').forEach(function (el) {
+                    el.textContent = NFSignalT('path_cell_s');
+                });
+                document.querySelectorAll('#path-grid .pcell.goal').forEach(function (el) {
+                    el.textContent = NFSignalT('path_cell_g');
                 });
             };
         })();
