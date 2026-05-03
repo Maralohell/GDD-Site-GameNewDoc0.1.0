@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="page_title">NF-NODE · CTF</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #06070a;
+            --ink: #e6ebf2;
+            --dim: #8a93a1;
+            --cyan: #4de2ff;
+            --amber: #ffb24a;
+            --ok: #6fe39c;
+            --rule: #1f242d;
+            --mono: 'JetBrains Mono', ui-monospace, monospace;
+            --sans: 'Inter', system-ui, sans-serif;
+        }
+        body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.65; padding: 2rem 1.25rem 4rem; }
+        .wrap { max-width: 720px; margin: 0 auto; }
+        .langtog { font-family: var(--mono); font-size: 0.68rem; color: #6b7280; margin-bottom: 1rem; }
+        .langtog button { background: none; border: none; font: inherit; color: #6b7280; cursor: pointer; border-bottom: 1px solid rgba(107,114,128,0.35); padding: 0; }
+        .langtog button.active { color: var(--cyan); pointer-events: none; border-bottom-color: rgba(77,226,255,0.45); }
+        .langtog .sep { margin: 0 0.35rem; opacity: 0.45; }
+        h1 { font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin-bottom: 0.75rem; }
+        .lead { color: var(--dim); font-size: 0.92rem; margin-bottom: 2rem; }
+        h2 { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--amber); margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.35rem; }
+        .chal { border: 1px solid var(--rule); padding: 1rem 1.1rem; margin-bottom: 1rem; background: rgba(17,20,27,0.6); }
+        .chal h3 { font-size: 0.88rem; margin-bottom: 0.5rem; color: var(--cyan); }
+        .chal p { font-size: 0.84rem; color: #b8c0cc; margin-bottom: 0.45rem; }
+        code { font-family: var(--mono); font-size: 0.82em; background: #11141b; padding: 0.1em 0.35em; border: 1px solid var(--rule); color: var(--cyan); }
+        .flag { font-family: var(--mono); color: var(--ok); font-size: 0.78rem; margin-top: 0.5rem; }
+        footer { margin-top: 2.5rem; font-family: var(--mono); font-size: 0.68rem; color: #6b7280; }
+        footer a { color: var(--cyan); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+    </style>
+    <script src="nf-lang.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <p class="langtog"><button type="button" id="ctf-en">EN</button><span class="sep">|</span><button type="button" id="ctf-ru">RU</button></p>
+        <h1 data-i18n="h1">NF-NODE · capture-the-flag</h1>
+        <p class="lead" data-i18n="lead">Static ARG flags — no server scoring. Collect fragments across intercept, shell, and console.</p>
+
+        <h2 data-i18n="sec1">Challenges</h2>
+        <div class="chal">
+            <h3 data-i18n="c1t">Tension lane</h3>
+            <p data-i18n="c1p">On signal-test, balance the PMC ↔ NET needle inside the deadband while drift fights you. Hold steady for a few seconds until the lane accepts the sync.</p>
+            <p class="flag" data-i18n="c1f">Flag (shown on success): NF{tension_lane_balanced_v2}</p>
+        </div>
+        <div class="chal">
+            <h3 data-i18n="c2t">Morse spill</h3>
+            <p data-i18n="c2p">The memo RF line uses idle ∘ symbols as fences — strip them before ITU Morse decode. Cross-check with nf.access("leak") after L0.</p>
+        </div>
+        <div class="chal">
+            <h3 data-i18n="c3t">Shell proofs</h3>
+            <p data-i18n="c3p">Hard-track ciphertexts and vfs proofs are in nf-shell — pass DEC checkpoints on signal-test to unlock AUDIT.blackline.txt.</p>
+        </div>
+
+        <footer id="ctf-foot">
+            <a class="ctf-nav" data-base="signal-test.html" href="signal-test.html" data-i18n="lk_sig">intercept</a>
+            · <a class="ctf-nav" data-base="nf-shell.html" href="nf-shell.html" data-i18n="lk_shell">shell</a>
+            · <a class="ctf-nav" data-base="arg-play.html" href="arg-play.html" data-i18n="lk_arg">arg-play</a>
+            · <a class="ctf-nav" data-base="index.html" href="index.html" data-i18n="lk_home">pitch</a>
+        </footer>
+    </div>
+    <script>
+(function () {
+    var CTF_MAP = {
+        en: {
+            page_title: 'NF-NODE · CTF',
+            h1: 'NF-NODE · capture-the-flag',
+            lead: 'Static ARG flags — no server scoring. Collect fragments across intercept, shell, and console.',
+            sec1: 'Challenges',
+            c1t: 'Tension lane',
+            c1p: 'On signal-test, balance the PMC ↔ NET needle inside the deadband while drift fights you. Hold steady for a few seconds until the lane accepts the sync.',
+            c1f: 'Flag (shown on success): NF{tension_lane_balanced_v2}',
+            c2t: 'Morse spill',
+            c2p: 'The memo RF line uses idle ∘ symbols as fences — strip them before ITU Morse decode. Cross-check with nf.access("leak") after L0.',
+            c3t: 'Shell proofs',
+            c3p: 'Hard-track ciphertexts and vfs proofs are in nf-shell — pass DEC checkpoints on signal-test to unlock AUDIT.blackline.txt.',
+            lk_sig: 'intercept',
+            lk_shell: 'shell',
+            lk_arg: 'arg-play',
+            lk_home: 'pitch'
+        },
+        ru: {
+            page_title: 'NF-NODE · CTF',
+            h1: 'NF-NODE · CTF / захват флага',
+            lead: 'Статические флаги ARG — без сервера и таблицы лидеров. Фрагменты на перехвате, в shell и в консоли.',
+            sec1: 'Задания',
+            c1t: 'Дорожка напряжения',
+            c1p: 'На signal-test удерживайте метку PMC ↔ NET в мёртвой зоне, пока дрейф смещает баланс. Держите стабильно несколько секунд, пока полоса не примет синхронизацию.',
+            c1f: 'Флаг (после успеха): NF{tension_lane_balanced_v2}',
+            c2t: 'Морзе-разлив',
+            c2p: 'В RF-строке служебки символы ∘ — ограждения; уберите их перед декодом Морзе ITU. Сверка с nf.access("leak") после L0.',
+            c3t: 'Доказательства в shell',
+            c3p: 'Шифртексты сложной ветки и vfs — в nf-shell; контрольные точки DEC на signal-test открывают AUDIT.blackline.txt.',
+            lk_sig: 'перехват',
+            lk_shell: 'shell',
+            lk_arg: 'ARG',
+            lk_home: 'питч'
+        }
+    };
+    function syncCtfNav() {
+        var L = NFLang.get();
+        var q = '?lang=' + L;
+        document.querySelectorAll('.ctf-nav').forEach(function (a) {
+            var base = a.getAttribute('data-base') || '';
+            if (base) a.setAttribute('href', base.split('?')[0] + q);
+        });
+    }
+    function go() {
+        var L = NFLang.get();
+        document.getElementById('ctf-en').classList.toggle('active', L === 'en');
+        document.getElementById('ctf-ru').classList.toggle('active', L === 'ru');
+        syncCtfNav();
+    }
+    document.getElementById('ctf-en').addEventListener('click', function () {
+        NFLang.set('en', { map: CTF_MAP });
+        go();
+        try { history.replaceState({}, '', '?lang=en'); } catch (e) {}
+    });
+    document.getElementById('ctf-ru').addEventListener('click', function () {
+        NFLang.set('ru', { map: CTF_MAP });
+        go();
+        try { history.replaceState({}, '', '?lang=ru'); } catch (e) {}
+    });
+    NFLang.apply(CTF_MAP);
+    go();
+})();
+    </script>
+</body>
+</html>

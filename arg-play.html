@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="page_title">NF-NODE · alternate signal</title>
+    <meta name="description" content="Entry point for the static NF-NODE intercept puzzle — no spoilers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #06070a;
+            --ink: #e6ebf2;
+            --dim: #6b7280;
+            --cyan: #4de2ff;
+            --rule: #1f242d;
+            --mono: 'JetBrains Mono', ui-monospace, monospace;
+            --sans: 'Inter', system-ui, sans-serif;
+        }
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--ink);
+            min-height: 100vh;
+            line-height: 1.6;
+            padding: 2rem 1.25rem 3rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .wrap { max-width: 520px; margin: 0 auto; }
+        h1 {
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 1.25rem;
+        }
+        p { font-size: 0.95rem; color: #9ca3af; margin-bottom: 1rem; }
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            margin-top: 1.5rem;
+        }
+        .actions a {
+            font-family: var(--mono);
+            font-size: 0.82rem;
+            text-align: center;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--rule);
+            color: var(--cyan);
+            text-decoration: none;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .actions a:hover {
+            border-color: rgba(77, 226, 255, 0.45);
+            background: rgba(77, 226, 255, 0.06);
+        }
+        .foot {
+            margin-top: 2.5rem;
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: #4b5563;
+        }
+        .foot a { color: #6b7280; }
+        .lang {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+        .lang button {
+            background: none;
+            border: none;
+            font: inherit;
+            color: #6b7280;
+            cursor: pointer;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(107,114,128,0.35);
+            padding: 0;
+        }
+        .lang button:hover { color: var(--cyan); border-bottom-color: rgba(77,226,255,0.45); }
+        .lang button.active { color: var(--cyan); border-bottom-color: rgba(77,226,255,0.45); pointer-events: none; }
+        .lang span.sep { margin: 0 0.35rem; opacity: 0.45; }
+    </style>
+    <script src="nf-lang.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <p class="lang">
+            <button type="button" data-lang-btn="en" id="btn-lang-en">EN</button><span class="sep">|</span><button type="button" data-lang-btn="ru" id="btn-lang-ru">RU</button>
+        </p>
+        <h1 data-i18n="h1">NF-NODE · alternate signal</h1>
+        <p data-i18n="intro">Static browser puzzle: use the intercept page and the sandbox shell. Developer tools are part of the fiction — open the console on the intercept page when you are ready.</p>
+        <div class="actions">
+            <a href="signal-test.html" data-i18n="link_signal">Open intercept · signal-test</a>
+            <a href="nf-shell.html" data-i18n="link_shell">Open shell · nf-shell</a>
+            <a href="ctf.html" data-i18n="link_ctf">CTF challenges · flags</a>
+        </div>
+        <p class="foot"><a href="index.html" data-i18n="link_pitch">← pitch site</a></p>
+    </div>
+    <audio id="site-audio" src="website_not_found.mp3" loop preload="auto"></audio>
+    <script>
+(function () {
+    'use strict';
+    var ARG_PLAY_MAP = {
+        en: {
+            page_title: 'NF-NODE · alternate signal',
+            h1: 'NF-NODE · alternate signal',
+            intro: 'Static browser puzzle: use the intercept page and the sandbox shell. Developer tools are part of the fiction — open the console on the intercept page when you are ready.',
+            link_signal: 'Open intercept · signal-test',
+            link_shell: 'Open shell · nf-shell',
+            link_ctf: 'CTF challenges · flags',
+            link_pitch: '← pitch site'
+        },
+        ru: {
+            page_title: 'NF-NODE · альтернативный сигнал',
+            h1: 'NF-NODE · альтернативный сигнал',
+            intro: 'Головоломка в браузере: перехват (signal-test) и песочница shell. DevTools — часть вымысла; консоль на перехвате открывайте, когда будете готовы.',
+            link_signal: 'Перехват · signal-test',
+            link_shell: 'Shell · nf-shell',
+            link_ctf: 'CTF · задания и флаги',
+            link_pitch: '← питч-сайт'
+        }
+    };
+
+    function syncArgNav() {
+        var L = NFLang.get();
+        var q = '?lang=' + L;
+        document.querySelectorAll('.actions a[href], .foot a[href]').forEach(function (a) {
+            var h = a.getAttribute('href');
+            if (!h || h.indexOf(':') >= 0) return;
+            var base = h.split('?')[0];
+            a.setAttribute('href', base + q);
+        });
+    }
+
+    function syncLangButtons() {
+        var l = NFLang.get();
+        document.getElementById('btn-lang-en').classList.toggle('active', l === 'en');
+        document.getElementById('btn-lang-ru').classList.toggle('active', l === 'ru');
+    }
+
+    document.getElementById('btn-lang-en').addEventListener('click', function () {
+        NFLang.set('en', { map: ARG_PLAY_MAP });
+        try { history.replaceState({}, '', '?lang=en'); } catch (e) {}
+        syncLangButtons();
+        syncArgNav();
+    });
+    document.getElementById('btn-lang-ru').addEventListener('click', function () {
+        NFLang.set('ru', { map: ARG_PLAY_MAP });
+        try { history.replaceState({}, '', '?lang=ru'); } catch (e) {}
+        syncLangButtons();
+        syncArgNav();
+    });
+
+    NFLang.apply(ARG_PLAY_MAP);
+    syncLangButtons();
+    syncArgNav();
+})();
+(function () {
+    'use strict';
+    var K_TIME = 'nf_audio_t';
+    var K_PLAYING = 'nf_audio_playing';
+    var K_ARMED = 'nf_audio_armed';
+    function fromDocsReferrer() {
+        try { return (document.referrer || '').indexOf('docs.html') !== -1; } catch (e) { return false; }
+    }
+    function persist(audio) {
+        try {
+            var t = audio.currentTime;
+            if (!isFinite(t) || t < 0) t = 0;
+            sessionStorage.setItem(K_TIME, String(Math.round(t * 20) / 20));
+            sessionStorage.setItem(K_PLAYING, audio.paused ? '0' : '1');
+        } catch (e) { /* ignore */ }
+    }
+    function init() {
+        var audio = document.getElementById('site-audio');
+        if (!audio) return;
+        var shouldPlay = false;
+        try {
+            if (fromDocsReferrer()) {
+                audio.currentTime = 0;
+                sessionStorage.setItem(K_TIME, '0');
+                shouldPlay = sessionStorage.getItem(K_PLAYING) === '1';
+            } else {
+                var savedT = parseFloat(sessionStorage.getItem(K_TIME) || '0', 10);
+                shouldPlay = sessionStorage.getItem(K_PLAYING) === '1';
+                if (savedT > 0.15) {
+                    var applySeek = function () {
+                        try { audio.currentTime = savedT; } catch (e) { /* ignore */ }
+                    };
+                    if (audio.readyState >= 1) applySeek();
+                    else audio.addEventListener('loadedmetadata', applySeek, { once: true });
+                }
+            }
+        } catch (e) { /* ignore */ }
+        var tick = 0;
+        audio.addEventListener('timeupdate', function () {
+            var n = Date.now();
+            if (n - tick < 450) return;
+            tick = n;
+            persist(audio);
+        });
+        audio.addEventListener('play', function () { persist(audio); });
+        audio.addEventListener('pause', function () { persist(audio); });
+        window.addEventListener('pagehide', function () { persist(audio); });
+        var bar = document.createElement('div');
+        bar.id = 'nf-audio-ui';
+        bar.style.cssText = 'position:fixed;bottom:0.75rem;right:0.75rem;z-index:99999;font-family:JetBrains Mono,ui-monospace,monospace;font-size:0.68rem;display:flex;align-items:center;gap:0.35rem;pointer-events:auto;';
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.style.cssText = 'background:#11141b;border:1px solid #1f242d;color:#4de2ff;cursor:pointer;padding:0.35rem 0.55rem;border-radius:2px;line-height:1;';
+        function updateBtn() {
+            btn.textContent = audio.paused ? '♪' : '♫';
+            btn.setAttribute('aria-label', audio.paused ? 'Music: play' : 'Music: pause');
+        }
+        updateBtn();
+        bar.appendChild(btn);
+        document.body.appendChild(bar);
+        function armSession() {
+            try { sessionStorage.setItem(K_ARMED, '1'); } catch (e) { /* ignore */ }
+        }
+        function tryResumePlayback() {
+            if (!shouldPlay) return;
+            if (sessionStorage.getItem(K_ARMED) !== '1') return;
+            var p = audio.play();
+            if (p && typeof p.catch === 'function') p.catch(function () {});
+        }
+        btn.addEventListener('click', function () {
+            armSession();
+            if (audio.paused) {
+                var p = audio.play();
+                if (p && typeof p.catch === 'function') p.catch(function () {});
+            } else {
+                audio.pause();
+            }
+            updateBtn();
+        });
+        function armOnce() {
+            armSession();
+            document.removeEventListener('click', armOnce, true);
+            document.removeEventListener('keydown', armOnce, true);
+            tryResumePlayback();
+        }
+        document.addEventListener('click', armOnce, true);
+        document.addEventListener('keydown', armOnce, true);
+        audio.addEventListener('play', updateBtn);
+        audio.addEventListener('pause', updateBtn);
+        function onReady() { tryResumePlayback(); }
+        if (audio.readyState >= 2) setTimeout(onReady, 0);
+        else audio.addEventListener('canplay', onReady, { once: true });
+        setTimeout(tryResumePlayback, 50);
+    }
+    init();
+})();
+    </script>
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<!-- NF-SHELL // read-only staging shell — credentials not provisioned -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="page_title">NF-NODE // remote shell [SANDBOX]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            background: #06070a;
+            color: #c8ced8;
+            font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            padding: 0.75rem 1rem 2rem;
+        }
+        .bar {
+            color: #4de2ff;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid #1f242d;
+            padding-bottom: 0.5rem;
+        }
+        #out {
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin-bottom: 0.5rem;
+            min-height: 40vh;
+        }
+        .line { color: #6fe39c; }
+        .err { color: #ff3ea5; }
+        .dim { color: #6b7280; }
+        .row-in { display: flex; align-items: center; gap: 0.5rem; }
+        .prompt { color: #ffb24a; flex-shrink: 0; }
+        #cmd {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #e6ebf2;
+            font: inherit;
+            outline: none;
+            caret-color: #4de2ff;
+        }
+        footer { margin-top: 1.5rem; font-size: 11px; color: #6b7280; }
+        footer a { color: #4de2ff; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        footer .langb {
+            display: inline;
+            margin-left: 0.35rem;
+        }
+        footer .langb button {
+            background: none;
+            border: none;
+            color: #6b7280;
+            font: inherit;
+            cursor: pointer;
+            padding: 0;
+        }
+        footer .langb button.active { color: #4de2ff; pointer-events: none; }
+    </style>
+    <script src="nf-lang.js"></script>
+</head>
+<body>
+    <div class="bar"><span data-i18n="bar_label">nf-node · shell v0 · sandbox · session </span><span id="ss"></span></div>
+    <div id="out" aria-live="polite"></div>
+    <div class="row-in">
+        <span class="prompt">guest@nf-node:~$</span>
+        <input id="cmd" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" autofocus>
+    </div>
+    <footer>
+        <a href="index.html" data-i18n="foot_exit">exit → site</a>
+        · <a href="docs.html" data-i18n="foot_docs">docs</a>
+        · <a href="signal-test.html" data-i18n="foot_signal">signal-test</a>
+        · <a href="arg-play.html" data-i18n="foot_arg">arg-play</a>
+        · <a href="ctf.html" data-i18n="foot_ctf">ctf</a>
+        <span class="langb"><button type="button" data-lang-btn="en" id="sl-en">EN</button>/<button type="button" data-lang-btn="ru" id="sl-ru">RU</button></span>
+    </footer>
+
+    <script>
+        (function () {
+            document.getElementById('ss').textContent = '0x' + Math.random().toString(16).slice(2, 10);
+
+            var SHELL_MAP = {
+                en: {
+                    page_title: 'NF-NODE // remote shell [SANDBOX]',
+                    bar_label: 'nf-node · shell v0 · sandbox · session ',
+                    foot_exit: 'exit → site',
+                    foot_docs: 'docs',
+                    foot_signal: 'signal-test',
+                    foot_arg: 'arg-play',
+                    foot_ctf: 'ctf',
+                    welcome: 'NF-NODE limited shell. Type \'help\' for commands.',
+                    help: [
+                        '  help              — this message',
+                        '  clear             — clear buffer',
+                        '  ls                — sandbox files',
+                        '  cat <file>        — print file',
+                        '  strings / hexdump — cat aliases (flavor)',
+                        '  whoami            — access context',
+                        '  open <file.html>  — navigate (local .html only)',
+                        ''
+                    ].join('\n'),
+                    cat_need: 'cat: filename required',
+                    cat_no: 'cat: ',
+                    cat_none: ': No such file',
+                    audit_lock: 'AUDIT.blackline.txt: CLASSIFIED // complete DEC checkpoint B on signal-test (hard track), then re-cat.',
+                    audit_stor: 'AUDIT.blackline.txt: storage unavailable.',
+                    open_bad: 'open: local *.html only (e.g. signal-test.html)',
+                    nf: 'command not found: ',
+                    whoami: 'guest (unprivileged) · channel=sandbox · attestation=NONE'
+                },
+                ru: {
+                    page_title: 'NF-NODE // удалённый shell [ПЕСОЧНИЦА]',
+                    bar_label: 'nf-node · shell v0 · песочница · сессия ',
+                    foot_exit: 'выход → сайт',
+                    foot_docs: 'документация',
+                    foot_signal: 'signal-test',
+                    foot_arg: 'arg-play',
+                    foot_ctf: 'CTF',
+                    welcome: 'NF-NODE: ограниченный shell. Команда help — справка.',
+                    help: [
+                        '  help              — это сообщение',
+                        '  clear             — очистить буфер',
+                        '  ls                — файлы песочницы',
+                        '  cat <файл>        — вывести файл',
+                        '  strings / hexdump — псевдонимы cat',
+                        '  whoami            — контекст доступа',
+                        '  open <файл.html>  — открыть страницу (локально)',
+                        ''
+                    ].join('\n'),
+                    cat_need: 'cat: нужно имя файла',
+                    cat_no: 'cat: ',
+                    cat_none: ': нет такого файла',
+                    audit_lock: 'AUDIT.blackline.txt: СЕКРЕТНО // выполните пункт B DEC на signal-test (сложная ветка), затем снова cat.',
+                    audit_stor: 'AUDIT.blackline.txt: хранилище недоступно.',
+                    open_bad: 'open: только локальные *.html (напр. signal-test.html)',
+                    nf: 'команда не найдена: ',
+                    whoami: 'guest (без привилегий) · channel=sandbox · attestation=NONE'
+                }
+            };
+
+            function t(key) {
+                var lang = (typeof NFLang !== 'undefined' && NFLang.get() === 'ru') ? 'ru' : 'en';
+                var v = SHELL_MAP[lang][key];
+                if (v != null) return v;
+                return SHELL_MAP.en[key] || '';
+            }
+
+            function syncBarSession() {
+                /* bar_label applied via NFLang.apply */
+            }
+
+            function syncShellFoot() {
+                var L = NFLang.get();
+                var q = '?lang=' + L;
+                document.querySelectorAll('footer a[href]').forEach(function (a) {
+                    var h = a.getAttribute('href');
+                    if (!h || h.indexOf(':') >= 0) return;
+                    var base = h.split('?')[0];
+                    a.setAttribute('href', base + q);
+                });
+            }
+
+            function applyShellChrome() {
+                if (typeof NFLang === 'undefined') return;
+                NFLang.apply(SHELL_MAP);
+                syncBarSession();
+                syncShellFoot();
+                document.getElementById('sl-en').classList.toggle('active', NFLang.get() === 'en');
+                document.getElementById('sl-ru').classList.toggle('active', NFLang.get() === 'ru');
+            }
+
+            document.getElementById('sl-en').addEventListener('click', function () {
+                NFLang.set('en', { map: SHELL_MAP });
+                applyShellChrome();
+                try { history.replaceState({}, '', '?lang=en'); } catch (e) {}
+                out.innerHTML = '';
+                welcome();
+            });
+            document.getElementById('sl-ru').addEventListener('click', function () {
+                NFLang.set('ru', { map: SHELL_MAP });
+                applyShellChrome();
+                try { history.replaceState({}, '', '?lang=ru'); } catch (e) {}
+                out.innerHTML = '';
+                welcome();
+            });
+
+            var vfsEn = {
+                'README.signal': [
+                    'NF-NODE // cross-reference · v0.3',
+                    '',
+                    'Order (no full L3 spoiler):',
+                    '  1) signal-test.html — L0 grid gate, sync phases A/B',
+                    '  2) console on page: nf.access("leak"|"witness"|...)',
+                    '  3) here: cat INCIDENT_0314.txt, WITNESS.stub, ROUTES.sleeping_stub, CRYPTO.hint',
+                    '',
+                    'Optional hard track: checkbox or #hard on signal-test — DEC checkpoints; unlocks CRYPTO.challenge / AUDIT.blackline.txt bonus.',
+                    '',
+                    'L3 final token is not assembled from README — only after Witness order on signal-test.',
+                    ''
+                ].join('\n'),
+                'INCIDENT_0314.txt': [
+                    '// INCIDENT RUBEZH // batch 7 // UNCLASSIFIED TEST',
+                    '',
+                    'Field unit logged dispatch answer BEFORE request send (NTP drift ruled out at perimeter).',
+                    'Material batch tagged RUBEZH-7.',
+                    '',
+                    'L1 fragment — token suffix (after phase A prefix on signal-test): H7',
+                    'Build: phase A report prefix + this suffix → string for L1 clearance field.',
+                    ''
+                ].join('\n'),
+                'TRANSMISSION_LOG.fragment': [
+                    '// NULL HANDSHAKE // subchannel 7',
+                    '',
+                    '0000: 6e 66 2d 6e 6f 64 65 7c  ...',
+                    'FLAG: intentional bad signature -> tripwire for passive tap',
+                    '',
+                    'L2 code on page: HANDSHAKE7 (requires phase B + cat WITNESS.stub).',
+                    ''
+                ].join('\n'),
+                'WITNESS.stub': [
+                    '// WITNESS · dual archive · TEST',
+                    '',
+                    'Double responder: both answers marked legitimate until L2 sync.',
+                    'Reading this file flags acceptance for L2 on signal-test.',
+                    '',
+                    'See ROUTES.sleeping_stub · final PM7NULL tag only after L3 log order.',
+                    ''
+                ].join('\n'),
+                'ROUTES.sleeping_stub': [
+                    '// ROUTES · sleeping bridge · excerpt',
+                    '',
+                    'Sleeping Bridge node: deferred packets bypass the public resolver on fictitious TTL;',
+                    'in-fiction only — terms like BGP hijacking appear as vocabulary, not instructions.',
+                    '',
+                    'L3 hint: reconcile PM7NULL with witness console and PMC/NET columns in Appendix G.',
+                    ''
+                ].join('\n'),
+                'CRYPTO.hint': [
+                    '// CRYPTO · sandbox hint',
+                    '',
+                    'Example: Ebgngr Z = Rotate N (ROT13). DEC-tool unlocks on signal-test after L0.',
+                    'Vigenère key from lore: RUBEZH (see also Appendix G columns).',
+                    ''
+                ].join('\n'),
+                'CRYPTO.challenge': [
+                    '// CRYPTO · hard-track challenge',
+                    '',
+                    'Ciphertext (letters only): ROEMSVGYO',
+                    'Method: Vigenère decode. Key: incident batch codename RUBEZH (ledger / INCIDENT header).',
+                    'Paste into DEC on signal-test; verify checkpoint B unlocks AUDIT.blackline.txt here.',
+                    ''
+                ].join('\n'),
+                'AUDIT.blackline.txt': [
+                    '// AUDIT · black-line memorandum · TEST STUB',
+                    '',
+                    'Subject: parallel logging lane for Frontier-class duplicates.',
+                    'Status: sealed until witness archive reconciliation (PM7NULL).',
+                    'Cross-reference Appendix G PMC vs NET columns — NF-NODE keeps both incident graphs intentionally.',
+                    ''
+                ].join('\n'),
+                'notice.txt': [
+                    'This shell is a client-side simulation.',
+                    'No outbound connections. No credentials stored.',
+                    ''
+                ].join('\n')
+            };
+
+            var vfsRu = {
+                'README.signal': [
+                    'NF-NODE // перекрёстные ссылки · v0.3',
+                    '',
+                    'Порядок (без полного спойлера L3):',
+                    '  1) signal-test.html — решётка L0, фазы A/B',
+                    '  2) консоль на странице: nf.access("leak"|"witness"|...)',
+                    '  3) здесь: cat INCIDENT_0314.txt, WITNESS.stub, ROUTES.sleeping_stub, CRYPTO.hint',
+                    '',
+                    'Опционально сложная ветка: checkbox или #hard на signal-test — контрольные DEC; CRYPTO.challenge / AUDIT.blackline.txt.',
+                    '',
+                    'Финальный токен L3 не из README — только после порядка Witness на signal-test.',
+                    ''
+                ].join('\n'),
+                'INCIDENT_0314.txt': vfsEn['INCIDENT_0314.txt'],
+                'TRANSMISSION_LOG.fragment': [
+                    '// NULL HANDSHAKE // подканал 7',
+                    '',
+                    '0000: 6e 66 2d 6e 6f 64 65 7c  ...',
+                    'ФЛАГ: намеренно неверная подпись -> растяжка для пассивного тапа',
+                    '',
+                    'Код L2 на странице: HANDSHAKE7 (нужны фаза B + cat WITNESS.stub).',
+                    ''
+                ].join('\n'),
+                'WITNESS.stub': [
+                    '// WITNESS · двойной архив · ТЕСТ',
+                    '',
+                    'Двойной ответчик: оба ответа легитимны до синхра L2.',
+                    'Чтение этого файла фиксирует условие для L2 на signal-test.',
+                    '',
+                    'См. ROUTES.sleeping_stub · финальный тег PM7NULL только после порядка лога L3.',
+                    ''
+                ].join('\n'),
+                'ROUTES.sleeping_stub': [
+                    '// ROUTES · sleeping bridge · выдержка',
+                    '',
+                    'Узел Sleeping Bridge: отложенные пакеты обходят публичный резолвер на вымышленном TTL;',
+                    'только вымысел — термины вроде BGP hijacking как словарь, не инструкции.',
+                    '',
+                    'Подсказка L3: сверите PM7NULL с консолью witness и колонками PMC/NET в Приложении G.',
+                    ''
+                ].join('\n'),
+                'CRYPTO.hint': [
+                    '// CRYPTO · подсказка песочницы',
+                    '',
+                    'Пример: Ebgngr Z = Rotate N (ROT13). DEC на signal-test после L0.',
+                    'Ключ Виженера из лора: RUBEZH (см. колонки Приложения G).',
+                    ''
+                ].join('\n'),
+                'CRYPTO.challenge': [
+                    '// CRYPTO · сложная ветка',
+                    '',
+                    'Шифртекст (только буквы): ROEMSVGYO',
+                    'Метод: дешифр Виженера. Ключ: код партии RUBEZH (ledger / заголовок INCIDENT).',
+                    'Вставить в DEC на signal-test; пункт B открывает AUDIT.blackline.txt здесь.',
+                    ''
+                ].join('\n'),
+                'AUDIT.blackline.txt': [
+                    '// AUDIT · меморандум «чёрная линия» · ЗАГЛУШКА ТЕСТА',
+                    '',
+                    'Тема: параллельная дорожка логов для дубликатов класса Frontier.',
+                    'Статус: запечатано до сверки архива witness (PM7NULL).',
+                    'Сверка с колонками PMC vs NET в Приложении G — NF-NODE хранит оба графа.',
+                    ''
+                ].join('\n'),
+                'notice.txt': [
+                    'Этот shell — клиентская симуляция.',
+                    'Исходящих соединений нет. Учётные данные не хранятся.',
+                    ''
+                ].join('\n')
+            };
+
+            function curVfs() {
+                return (typeof NFLang !== 'undefined' && NFLang.get() === 'ru') ? vfsRu : vfsEn;
+            }
+
+            function markLocal(key) {
+                try {
+                    localStorage.setItem(key, '1');
+                } catch (e) { /* ignore */ }
+            }
+
+            var out = document.getElementById('out');
+            var input = document.getElementById('cmd');
+
+            function println(text, cls) {
+                var d = document.createElement('div');
+                if (cls) d.className = cls;
+                d.textContent = text;
+                out.appendChild(d);
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+
+            function welcome() {
+                println(t('welcome'), 'dim');
+            }
+
+            function run(line) {
+                var raw = line.trim();
+                if (!raw) return;
+                println('guest@nf-node:~$ ' + raw, 'line');
+
+                var vfs = curVfs();
+                var parts = raw.split(/\s+/);
+                var cmd = parts[0].toLowerCase();
+                var arg = parts.slice(1).join(' ');
+
+                if (cmd === 'help') {
+                    println(t('help'));
+                    return;
+                }
+                if (cmd === 'clear') {
+                    out.innerHTML = '';
+                    welcome();
+                    return;
+                }
+                if (cmd === 'ls') {
+                    println(Object.keys(vfs).join('  '));
+                    return;
+                }
+                if (cmd === 'whoami') {
+                    println(t('whoami'));
+                    return;
+                }
+                if (cmd === 'cat' || cmd === 'strings' || cmd === 'hexdump') {
+                    var f = arg;
+                    if (!f) { println(t('cat_need'), 'err'); return; }
+                    if (!vfs[f]) { println(t('cat_no') + f + t('cat_none'), 'err'); return; }
+                    if (f === 'INCIDENT_0314.txt') markLocal('nf_shell_fragment_L1');
+                    if (f === 'WITNESS.stub') markLocal('nf_shell_witness_read');
+                    if (f === 'AUDIT.blackline.txt') {
+                        try {
+                            if (localStorage.getItem('nf_hard_checkpoint_b') !== '1') {
+                                println(t('audit_lock'), 'err');
+                                return;
+                            }
+                        } catch (e) {
+                            println(t('audit_stor'), 'err');
+                            return;
+                        }
+                    }
+                    println(vfs[f]);
+                    return;
+                }
+                if (cmd === 'open') {
+                    var p = arg.replace(/^\.\//, '');
+                    if (!p || !/^[a-zA-Z0-9._-]+\.html$/.test(p)) {
+                        println(t('open_bad'), 'err');
+                        return;
+                    }
+                    window.location.href = p;
+                    return;
+                }
+                println(t('nf') + cmd + ' (help)', 'err');
+            }
+
+            applyShellChrome();
+            welcome();
+
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    run(input.value);
+                    input.value = '';
+                }
+            });
+        })();
+    </script>
+    <audio id="site-audio" src="website_not_found.mp3" loop preload="auto"></audio>
+    <script>
+(function () {
+    'use strict';
+    var K_TIME = 'nf_audio_t';
+    var K_PLAYING = 'nf_audio_playing';
+    var K_ARMED = 'nf_audio_armed';
+    function fromDocsReferrer() {
+        try { return (document.referrer || '').indexOf('docs.html') !== -1; } catch (e) { return false; }
+    }
+    function persist(audio) {
+        try {
+            var t = audio.currentTime;
+            if (!isFinite(t) || t < 0) t = 0;
+            sessionStorage.setItem(K_TIME, String(Math.round(t * 20) / 20));
+            sessionStorage.setItem(K_PLAYING, audio.paused ? '0' : '1');
+        } catch (e) { /* ignore */ }
+    }
+    function init() {
+        var audio = document.getElementById('site-audio');
+        if (!audio) return;
+        var shouldPlay = false;
+        try {
+            if (fromDocsReferrer()) {
+                audio.currentTime = 0;
+                sessionStorage.setItem(K_TIME, '0');
+                shouldPlay = sessionStorage.getItem(K_PLAYING) === '1';
+            } else {
+                var savedT = parseFloat(sessionStorage.getItem(K_TIME) || '0', 10);
+                shouldPlay = sessionStorage.getItem(K_PLAYING) === '1';
+                if (savedT > 0.15) {
+                    var applySeek = function () {
+                        try { audio.currentTime = savedT; } catch (e) { /* ignore */ }
+                    };
+                    if (audio.readyState >= 1) applySeek();
+                    else audio.addEventListener('loadedmetadata', applySeek, { once: true });
+                }
+            }
+        } catch (e) { /* ignore */ }
+        var tick = 0;
+        audio.addEventListener('timeupdate', function () {
+            var n = Date.now();
+            if (n - tick < 450) return;
+            tick = n;
+            persist(audio);
+        });
+        audio.addEventListener('play', function () { persist(audio); });
+        audio.addEventListener('pause', function () { persist(audio); });
+        window.addEventListener('pagehide', function () { persist(audio); });
+        var bar = document.createElement('div');
+        bar.id = 'nf-audio-ui';
+        bar.style.cssText = 'position:fixed;bottom:0.75rem;right:0.75rem;z-index:99999;font-family:JetBrains Mono,ui-monospace,monospace;font-size:0.68rem;display:flex;align-items:center;gap:0.35rem;pointer-events:auto;';
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.style.cssText = 'background:#11141b;border:1px solid #1f242d;color:#4de2ff;cursor:pointer;padding:0.35rem 0.55rem;border-radius:2px;line-height:1;';
+        function updateBtn() {
+            btn.textContent = audio.paused ? '♪' : '♫';
+            btn.setAttribute('aria-label', audio.paused ? 'Music: play' : 'Music: pause');
+        }
+        updateBtn();
+        bar.appendChild(btn);
+        document.body.appendChild(bar);
+        function armSession() {
+            try { sessionStorage.setItem(K_ARMED, '1'); } catch (e) { /* ignore */ }
+        }
+        function tryResumePlayback() {
+            if (!shouldPlay) return;
+            if (sessionStorage.getItem(K_ARMED) !== '1') return;
+            var p = audio.play();
+            if (p && typeof p.catch === 'function') p.catch(function () {});
+        }
+        btn.addEventListener('click', function () {
+            armSession();
+            if (audio.paused) {
+                var p = audio.play();
+                if (p && typeof p.catch === 'function') p.catch(function () {});
+            } else {
+                audio.pause();
+            }
+            updateBtn();
+        });
+        function armOnce() {
+            armSession();
+            document.removeEventListener('click', armOnce, true);
+            document.removeEventListener('keydown', armOnce, true);
+            tryResumePlayback();
+        }
+        document.addEventListener('click', armOnce, true);
+        document.addEventListener('keydown', armOnce, true);
+        audio.addEventListener('play', updateBtn);
+        audio.addEventListener('pause', updateBtn);
+        function onReady() { tryResumePlayback(); }
+        if (audio.readyState >= 2) setTimeout(onReady, 0);
+        else audio.addEventListener('canplay', onReady, { once: true });
+        setTimeout(tryResumePlayback, 50);
+    }
+    init();
+})();
+    </script>
+</body>
+</html>

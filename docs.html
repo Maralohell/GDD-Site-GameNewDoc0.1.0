@@ -1234,24 +1234,34 @@
                 <div class="sidebar-title">Часть 01 // GDD</div>
                 <a href="#overview" class="sidebar-link active">Обзор проекта</a>
                 <a href="#pillars" class="sidebar-link sub">Столпы дизайна</a>
+                <a href="#design-philosophy" class="sidebar-link sub">Философия дизайна</a>
+                <a href="#balance-framework" class="sidebar-link sub">Фреймворк баланса</a>
                 <a href="#core-mechanics" class="sidebar-link">Основные механики</a>
                 <a href="#movement" class="sidebar-link sub">Передвижение</a>
                 <a href="#shooting" class="sidebar-link sub">Стрельба</a>
                 <a href="#health" class="sidebar-link sub">Здоровье и урон</a>
+                <a href="#game-feel" class="sidebar-link sub">Game Feel / Juice</a>
+                <a href="#player-feel" class="sidebar-link sub">Психология игрока</a>
                 <a href="#weapons" class="sidebar-link">Система оружия</a>
                 <a href="#weapon-categories" class="sidebar-link sub">Категории</a>
                 <a href="#gunsmith" class="sidebar-link sub">Модификации</a>
                 <a href="#perks" class="sidebar-link">Перки</a>
                 <a href="#killstreaks" class="sidebar-link">Killstreaks</a>
+                <a href="#killstreak-design" class="sidebar-link sub">Философия Killstreak</a>
                 <a href="#multiplayer" class="sidebar-link">Мультиплеер</a>
+                <a href="#mode-design" class="sidebar-link sub">Теория режимов</a>
                 <a href="#mp-modes" class="sidebar-link sub">Режимы</a>
                 <a href="#mp-maps" class="sidebar-link sub">Карты</a>
+                <a href="#map-flow-deep" class="sidebar-link sub">Теория потоков карт</a>
                 <a href="#mp-progression" class="sidebar-link sub">Прогрессия</a>
+                <a href="#retention" class="sidebar-link sub">Удержание игроков</a>
                 <a href="#campaign" class="sidebar-link">Кампания</a>
                 <a href="#ai-systems" class="sidebar-link sub">ИИ врагов</a>
                 <a href="#ui-ux" class="sidebar-link">Интерфейс</a>
                 <a href="#audio" class="sidebar-link">Звук</a>
+                <a href="#metasounds" class="sidebar-link sub">MetaSounds</a>
                 <a href="#visual" class="sidebar-link">Визуальный стиль</a>
+                <a href="#ue5-rendering" class="sidebar-link sub">UE5 Рендеринг</a>
                 <a href="#monetization" class="sidebar-link">Монетизация</a>
             </div>
 
@@ -1265,9 +1275,14 @@
                 <a href="#module-structure" class="sidebar-link sub">Модульная структура</a>
                 <a href="#weapon-system-code" class="sidebar-link sub">Система оружия (код)</a>
                 <a href="#damage-system" class="sidebar-link sub">Система урона</a>
+                <a href="#gas-arch" class="sidebar-link sub">GAS — Gameplay Abilities</a>
+                <a href="#anim-arch" class="sidebar-link sub">Animation Blueprint</a>
+                <a href="#input-system" class="sidebar-link sub">Enhanced Input System</a>
                 <a href="#networking" class="sidebar-link">Сетевая архитектура</a>
                 <a href="#replication" class="sidebar-link sub">Репликация</a>
-                <a href="#lag-comp" class="sidebar-link sub">Lag Compensation</a>
+                <a href="#lag-comp" class="sidebar-link sub">Предсказание и Lag Comp</a>
+                <a href="#sbmm" class="sidebar-link sub">SBMM</a>
+                <a href="#tick-rate" class="sidebar-link sub">Тик-рейт</a>
                 <a href="#spawn-system" class="sidebar-link sub">Система респауна</a>
                 <a href="#server-infra" class="sidebar-link">Серверная инфраструктура</a>
                 <a href="#backend" class="sidebar-link sub">Бэкенд</a>
@@ -1275,8 +1290,10 @@
                 <a href="#dedicated" class="sidebar-link sub">Dedicated Servers</a>
                 <a href="#pipeline" class="sidebar-link">Пайплайн ассетов</a>
                 <a href="#optimization" class="sidebar-link">Оптимизация</a>
+                <a href="#streaming" class="sidebar-link sub">World Partition</a>
                 <a href="#anticheat" class="sidebar-link">Античит</a>
                 <a href="#cicd" class="sidebar-link">CI/CD</a>
+                <a href="#ranked" class="sidebar-link">Ранговый режим</a>
             </div>
         </aside>
 
@@ -1388,9 +1405,138 @@
                 </div>
             </div>
 
+            <!-- DESIGN PHILOSOPHY -->
+            <div class="doc-section" id="design-philosophy">
+                <h2><span class="section-icon"></span> 2. Философия дизайна и навыковое выражение</h2>
+
+                <h3>TTK философия</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">TTK Philosophy</span></div>
+                    <div class="code-body"><span class="accent">ЦЕЛЕВОЙ ДИАПАЗОН: 200–400ms</span>
+
+<span class="warn">&lt; 150ms:</span> «Реакция невозможна» — игрок не успевает среагировать.
+          Ощущение: «меня убивают из ниоткуда». Неудовлетворительно.
+          Пример: некоторые конфигурации в MW2019 на релизе.
+
+<span class="success">200–400ms:</span> «Золотая зона» — реакция возможна, но требует мастерства.
+              Прицел важен, но позиционирование тоже решает.
+              Пример: CoD4, MW2 (2009), Valorant.
+
+<span class="warn">&gt; 500ms:</span> «Позиция важнее прицела» — бьют долго, можно убежать.
+          Снижает навыковое выражение стрельбы.
+          Пример: Battlefield (намеренно), PUBG.
+
+<span class="info">Наш выбор: 250–350ms для AR (4–5 пуль при 800 RPM)</span></div>
+                </div>
+
+                <h3>Модель навыкового потолка</h3>
+                <div class="spec-grid">
+                    <div class="spec-card">
+                        <div class="spec-card-label">Низкий порог (Floor)</div>
+                        <div class="spec-card-value">Доступно новичкам</div>
+                        <div class="spec-card-desc">Мягкий hip-fire spread · Прощающий ADS · Авто-манипуляции через манёвры · Понятный HUD</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Средний уровень</div>
+                        <div class="spec-card-value">Позиционирование</div>
+                        <div class="spec-card-desc">Чтение карты · Тайминги ротаций · Правильное снаряжение · Работа с командой</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Высокий потолок (Ceiling)</div>
+                        <div class="spec-card-value">Мастерство</div>
+                        <div class="spec-card-desc">Контроль отдачи · Lean-микрокоррекции · Pre-aim углов · Чтение звука · Jiggle peeking</div>
+                    </div>
+                </div>
+
+                <h3>Теория карт</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Map Design Theory</span></div>
+                    <div class="code-body"><span class="accent">СТРУКТУРА «3 ЛИНИИ + ЦЕНТРАЛЬНЫЙ КОНТЕСТ»:</span>
+
+    [SPAWN A]                         [SPAWN B]
+        │                                 │
+    ────┼─── Линия 1 (верх) ─────────────┼────
+        │                                 │
+    ────┼─── Центр (контест) ─────────────┼────
+        │                                 │
+    ────┼─── Линия 3 (низ) ──────────────┼────
+        │                                 │
+
+<span class="accent">ПРАВИЛА СИЛОВЫХ ПОЗИЦИЙ:</span>
+├── Каждая сильная позиция имеет минимум 2 контр-угла
+├── Нет «богочеловеческого» угла с видом на всю карту
+├── Движение через центр: всегда риск, всегда выгода
+└── Каждый угол читается через звук ДО визуального контакта
+
+<span class="accent">ДИСТАНЦИИ ВОВЛЕЧЕНИЯ:</span>
+├── SMG: оптимально 0–20m, критично 25m+
+├── AR:  оптимально 15–45m
+├── SR:  оптимально 40m+, слабость &lt;15m
+└── Модификации сдвигают диапазоны на ±5–10m</div>
+                </div>
+
+                <h3>Диапазоны вовлечения по классам оружия</h3>
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Класс</th><th>Оптимальная дистанция</th><th>Урон в оптимуме</th><th>Урон вне оптимума</th><th>Сдвиг через модификации</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>SMG</td><td>0–20m</td><td>100%</td><td>55–70%</td><td>+5–8m (ствол)</td></tr>
+                            <tr><td>AR</td><td>15–45m</td><td>100%</td><td>70–85%</td><td>±5–10m (ствол / магазин)</td></tr>
+                            <tr><td>LMG</td><td>20–60m</td><td>100%</td><td>75–90%</td><td>+10m (ствол)</td></tr>
+                            <tr><td>Снайперка</td><td>40m+</td><td>100%</td><td>65–80% (&lt;40m)</td><td>–10m (короткий ствол)</td></tr>
+                            <tr><td>Дробовик</td><td>0–8m</td><td>100%</td><td>20–40%</td><td>+3m (чок)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- BALANCE FRAMEWORK -->
+            <div class="doc-section" id="balance-framework">
+                <h2><span class="section-icon"></span> 3. Фреймворк баланса</h2>
+
+                <h3>Тировая модель оружия</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Weapon Tier Model</span></div>
+                    <div class="code-body"><span class="accent">ТИР S:</span> доминирует во всех метриках → немедленный нёрф
+<span class="accent">ТИР A:</span> сильное, но контрится другими оружиями → мониторинг
+<span class="accent">ТИР B:</span> BASELINE — стартовая точка для всего нового оружия
+<span class="accent">ТИР C:</span> слабее, но с нишевыми преимуществами → мягкий бафф
+<span class="accent">ТИР D:</span> не используется в матчах → бафф или ревью удаления
+
+<span class="accent">Целевое распределение пик-рейта:</span>
+├── Разброс между самым/наименее используемым: &lt;3×
+├── Пример: топ 30% пикрейт, дно 10% → OK
+│   Топ 50% / дно 5% → проблема, требует балансировки
+└── Данные: 2 недели сбора после патча перед следующими изменениями</div>
+                </div>
+
+                <h3>Приоритет настроечных рычагов</h3>
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Рычаг</th><th>Радиус влияния</th><th>Риск</th><th>Пример изменения</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Профиль урона / damage falloff</td><td>Широкий (дистанция + TTK)</td><td>Высокий</td><td>Урон на 50m: 28→24 (–14%)</td></tr>
+                            <tr><td>RPM (скорость стрельбы)</td><td>Широкий (TTK, feel)</td><td>Высокий</td><td>800→750 RPM (–6%)</td></tr>
+                            <tr><td>ADS время</td><td>Средний (реакция)</td><td>Средний</td><td>210ms→230ms (+9%)</td></tr>
+                            <tr><td>Паттерн отдачи</td><td>Средний (точность)</td><td>Средний</td><td>Увеличить горизонтальный drift</td></tr>
+                            <tr><td>Размер магазина</td><td>Узкий (экономика огня)</td><td>Низкий</td><td>30→25 патронов</td></tr>
+                            <tr><td>Время перезарядки</td><td>Узкий (ритм)</td><td>Низкий</td><td>2.4s→2.6s (+8%)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box note">
+                    <strong>Принцип перка:</strong> ни один перк не должен быть строгим апгрейдом другого — каждый перк торгует одним преимуществом на другое. Пример: «Ниндзя» (тише шаги) vs «Отслеживание» (видно следы врагов) — оба полезны, но в разных ситуациях.
+                </div>
+            </div>
+
             <!-- CORE MECHANICS -->
             <div class="doc-section" id="core-mechanics">
-                <h2><span class="section-icon"></span> 2. Основные механики</h2>
+                <h2><span class="section-icon"></span> 4. Основные механики</h2>
 
                 <h3 id="movement"> Передвижение</h3>
 
@@ -1517,9 +1663,262 @@ Hitzone множители:
                 </div>
             </div>
 
+            <!-- GAME FEEL -->
+            <div class="doc-section" id="game-feel">
+                <h2><span class="section-icon"></span> 5. Игровой отклик (Game Feel / Juice)</h2>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.5rem;line-height:1.6;">Философия CoD-школы: каждое действие должно иметь <strong>аудиальный, визуальный И тактильный отклик</strong>. Отсутствие любого из трёх слоёв разрушает ощущение от игры, даже если механика технически работает правильно.</p>
+
+                <h3>Hitstop — стоп-кадр на попадании</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Hitstop Implementation</span></div>
+                    <div class="code-body"><span class="comment">// Дилатация времени при подтверждённом попадании</span>
+<span class="keyword">void</span> <span class="function">ApplyHitstop</span>(<span class="type">EHitType</span> HitType)
+{
+    <span class="type">float</span> Duration = 0.0f;
+    <span class="keyword">switch</span> (HitType)
+    {
+        <span class="keyword">case</span> EHitType::BodyShot:    Duration = 2.0f / 60.0f; <span class="keyword">break</span>; <span class="comment">// 2 кадра</span>
+        <span class="keyword">case</span> EHitType::Headshot:    Duration = 3.0f / 60.0f; <span class="keyword">break</span>; <span class="comment">// 3 кадра</span>
+        <span class="keyword">case</span> EHitType::KillShot:    Duration = 4.0f / 60.0f; <span class="keyword">break</span>; <span class="comment">// 4 кадра</span>
+    }
+    <span class="comment">// Замедляем только жертву и её эффекты</span>
+    <span class="type">UGameplayStatics</span>::<span class="function">SetGlobalTimeDilation</span>(World, 0.05f);
+    <span class="function">GetWorld</span>()-><span class="function">GetTimerManager</span>().<span class="function">SetTimer</span>(
+        HitstopTimer, [<span class="keyword">this</span>]() {
+            <span class="type">UGameplayStatics</span>::<span class="function">SetGlobalTimeDilation</span>(World, 1.0f);
+        }, Duration, <span class="keyword">false</span>);
+}</div>
+                </div>
+
+                <h3>Screenshake — тряска камеры</h3>
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Событие</th><th>Тип шейка</th><th>Длительность</th><th>Интенсивность</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Выстрел (свой)</td><td>PerlinNoise (непрерывный при удержании)</td><td>Per-shot, 0.05s</td><td>Low (recoil pattern)</td></tr>
+                            <tr><td>Взрыв рядом</td><td>WaveOscillator</td><td>0.4s затухание</td><td>High (дистанция-зависимая)</td></tr>
+                            <tr><td>Смерть игрока</td><td>WaveOscillator</td><td>0.2s</td><td>Medium</td></tr>
+                            <tr><td>Приземление с высоты</td><td>Impulse (разовый)</td><td>0.1s</td><td>Low–Medium</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Полная цепочка обратной связи на попадание</h3>
+                <div class="diagram">ВЫСТРЕЛ ПОДТВЕРЖДЁН СЕРВЕРОМ
+         │
+         ▼
+┌────────────────────────────────────────────────────┐
+│                FEEDBACK LOOP                       │
+├────────────────────────────────────────────────────┤
+│ 🎯 ХИТМАРКЕР        — красный крест (headshot: ☠️) │
+│ 🔊 ЗВУКОВОЙ CUE     — мясной «thud» + ding-звук    │
+│ 💥 ЭКРАННАЯ ВСПЫШКА — аддитивный материал, 1 кадр  │
+│ 🎮 ВИБРАЦИЯ ГЕЙМПАДА — левый мотор (сила = урон)   │
+└────────────────────────────────────────────────────┘
+         │
+         ▼ (если kill)
+┌────────────────────────────────────────────────────┐
+│              KILL CONFIRMATION                     │
+├────────────────────────────────────────────────────┤
+│ ⏸  Freeze-frame 250ms (TimeDilation 0.1 → 1.0)    │
+│ 📋 Killfeed push — имя жертвы + оружие             │
+│ 🎵 Audio sting — уникальный kill-подтверждающий    │
+│ +💥 Hitstop 4 кадра                                │
+└────────────────────────────────────────────────────┘</div>
+
+                <div class="info-box note">
+                    <strong>Правило трёх слоёв:</strong> если убираешь любой из трёх (звук, визуал, тактиль) — игроки жалуются что «оружие не ощущается». Это доказано плейтестами CoD4, MW2. В нашем проекте тактильный слой (вибрация) обязателен даже на KB&M через слабую тряску камеры — «tactile proxy».
+                </div>
+            </div>
+
+            <!-- PLAYER PSYCHOLOGY -->
+            <div class="doc-section" id="player-feel">
+                <h2><span class="section-icon"></span> 6. Ощущение игрока — Психология и эмоциональный дизайн</h2>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.5rem;line-height:1.6;">Игровой отклик (Section 5) — это <em>тактильный</em> слой. Ощущение игрока — это <em>психологический</em> слой. Один отвечает за то, как чувствуется выстрел. Другой — за то, как чувствуется <strong>вся сессия</strong>. Это разные уровни проектирования, и игнорировать второй — значит строить дом без фундамента.</p>
+
+                <h3>Типы игроков — адаптированная таксономия Бартла для FPS</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Player Archetype Model</span></div>
+                    <div class="code-body"><span class="accent">УБИЙЦА (Killer) ~30%</span>
+├── Мотивация: доминировать над другими людьми
+├── Что ценит: высокий K/D, killstreaks, нагибать в клиппы
+├── Боится: проигрывать публично, выглядеть слабо
+├── Дизайн-решение: killfeed, MVP-экран, Prestige значки
+└── Ошибка: если он доминирует без счётчика → остальные уходят
+
+<span class="accent">ДОСТИГАТЕЛЬ (Achiever) ~35%</span>
+├── Мотивация: выполнять задания, собирать прогресс
+├── Что ценит: разблокировки, камуфляжи, уровни оружия
+├── Боится: потерять прогресс, невидимого прогресса
+├── Дизайн-решение: видимые XP-бары, ачивменты, счётчики
+└── Ошибка: скрытый прогресс — Achiever теряет мотивацию
+
+<span class="accent">СОЦИАЛИСТ (Socializer) ~25%</span>
+├── Мотивация: общаться с людьми, играть с друзьями
+├── Что ценит: голосовой чат, группы, история отряда
+├── Боится: играть одному, молчаливого лобби
+├── Дизайн-решение: пинг-система, pre-game лобби чат
+└── Ошибка: нет причин играть с одними и теми же людьми
+
+<span class="accent">ИССЛЕДОВАТЕЛЬ (Explorer) ~10%</span>
+├── Мотивация: понять систему, найти оптимальное
+├── Что ценит: deep stats, meta-анализ, скрытые механики
+├── Боится: непрозрачных систем, случайности без объяснения
+├── Дизайн-решение: подробная статистика, VOD-replay
+└── Ошибка: прозрачная игра vs. экономика тайны</div>
+                </div>
+
+                <h3>Эмоциональная дуга матча</h3>
+                <div class="diagram">ЭМОЦИОНАЛЬНАЯ КРИВАЯ МАТЧА (TDM, 10 минут)
+
+Интенсивность
+    ^
+100%│                              ╭──╮ ПИКОВЫЙ МОМЕНТ
+    │              ╭──╮           ╭╯  ╰╮ (killstreak / clutch)
+ 75%│         ╭───╯  ╰──╮     ╭──╯    ╰──╮
+    │    ╭────╯          ╰────╯           ╰──╮
+ 50%│───╯ ВХОЖДЕНИЕ      СЕРЕДИНА           ╰── ФИНАЛ
+    │    (разведка,       (ритм + небольшие  (напряжение,
+    │     первые          пики смертей/      счёт близко)
+    │     столкновения)   убийств)
+ 25%│
+  0%└──────────────────────────────────────────────────► Время
+     0        2мин      4мин      6мин      8мин    10мин
+
+ЗАДАЧА ДИЗАЙНА: минимум 2-3 «пиковых момента» в матче
+                иначе матч воспринимается как «скучный»</div>
+
+                <h3>Состояние потока (Flow State — Чиксентмихайи)</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Flow State Theory applied to FPS</span></div>
+                    <div class="code-body"><span class="accent">КАНАЛ ПОТОКА:</span>
+
+  Сложность
+  задачи
+    ^
+    │         ╱ ТРЕВОГА
+    │        ╱  (слишком сложно)
+    │       ╱
+    │   ╔══╪══════╗
+    │   ║  ╱      ║  ← ПОТОК (Flow Zone)
+    │   ║ ╱       ║     игрок «в зоне»
+    │   ╚╪════════╝
+    │    ╱  СКУКА
+    │   ╱   (слишком легко)
+    └──────────────► Навык игрока
+
+<span class="accent">КАК УДЕРЖИВАТЬ ИГРОКА В ПОТОКЕ:</span>
+├── SBMM: сложность ≈ навыку → нет ни скуки, ни тревоги
+├── TTK 200–400ms: не слишком прощающий, не смертельно быстрый
+├── Постепенное раскрытие механик: сначала простое оружие,
+│   потом снайперки, перки, killstreak комбо
+├── Ментальные паузы: момент после смерти (killcam) =
+│   точка переосмысления, не наказание
+└── Форс-маппинг: карты фанелируют к контакту, нет «пустых» зон
+
+<span class="accent">НАРУШИТЕЛИ ПОТОКА (избегать!):</span>
+├── Спаун-трап: игрок не может «войти» → тревога без пути выхода
+├── Undetectable death: «откуда меня убили?» → нет обучения
+├── RNG-смерть (случайная граната через стену) → нет справедливости
+└── Wait-time killer: больше 60 сек в очереди → выход из состояния</div>
+                </div>
+
+                <h3>Тилт и антифрустрационный дизайн</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Tilt Theory &amp; Frustration Prevention</span></div>
+                    <div class="code-body"><span class="accent">ТИЛТ = кумулятивная фрустрация → иррациональные решения</span>
+
+Механизм тилта:
+  Смерть₁ (нормально) → Смерть₂ (неприятно) → Смерть₃ (злость)
+  → Смерть₄ (бег в лоб) → Смерть₅ (rage quit)
+
+<span class="accent">ТРИГГЕРЫ ТИЛТА:</span>
+├── «Несправедливая» смерть (lag, читер, спаун-трап)
+├── Невозможность отыграться (команда не слушает)
+├── Невидимый прогресс (умираю, но не учусь)
+└── Публичный провал (внизу таблицы, все видят)
+
+<span class="accent">АНТИФРУСТРАЦИОННЫЕ СИСТЕМЫ:</span>
+├── Killcam / смерть-повтор: ВСЕГДА показывает угол врага
+│   → «Ах, он был ТАМ» → обучение, не слепая злость
+├── Mercy timer: 5+ смертей подряд → безопасный спаун
+├── XP при смерти: ассист, «смерть с уроном» дают XP
+│   → нет «бесполезной» смерти, всегда есть прогресс
+├── «Смягчённый ранговый дроп»: серия поражений → меньший
+│   штраф после 3-й потери подряд (RP decay smearing)
+└── Скрытая статистика поражений: показываем достижения,
+    не «ты проиграл 12 раз за вечер»</div>
+                </div>
+
+                <h3>Пиковые моменты — архитектура «историй внутри матча»</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Peak Moment Design</span></div>
+                    <div class="code-body"><span class="accent">ПРИНЦИП ПИКОВОГО ОПЫТА (Peak-End Rule):</span>
+Игроки запоминают матч не в среднем — они запоминают
+ПИКОВЫЙ МОМЕНТ + КАК МАТЧ ЗАКОНЧИЛСЯ.
+
+Хороший матч с плохим финалом → «плохой матч» в памяти.
+Средний матч с одним epic-моментом → «крутой матч».
+
+<span class="accent">ТИПЫ ПИКОВЫХ МОМЕНТОВ (все должны встречаться часто):</span>
+
+🎯 «КЛАТЧ» — 1 против N в напряжённой ситуации
+   Дизайн: S&D без респауна → каждый раунд может дать клатч
+
+🔥 «KILLSTREAK» — серия убийств без смерти
+   Дизайн: звук нарастает с каждым убийством, "Double Kill!",
+            "Triple Kill!" голосовой announcer → вербальное
+            подтверждение достижения
+
+🔄 «КАМБЭК» — команда проигрывает, но побеждает
+   Дизайн: режим без очков Domination при 0:2 — сохраняет
+            математическую возможность всегда
+
+💀 «EPIC DEATH» — красивая смерть, которую хочется смотреть
+   Дизайн: killcam всегда доступен, sharing кнопка в killcam
+
+<span class="accent">«ИСТОРИЯ МАТЧА» = набор таких моментов:</span>
+└── Цель: минимум 1 пиковый момент за 10 мин для 80%+ игроков
+    Метрика: session replay survey — «был ли момент, который
+              ты хочешь рассказать другу?» → да &gt; 70%</div>
+                </div>
+
+                <h3>Социальное подтверждение и идентичность</h3>
+                <div class="spec-grid">
+                    <div class="spec-card">
+                        <div class="spec-card-label">Публичные сигналы</div>
+                        <div class="spec-card-value">Видимость успеха</div>
+                        <div class="spec-card-desc">Killfeed · Prestige значок · Цвет ника · Calling Card · Animated emblem</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Личные триггеры</div>
+                        <div class="spec-card-value">Самовыражение</div>
+                        <div class="spec-card-desc">Камуфляж оружия · Скин оператора · Визитная карточка · «not found» Prestige финал</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Командные сигналы</div>
+                        <div class="spec-card-value">Принадлежность</div>
+                        <div class="spec-card-desc">MVP-экран конца матча · «Лучший игрок отряда» · Party статус в лобби</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Нарратив</div>
+                        <div class="spec-card-value">Личная история</div>
+                        <div class="spec-card-desc">Статистика сессии · Highlight рилл · «Твой рекорд побит» уведомления</div>
+                    </div>
+                </div>
+
+                <div class="info-box note">
+                    <strong>Почему это важнее механик:</strong> игрок может простить плохой TTK если матч дал ему «историю». Но идеальный TTK не спасёт игру, в которой нет эмоциональных пиков, нет ощущения роста и нет социального зеркала — «меня видят, меня признают». Это не мягкое UX — это архитектурное решение на уровне всего дизайна игры.
+                </div>
+            </div>
+
             <!-- WEAPONS -->
             <div class="doc-section" id="weapons">
-                <h2><span class="section-icon"></span> 3. Система оружия</h2>
+                <h2><span class="section-icon"></span> 7. Система оружия</h2>
 
                 <h3 id="weapon-categories">Категории оружия (16 единиц на релизе)</h3>
 
@@ -1696,7 +2095,7 @@ Hitzone множители:
 
             <!-- PERKS -->
             <div class="doc-section" id="perks">
-                <h2><span class="section-icon"></span> 4. Система перков</h2>
+                <h2><span class="section-icon"></span> 8. Система перков</h2>
 
                 <p>3 слота перков, как в классических CoD. Каждый слот — своя категория. Игрок выбирает по одному перку из каждого слота.</p>
 
@@ -1765,7 +2164,7 @@ Hitzone множители:
 
             <!-- KILLSTREAKS -->
             <div class="doc-section" id="killstreaks">
-                <h2><span class="section-icon"></span> 5. Killstreaks</h2>
+                <h2><span class="section-icon"></span> 9. Killstreaks</h2>
 
                 <div class="info-box note">
                     <div class="info-box-title"> Система</div>
@@ -1834,11 +2233,56 @@ Hitzone множители:
                         </div>
                     </div>
                 </div>
+
+                <h3 id="killstreak-design">Философия дизайна Killstreak'ов</h3>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.2rem;line-height:1.6;">Killstreak — это не просто награда. Это <strong>архитектурный инструмент</strong>: управляет темпом матча, создаёт переломные моменты, и формирует «истории» внутри раунда. Без грамотного дизайна превращается в систему «богатый богатеет».</p>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Killstreak Design Principles</span></div>
+                    <div class="code-body"><span class="accent">ПРИНЦИП 1: КАЖДЫЙ KILLSTREAK ИМЕЕТ КОНТРИГРУ</span>
+├── 3K БПЛА          → сбивается 1 выстрелом из РПГ / Stinger
+├── 5K Артиллерия    → нет прямой контригры, но: задержка 2сек = время уйти
+├── 7K Вертолёт      → сбивается 2 ракетами, выходит из строя на 30 сек
+└── ПРАВИЛО: если killstreak нельзя игнорировать И нельзя уничтожить →
+             он сломан. Хотя бы одна дверь должна быть открыта.
+
+<span class="accent">ПРИНЦИП 2: БЮДЖЕТ СИЛЫ (Power Budget)</span>
+├── Kill-стоимость = мера «силы»
+├── 3K = информация (мягкая сила)
+├── 5K = зональный урон (средняя сила)
+├── 7K = активное преследование (высокая сила)
+└── Нелинейность намеренна: 9K НЕ = 3× мощи 3K. Скачок.
+
+<span class="accent">ПРИНЦИП 3: KILLSTREAK ДОЛЖЕН СОЗДАВАТЬ «МОМЕНТ»</span>
+├── Игрок ЧУВСТВУЕТ разницу до и после вызова
+├── Команда противника РЕАГИРУЕТ (не игнорирует)
+└── Зрители (killcam, spectate) понимают что произошло
+
+<span class="accent">ПРИНЦИП 4: НЕТ «АВТОМАТИЧЕСКОГО SNOWBALL»</span>
+└── Нет killstreak который нельзя остановить и который даёт следующий</div>
+                </div>
+
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Killstreak</th><th>Тип силы</th><th>Контригра</th><th>Темп матча</th><th>Риск использования</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>БПЛА (3K)</td><td>Информация</td><td>Контр-БПЛА, постройки</td><td>Замедляет — враги прячутся</td><td>Нет (пассивный)</td></tr>
+                            <tr><td>Контр-БПЛА (4K)</td><td>Отрицание</td><td>Нет (информационный)</td><td>Нейтральный</td><td>Нет</td></tr>
+                            <tr><td>Арт. удар (5K)</td><td>Зональный</td><td>Уход из зоны (2 сек)</td><td>Сжимает карту локально</td><td>Низкий</td></tr>
+                            <tr><td>Авиаудар (6K)</td><td>Линейный</td><td>Крыши, помещения</td><td>Перекрывает линию</td><td>Средний (направление)</td></tr>
+                            <tr><td>Вертолёт (7K)</td><td>Активное преследование</td><td>РПГ (2 ракеты)</td><td>Давит, выгоняет из укрытий</td><td>Нет (AI)</td></tr>
+                            <tr><td>Дрон (9K)</td><td>Контролируемый</td><td>Стрелковое оружие</td><td>Игрок вне боя 30 сек</td><td>Высокий (уязвимость)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- MULTIPLAYER -->
             <div class="doc-section" id="multiplayer">
-                <h2><span class="section-icon"></span> 6. Мультиплеер</h2>
+                <h2><span class="section-icon"></span> 10. Мультиплеер</h2>
 
                 <h3 id="mp-modes">Режимы</h3>
 
@@ -1852,6 +2296,54 @@ Hitzone множители:
                             <tr><td>Domination</td><td>6v6</td><td>200 очков / 10 мин</td><td>Мгновенный</td><td>3 точки захвата (A, B, C)</td></tr>
                             <tr><td>Search & Destroy</td><td>6v6</td><td>До 6 побед</td><td>Нет</td><td>Бомба, 2 мин на раунд</td></tr>
                             <tr><td>Free-for-All</td><td>8</td><td>30 убийств / 10 мин</td><td>Мгновенный</td><td>Каждый сам за себя</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="mode-design">Теория дизайна режимов</h3>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.2rem;line-height:1.6;">Каждый режим — это уникальный <strong>контракт с игроком</strong>: обещание определённого ритма, напряжения и истории раунда. Смешивать эти ритмы нельзя — карта для S&D работает иначе, чем карта для TDM.</p>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Mode Psychology</span></div>
+                    <div class="code-body"><span class="accent">TEAM DEATHMATCH — «Свободный джаз»</span>
+├── Нет объектива → всё действие везде одновременно
+├── Психология: личная статистика важна (K/D виден всем)
+├── Ритм: высокий, постоянный, без пиков и пауз
+├── Опасность: «фермерство» (grind) убийств без напряжения
+└── Дизайн-решение: таймер 10 мин, не счёт — создаёт давление финала
+
+<span class="accent">DOMINATION — «Перетягивание каната»</span>
+├── 3 точки создают «3 истории» внутри раунда
+├── Психология: позиция важнее убийств; можно выиграть не выходя в топ K/D
+├── Ритм: пульсирующий (атака/удержание/контратака)
+├── Опасность: «черепаха» — команда сидит на своих 2 точках
+└── Дизайн-решение: очки только при КОНТЕСТЕ (не 3:0)
+
+<span class="accent">SEARCH & DESTROY — «Шахматы»</span>
+├── 1 жизнь = максимальное давление каждого решения
+├── Психология: смерть имеет цену → тактика, не агрессия
+├── Ритм: медленный, нарастающий, с катарсисом в финале раунда
+├── Опасность: «кемперство» — пассивная игра выгодна технически
+└── Дизайн-решение: таймер 2 мин + звуковой сигнал каждые 30 сек
+
+<span class="accent">FREE-FOR-ALL — «Хаос»</span>
+├── 8 игроков, нет команд → постоянная угроза со всех сторон
+├── Психология: параноидная осведомлённость, ни одному союзнику нет
+├── Ритм: хаотичный, высокий адреналин
+└── Дизайн-решение: карты всегда меньше — плотность контакта выше</div>
+                </div>
+
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Режим</th><th>Пик напряжения</th><th>Роль позиционирования</th><th>Роль K/D</th><th>Оптимальная длительность</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>TDM</td><td>Последние 2 минуты</td><td>Средняя</td><td>Высокая</td><td>8–10 мин</td></tr>
+                            <tr><td>Domination</td><td>Постоянный (пульс)</td><td>Высокая</td><td>Низкая–Средняя</td><td>10–12 мин</td></tr>
+                            <tr><td>S&D</td><td>Финал каждого раунда</td><td>Критическая</td><td>Очень низкая</td><td>~3 мин/раунд × 12</td></tr>
+                            <tr><td>FFA</td><td>Постоянный</td><td>Низкая</td><td>Критическая</td><td>7–8 мин</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1891,6 +2383,62 @@ Hitzone множители:
 └── Референс: Shipment (CoD4, но больше) + Terminal (MW2)</div>
                 </div>
 
+                <h3 id="map-flow-deep">Теория потоков карты и бюджет линий обзора</h3>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.2rem;line-height:1.6;">Карта — это система управления движением и информацией. Каждый коридор — «обещание контакта». Каждая стена — «разрешение на безопасное движение». Весь дизайн сводится к управлению этими двумя ресурсами.</p>
+
+                <div class="diagram">АНАЛИЗ ПОТОКА «ЗАВОД» (схема):
+
+  [SPAWN A]──────────────────────────────[SPAWN B]
+      │    \                        /    │
+      │  ╔══╧════════════════════╧══╗  │
+      │  ║      ОТКРЫТЫЙ ЦЕНТР     ║  │
+      │  ║  (высокий риск,         ║  │
+      │  ║   высокая награда)      ║  │
+      │  ╚════════════════════════╝  │
+      │       /              \        │
+  [ЛИНИЯ 1]             [ЛИНИЯ 3]
+  Дальние дистанции     CQB коридоры
+  (снайпер-зона)        (SMG-зона)
+      │                      │
+  ────┼──────────[B]──────────┼────
+              СПОРНАЯ ТОЧКА</div>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Sightline Budget Theory</span></div>
+                    <div class="code-body"><span class="accent">БЮДЖЕТ ЛИНИЙ ОБЗОРА (Sightline Budget):</span>
+Каждая позиция имеет «долг» — чем дальше видишь, тем уязвимее ты.
+
+<span class="info">ХАРДКОРНЫЙ УГОЛ:</span> видит 40м+ → уязвим сзади + контр-угол 90°
+<span class="info">ПАУЭР-УГОЛ:</span>      видит 2+ входа в комнату → уязвим от гранат/дыма
+<span class="info">ИНФОРМАЦИОННЫЙ:</span>  видит вход/выход зоны → уязвим тому, кто его читает
+
+<span class="accent">ПРАВИЛО:</span> ни одна сильная позиция не удерживается
+         1 игроком против 2+ — минимум 3 контр-угла обязательны
+
+<span class="accent">МЕТРИКА «Убийства из позиции»:</span>
+Если 1 угол даёт &gt;25% убийств на карте → он сломан.
+Цель плейтеста: равномерное распределение по зонам ±15%</div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Spawn Protection Theory</span></div>
+                    <div class="code-body"><span class="accent">СПАУН-ТРАП — главный враг дизайна карт:</span>
+Спаун-трап = враги контролируют все маршруты выхода из спауна.
+Игрок умирает прежде чем «входит» в карту.
+
+<span class="warn">ИНДИКАТОРЫ СПАУН-ТРАПА:</span>
+├── Среднее время до смерти после спауна &lt; 3 сек
+├── K/D разрыв &gt; 4:1 между командами
+└── Spawn flip не происходит (или непредсказуем)
+
+<span class="accent">ЗАЩИТА:</span>
+├── «Спаун-пузырь»: радиус 20м без позиций врага
+├── Минимум 2 маршрута выхода из зоны спауна
+├── Spawn flip: все 3+ выхода заблокированы → спаун на другом конце
+└── «Mercy timer»: 5+ смертей подряд → приоритет безопасного спауна</div>
+                </div>
+
                 <h3 id="mp-progression">Система прогрессии</h3>
 
                 <div class="code-block">
@@ -1922,9 +2470,88 @@ Hitzone множители:
                 </div>
             </div>
 
+            <!-- RETENTION -->
+            <div class="doc-section" id="retention">
+                <h2><span class="section-icon"></span> 11. Удержание игроков и дизайн прогрессии</h2>
+
+                <h3>Механика переменного вознаграждения</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Variable Reward Schedule</span></div>
+                    <div class="code-body"><span class="accent">ПРЕДСКАЗУЕМЫЕ XP-события</span> (базовый цикл):
+├── Убийство:          +100 XP
+├── Убийство с хедшотом: +150 XP  
+├── Победа в матче:    +500 XP
+├── Выполнение задачи: +200 XP
+└── Ассист:            +50 XP
+
+<span class="accent">НЕПРЕДСКАЗУЕМЫЕ бонусы</span> (поведенческое кондиционирование):
+├── «Горячая серия» — после 3 убийств подряд: ×1.5 XP следующие 2 мин
+├── Случайный Challenge Pop — 1 раз за 5–8 матчей, без анонса
+│   Пример: «Первый хедшот сегодня — ×3 XP за матч»
+├── «Удача новичка» — в первые 20 матчах: скрытый буст +25% XP
+└── Ежедневный «XP-сюрприз» — случайно 2×, 3× или 1.5× за первый матч дня
+
+<span class="info">Основа: оперантное кондиционирование (переменное расписание = сильнейшая привязка)</span></div>
+                </div>
+
+                <h3>Психология Prestige</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Prestige Psychology</span></div>
+                    <div class="code-body"><span class="accent">СБРОС С КОМПЕНСАЦИЕЙ — торговля прогресса на идентичность:</span>
+
+После 55 уровня игрок выбирает:
+  ① Войти в Prestige:
+     ├── Уровни сбрасываются в 1
+     ├── Всё оружие перезапирается
+     ├── Получаю: уникальный Prestige-значок (публичный)
+     ├── Получаю: специальный камуфляж для ВСЕГО оружия
+     ├── Получаю: эксклюзивный Calling Card (визитка)
+     └── Новый цвет ника в лобби/килл-фиде
+  ② Остаться на 55:
+     └── Продолжаю фармить XP для оружейных уровней
+
+<span class="accent">5 уровней Prestige:</span> каждый следующий — более редкий значок и цвет
+<span class="accent">Финальный («not_found» Prestige):</span> особый анимированный значок</div>
+                </div>
+
+                <h3>Ежедневные и еженедельные драйверы</h3>
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Тип</th><th>Количество</th><th>Сброс</th><th>Принцип дизайна</th><th>Пример</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Ежедневный вызов</td><td>3 шт</td><td>00:00 UTC</td><td>Поощрять нестандартный стиль игры</td><td>«Выиграй раунд, используя только пистолет»</td></tr>
+                            <tr><td>Еженедельный контракт</td><td>1 шт</td><td>Понедельник</td><td>Долгосрочная цель с большой наградой</td><td>«Сыграй 15 матчей и получи XP-буст ×2 на 2 часа»</td></tr>
+                            <tr><td>Сезонные испытания</td><td>10–15 шт</td><td>Сезон (90 дней)</td><td>Ачивменты для хардкор-игроков</td><td>«Набери 500 хедшотов за сезон»</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Онбординг-воронка</h3>
+                <div class="diagram">НОВЫЙ ИГРОК
+     │
+     ▼
+[Матчи 1–5]  ─── Мягкий SBMM-пол (±50 MMR, только низкий рейтинг)
+     │            Скрытый буст: первая смерть — не раньше 2 убийств
+     │            (боты заменяют слишком сильных противников)
+     ▼
+[Матчи 6–10] ─── Нормальный пул начинающих
+     │            Принудительные туториал-подсказки (1 раз)
+     ▼
+[Матчи 11+]  ─── Полный SBMM, нет ограничений
+     │            Уже есть прогресс (оружие, класс, привычки)
+     ▼
+[Уровень 10+] ── Разблокируется Ранговый режим</div>
+
+                <div class="info-box note">
+                    <strong>Философия JOMO вместо FOMO:</strong> мы не используем механики страха упустить (time-limited exclusive cosmetics). Вместо этого — JOMO (Joy Of Missing Out): награждаем за время, которое игрок ПРОВЁЛ в игре, а не наказываем за пропуск. Нет счётчиков «осталось 2 часа!», нет эксклюзивов навсегда. Это строит долгосрочное доверие, а не краткосрочные всплески активности.
+                </div>
+            </div>
+
             <!-- CAMPAIGN -->
             <div class="doc-section" id="campaign">
-                <h2><span class="section-icon"></span> 7. WORK IN PROGRESS</h2>
+                <h2><span class="section-icon"></span> 12. WORK IN PROGRESS</h2>
 
 
                 <h3 id="ai-systems">ИИ врагов</h3>
@@ -1957,7 +2584,7 @@ Hitzone множители:
 
             <!-- UI/UX -->
             <div class="doc-section" id="ui-ux">
-                <h2><span class="section-icon"></span> 8. Интерфейс (UI/UX)</h2>
+                <h2><span class="section-icon"></span> 13. Интерфейс (UI/UX)</h2>
 
                 <h3>HUD в бою</h3>
 
@@ -1985,7 +2612,7 @@ Hitzone множители:
 
             <!-- AUDIO -->
             <div class="doc-section" id="audio">
-                <h2><span class="section-icon"></span> 9. Звуковой дизайн</h2>
+                <h2><span class="section-icon"></span> 14. Звуковой дизайн</h2>
 
                 <div class="code-block">
                     <div class="code-header"><span class="code-lang">Audio Priority</span></div>
@@ -2020,9 +2647,69 @@ Hitzone множители:
                 </div>
             </div>
 
+            <!-- METASOUNDS -->
+            <div class="doc-section" id="metasounds">
+                <h2><span class="section-icon"></span> 15. MetaSounds — Аудиоархитектура</h2>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.5rem;line-height:1.6;">Каждое оружие имеет собственный граф <strong>MetaSound Source</strong>. Это процедурная аудиосистема — не статичные файлы, а узловой граф, который генерирует звук в реальном времени с учётом дистанции, окружения и состояния игры.</p>
+
+                <h3>Граф выстрела (MetaSound)</h3>
+                <div class="diagram">┌──────────────────────────────────────────────────────────────┐
+│                  METASOUND SOURCE: Weapon_Fire               │
+└──────────────────────────────────────────────────────────────┘
+
+[Fire Trigger] ──► [Sample Player]  ──► [ADSR Envelope]
+                   (выбор сэмпла:        (A:0ms  D:5ms
+                   indoor/outdoor)        S:0.8   R:120ms)
+                         │
+                         ▼
+                   [Distance Attenuation] ──► [Occlusion Filter]
+                   (0–50m: linear,             (низкочастотный
+                    50m+: exponential)          LPF если сквозь
+                                               стену/дверь)
+                         │
+                         ▼
+                   [Reverb Send] ──► [Spatialization] ──► [Mix Bus]
+                   (Indoor:0.6        (HRTF бинауральный   (Weapons
+                    Outdoor:0.1)       3D sound)            Submix)</div>
+
+                <h3>Категории звуков и лимиты</h3>
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Категория</th><th>Макс. голоса</th><th>Приоритет</th><th>Модель дистанции</th><th>Окклюзия</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Выстрелы (weapons)</td><td>16</td><td>Критический</td><td>Линейная 0–50m, экспонента далее</td><td>LPF через стены</td></tr>
+                            <tr><td>Шаги (footsteps)</td><td>8</td><td>Высокий</td><td>Линейная 0–20m</td><td>Нет</td></tr>
+                            <tr><td>Взрывы</td><td>4</td><td>Высокий</td><td>Экспоненциальная</td><td>LPF + глушение</td></tr>
+                            <tr><td>Голос/команды</td><td>6</td><td>Средний</td><td>Линейная 0–30m</td><td>Лёгкий LPF</td></tr>
+                            <tr><td>Окружение (ambient)</td><td>12</td><td>Низкий</td><td>Сферическая зона</td><td>Нет</td></tr>
+                            <tr><td>Музыка (adaptive)</td><td>4</td><td>Низкий</td><td>Без затухания (2D)</td><td>Нет</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Адаптивная музыка</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Adaptive Music System</span></div>
+                    <div class="code-body"><span class="accent">UAudioBus</span> параметр <span class="type">CombatIntensity</span> (0.0–1.0)
+│
+├── 0.0 – 0.3: Слой «IDLE»   — атмосферная тема без перкуссии
+├── 0.3 – 0.7: Слой «COMBAT» — ритмичная, нарастающее напряжение
+└── 0.7 – 1.0: Слой «STREAK» — экшен-пик, электронные бит + оркестр
+
+<span class="accent">CombatIntensity</span> вычисляется каждые 2 сек:
+  = клипает( (убийства_за_30сек × 0.3) + (получен_урон × 0.2) +
+              (союзники_в_опасности × 0.15) + (цель_близко × 0.35), 0, 1 )
+
+<span class="accent">Blend</span> через UMetaSoundPatch с кроссфейдом 1.5 сек</div>
+                </div>
+            </div>
+
             <!-- VISUAL -->
             <div class="doc-section" id="visual">
-                <h2><span class="section-icon"></span> 10. Визуальный стиль</h2>
+                <h2><span class="section-icon"></span> 16. Визуальный стиль</h2>
 
                 <div class="code-block">
                     <div class="code-header"><span class="code-lang">Visual Direction</span></div>
@@ -2042,9 +2729,84 @@ Hitzone множители:
                 </div>
             </div>
 
+            <!-- UE5 RENDERING SYSTEMS -->
+            <div class="doc-section" id="ue5-rendering">
+                <h2><span class="section-icon"></span> 17. Системы рендеринга UE5</h2>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.5rem;line-height:1.6;">Детальная спецификация рендер-фич движка с разбивкой по пресетам качества. Каждая фича имеет четкие границы применения — что рендерится через Nanite, где работает Lumen и когда включаются Virtual Shadow Maps.</p>
+
+                <h3>Nanite — виртуализированная геометрия</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Nanite — область применения</span></div>
+                    <div class="code-body"><span class="success">✅ ИСПОЛЬЗУЕТСЯ:</span>
+├── Статические меши окружения (здания, обломки, реквизит)
+├── Высокополигональные архитектурные детали
+└── Импортированные скульпты (камни, колонны)
+
+<span class="warn">❌ НЕ ИСПОЛЬЗУЕТСЯ:</span>
+├── Скелетные меши (персонажи, оружие в руках)
+├── Фолиаж (трава, листья) — только Hierarchical Instanced Static Mesh
+├── Полупрозрачные меши (стёкла, частицы)
+└── Меши с vertex animation (вода, ткань)</div>
+                </div>
+
+                <h3>Таблица фич по пресетам качества</h3>
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Фича</th><th>Low</th><th>Mid</th><th>High</th><th>Ultra</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Nanite</td><td>Вкл</td><td>Вкл</td><td>Вкл</td><td>Вкл</td></tr>
+                            <tr><td>Lumen GI</td><td>SSGI fallback</td><td>Software RT (~2ms)</td><td>Software RT</td><td>Hardware RT</td></tr>
+                            <tr><td>Lumen Reflections</td><td>SSR</td><td>Software RT</td><td>Software RT</td><td>Hardware RT</td></tr>
+                            <tr><td>Virtual Shadow Maps</td><td>Выкл</td><td>Выкл</td><td>Вкл</td><td>Вкл (Ultra)</td></tr>
+                            <tr><td>Cascaded Shadow Maps</td><td>3 каскада, 2048px</td><td>3 каскада, 2048px</td><td>Выкл (VSM)</td><td>Выкл (VSM)</td></tr>
+                            <tr><td>TSR (апскейлинг)</td><td>Вкл (50%)</td><td>Вкл (67%)</td><td>Вкл (77%)</td><td>Native/DLSS</td></tr>
+                            <tr><td>Motion Blur</td><td>Выкл</td><td>Low</td><td>High</td><td>High</td></tr>
+                            <tr><td>Ambient Occlusion</td><td>SSAO (low)</td><td>SSAO</td><td>GTAO</td><td>RTAO</td></tr>
+                            <tr><td>Depth of Field</td><td>Выкл</td><td>Gaussian</td><td>Bokeh</td><td>Cinematic</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Ключевые CVar для shipping-конфига</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Scalability.ini — CVars</span>
+                        <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-body"><span class="comment">; Тени</span>
+r.Shadow.MaxResolution=2048          <span class="comment">; Low/Mid: 2048, High: VSM</span>
+r.Shadow.CSM.MaxCascades=3           <span class="comment">; Low/Mid</span>
+
+<span class="comment">; Lumen</span>
+r.Lumen.DiffuseIndirect.Allow=1      <span class="comment">; 0 на Low → SSGI</span>
+r.Lumen.HardwareRayTracing=0         <span class="comment">; 1 только на Ultra</span>
+r.Lumen.Reflections.Allow=1
+
+<span class="comment">; Virtual Shadow Maps</span>
+r.VirtualShadowMap.Enable=1          <span class="comment">; 0 на Low/Mid</span>
+
+<span class="comment">; TSR / апскейлинг</span>
+r.TemporalAA.Upscale=1
+r.ScreenPercentage=77                <span class="comment">; High: 77, Ultra: 100</span>
+
+<span class="comment">; Прочее</span>
+sg.ShadowQuality=3                   <span class="comment">; 0 Low → 3 Ultra</span>
+sg.PostProcessQuality=2
+sg.ReflectionQuality=3
+r.Nanite.MaxPixelsPerEdge=1.0</div>
+                </div>
+
+                <div class="info-box note">
+                    <strong>TSR vs DLSS/FSR:</strong> TSR (Temporal Super Resolution) — встроенный апскейлер UE5, заменяет TAA и работает на любом GPU без vendor lock-in. DLSS 3 (NVIDIA) и FSR 3 (AMD) подключаются через плагины как опциональный override поверх TSR — запланированы на post-launch патч.
+                </div>
+            </div>
+
             <!-- MONETIZATION -->
             <div class="doc-section" id="monetization">
-                <h2><span class="section-icon"></span> 11. Монетизация</h2>
+                <h2><span class="section-icon"></span> 18. Монетизация</h2>
 
                 <div class="code-block">
                     <div class="code-header"><span class="code-lang">Monetization Model</span></div>
@@ -2080,7 +2842,7 @@ Hitzone множители:
 
             <!-- TECH OVERVIEW -->
             <div class="doc-section" id="tech">
-                <h2><span class="section-icon"></span> 12. Технологический стек</h2>
+                <h2><span class="section-icon"></span> 19. Технологический стек</h2>
 
                 <div class="diagram">┌─────────────────────────────────────────────────────────┐
 │                    КЛИЕНТ (ИГРА)                        │
@@ -2148,7 +2910,7 @@ Hitzone множители:
 
             <!-- CODE ARCHITECTURE -->
             <div class="doc-section" id="code-arch">
-                <h2><span class="section-icon"></span> 13. Архитектура кода</h2>
+                <h2><span class="section-icon"></span> 20. Архитектура кода</h2>
 
                 <h3 id="module-structure">Модульная структура проекта</h3>
 
@@ -2285,7 +3047,7 @@ Hitzone множители:
                         <span class="code-lang">C++ — DamageSystem</span>
                         <button class="code-copy" onclick="copyCode(this)">Копировать</button>
                     </div>
-                    <div class="code-body"><span class="comment">// DamageSystem — расчёт урона с учётом всех факторов</span>
+                    <div class="code-body"><span class="comment">// DamageSystem — расчёт урона с учётом всех факторов (смотри GAS секцию ниже)</span>
 
 <span class="type">float</span> <span class="function">CalculateDamage</span>(
     <span class="keyword">const</span> <span class="type">FHitResult</span>& HitResult,
@@ -2314,9 +3076,227 @@ Hitzone множители:
                 </div>
             </div>
 
+            <!-- GAS ARCHITECTURE -->
+            <div class="doc-section" id="gas-arch">
+                <h2><span class="section-icon"></span> 21. Gameplay Ability System (GAS)</h2>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.5rem;line-height:1.6;">Каждое действие персонажа — спринт, ADS, перезарядка, ближний бой, взлом — реализовано как отдельный <code>UGameplayAbility</code>-подкласс. GAS обеспечивает сетевое предсказание, тег-based блокировку несовместимых состояний и легко расширяемую систему эффектов без ручного менеджмента состояний.</p>
+
+                <h3>Ключевые Gameplay Tags</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">GameplayTags — NF_Tags.ini</span>
+                        <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-body"><span class="comment">// Теги состояний (State Tags)</span>
+<span class="type">State.Sprinting</span>        <span class="comment">// персонаж в спринте</span>
+<span class="type">State.ADS</span>              <span class="comment">// прицеливание через прицел</span>
+<span class="type">State.Reloading</span>        <span class="comment">// идёт перезарядка</span>
+<span class="type">State.Vaulting</span>         <span class="comment">// перелезает через препятствие</span>
+<span class="type">State.Dead</span>             <span class="comment">// персонаж мёртв</span>
+
+<span class="comment">// Теги способностей (Ability Tags)</span>
+<span class="type">Ability.Fire.Primary</span>   <span class="comment">// выстрел из основного оружия</span>
+<span class="type">Ability.Fire.Secondary</span> <span class="comment">// прицеливание (ADS-триггер)</span>
+<span class="type">Ability.Reload</span>         <span class="comment">// перезарядка</span>
+<span class="type">Ability.Melee</span>          <span class="comment">// удар прикладом</span>
+<span class="type">Ability.Grenade.Throw</span>  <span class="comment">// бросок гранаты</span>
+
+<span class="comment">// Теги эффектов (Gameplay Effect Tags)</span>
+<span class="type">Effect.Damage.Bullet</span>       <span class="comment">// урон от пули</span>
+<span class="type">Effect.Damage.Explosive</span>    <span class="comment">// урон от взрыва</span>
+<span class="type">Effect.Status.Suppressed</span>   <span class="comment">// подавление (шум, дрожание)</span>
+<span class="type">Effect.Status.Flashbanged</span>  <span class="comment">// ослепление</span></div>
+                </div>
+
+                <h3>Таблица способностей</h3>
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Способность</th><th>Gameplay Tag</th><th>Политика активации</th><th>Блокирующие теги</th><th>Стоимость</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Выстрел</td><td>Ability.Fire.Primary</td><td>По нажатию (hold)</td><td>State.Reloading, State.Dead</td><td>Нет (патроны — отдельно)</td></tr>
+                            <tr><td>ADS</td><td>Ability.Fire.Secondary</td><td>По нажатию (hold)</td><td>State.Sprinting, State.Dead</td><td>Нет</td></tr>
+                            <tr><td>Спринт</td><td>State.Sprinting</td><td>По нажатию (hold)</td><td>State.ADS, State.Reloading</td><td>Нет</td></tr>
+                            <tr><td>Перезарядка</td><td>Ability.Reload</td><td>По нажатию</td><td>State.Reloading, State.Dead</td><td>Нет</td></tr>
+                            <tr><td>Ближний бой</td><td>Ability.Melee</td><td>По нажатию</td><td>State.Dead</td><td>Нет (кулдаун 1.2 с)</td></tr>
+                            <tr><td>Бросок гранаты</td><td>Ability.Grenade.Throw</td><td>По нажатию</td><td>State.Dead, State.Vaulting</td><td>1 граната из инвентаря</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Реализация выстрела — <code>UNF_GA_Fire</code></h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">C++ — UNF_GA_Fire</span>
+                        <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-body"><span class="keyword">void</span> <span class="function">UNF_GA_Fire::ActivateAbility</span>(...)
+{
+    <span class="comment">// 1. Только сервер регистрирует попадание</span>
+    <span class="keyword">if</span> (!<span class="function">CommitAbility</span>(Handle, ActorInfo, ActivationInfo)) <span class="keyword">return</span>;
+
+    <span class="comment">// 2. Клиент и сервер: воспроизводим монтаж и эффекты</span>
+    <span class="function">PlayMontageAndWait</span>(FireMontage);
+    <span class="function">SpawnParticlesAndSound</span>(MuzzleFlash, FireSound);
+
+    <span class="comment">// 3. Только сервер: line trace с lag compensation</span>
+    <span class="keyword">if</span> (<span class="function">HasAuthority</span>(&ActivationInfo))
+    {
+        <span class="type">FHitResult</span> Hit;
+        <span class="function">PerformLagCompensatedTrace</span>(Hit, Timestamp);
+
+        <span class="keyword">if</span> (Hit.<span class="function">IsValidBlockingHit</span>())
+        {
+            <span class="comment">// 4. Применяем Gameplay Effect (урон)</span>
+            <span class="type">FGameplayEffectSpecHandle</span> DmgSpec =
+                <span class="function">MakeOutgoingGameplayEffectSpec</span>(DamageEffect);
+            <span class="function">ApplyGameplayEffectSpecToTarget</span>(DmgSpec, Hit.Actor);
+        }
+    }
+    <span class="function">EndAbility</span>(...);
+}</div>
+                </div>
+
+                <div class="info-box note">
+                    <strong>Почему GAS, а не ручные state machines?</strong><br>
+                    GAS даёт сетевое предсказание из коробки: клиент активирует способность локально, сервер валидирует. Тег-based блокировка исключает эксплойт-комбо (например, стрелять во время перезарядки) без написания спагетти-условий в Character.cpp. Расширение новой способностью — отдельный класс, без правки существующего кода.
+                </div>
+            </div>
+
+            <!-- ANIMATION BLUEPRINT ARCHITECTURE -->
+            <div class="doc-section" id="anim-arch">
+                <h2><span class="section-icon"></span> 22. Архитектура Animation Blueprint</h2>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.5rem;line-height:1.6;">Анимационная система построена на трёх независимых слоях, которые комбинируются в финальную позу. Такой подход позволяет независимо менять локомоцию, верхний ADS-оверрайд и процедурные эффекты без конфликтов между аниматорами и программистами.</p>
+
+                <h3>Трёхслойная система</h3>
+                <div class="diagram">┌──────────────────────────────────────────────────────────┐
+│              ФИНАЛЬНАЯ ПОЗА (Final Pose)                 │
+└──────────────────────┬───────────────────────────────────┘
+                       │ LayeredBlendPerBone
+           ┌───────────┼───────────────┐
+           ▼           ▼               ▼
+┌──────────────┐  ┌──────────────┐  ┌────────────────────┐
+│   СЛОЙ 1     │  │   СЛОЙ 2     │  │      СЛОЙ 3        │
+│  База (Base) │  │  Аддитивный  │  │   Процедурный      │
+│              │  │  (Additive)  │  │   (Procedural)     │
+│ Locomotion   │  │ ADS верхний  │  │ Отдача + Sway      │
+│ Blend Space  │  │ body override│  │ Lean + Foot IK     │
+│ (скорость ×  │  │ (только при  │  │ Дыхание (UCurve)   │
+│  направление)│  │  State.ADS)  │  │ Two-Bone IK ноги   │
+└──────────────┘  └──────────────┘  └────────────────────┘</div>
+
+                <h3>Ключевые переменные <code>UNFAnimInstance</code></h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">C++ — UNFAnimInstance.h</span>
+                        <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-body"><span class="comment">// Обновляются каждый тик из Game Thread</span>
+<span class="type">float</span>    Speed;           <span class="comment">// скорость персонажа (м/с)</span>
+<span class="type">float</span>    Direction;       <span class="comment">// -180..180, для strafe blend</span>
+<span class="type">bool</span>     bIsADS;          <span class="comment">// из тега State.ADS</span>
+<span class="type">bool</span>     bIsSprinting;    <span class="comment">// из тега State.Sprinting</span>
+<span class="type">bool</span>     bIsGrounded;     <span class="comment">// для прыжков/падений</span>
+<span class="type">float</span>    LeanAngle;       <span class="comment">// -1..1, из RubezhMovement</span>
+
+<span class="comment">// Процедурная отдача (обновляется из GA_Fire)</span>
+<span class="type">FRotator</span> RecoilOffset;   <span class="comment">// pitch/yaw смещение кости прицела</span>
+<span class="type">FVector</span>  WeaponSwayOffset; <span class="comment">// FInterpTo на offset-кости оружия</span>
+<span class="type">float</span>    BreathingAlpha;  <span class="comment">// из UCurveFloat, ~0.3 Гц при стоянии</span>
+
+<span class="comment">// Two-Bone IK для ног</span>
+<span class="type">FVector</span>  FootIK_L;       <span class="comment">// target position левой ноги</span>
+<span class="type">FVector</span>  FootIK_R;       <span class="comment">// target position правой ноги</span>
+<span class="type">float</span>    PelvisOffset;   <span class="comment">// смещение таза для корректного IK</span></div>
+                </div>
+
+                <h3>Потоковая модель</h3>
+                <div class="diagram">Game Thread                Worker Thread              Game Thread
+     │                          │                          │
+     ▼                          ▼                          ▼
+[Обновить переменные]  →  [Evaluation Graph]  →  [Применить трансформы]
+ Speed, bIsADS,           (параллельно с GT)      к компонентам скелета
+ RecoilOffset и т.д.     Blend spaces, IK,        (финальная запись)
+                          Montage sampling</div>
+
+                <div class="info-box note">
+                    <strong>Weapon Sway и дыхание:</strong> оружие медленно дрейфует через <code>FInterpTo</code> на отдельной offset-кости (не spine) — это не влияет на хитбоксы. Дыхание реализовано через <code>UCurveFloat</code> с периодом ~3 сек, управляющую pitch-поворотом spine_03. В ADS-режиме амплитуда дыхания умножается на 0.3 для стабильности прицеливания.
+                </div>
+            </div>
+
+            <!-- INPUT SYSTEM -->
+            <div class="doc-section" id="input-system">
+                <h2><span class="section-icon"></span> 23. Enhanced Input System</h2>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.5rem;line-height:1.6;">Вся логика ввода построена на <strong>Enhanced Input</strong> (UE5). Это отделяет «физическую клавишу» от «игрового действия», позволяя менять раскладку без изменения кода, поддерживать геймпады/KB&M одновременно и обрабатывать сложные паттерны (hold, double-tap, combo).</p>
+
+                <h3>Пайплайн ввода</h3>
+                <div class="diagram">ФИЗИЧЕСКИЙ ВВОД                ENHANCED INPUT               ИГРОВАЯ ЛОГИКА
+      │                               │                              │
+[KB: LMB]  ──►                 [IA_Fire]               ──►  [GA_Fire (GAS)]
+[GP: RT]   ──►  Input Mapping   (Triggered)                  (активирует способность)
+               Context (IMC)        │
+[KB: ADS]  ──►                 [IA_ADS]                ──►  [GA_ADS (GAS)]
+[GP: LT]   ──►  IA = Input      (Held/Released)              (State.ADS тег)
+               Action               │
+[KB: R]    ──►                 [IA_Reload]             ──►  [GA_Reload (GAS)]
+[GP: X]    ──►                 (Started)                     (если не State.ADS)</div>
+
+                <h3>Input Action конфигурация</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">C++ — Input Bindings</span>
+                        <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-body"><span class="comment">// Регистрация в PlayerController::SetupInputComponent()</span>
+<span class="keyword">void</span> <span class="function">ANFPlayerController::SetupInputComponent</span>()
+{
+    <span class="keyword">if</span> (<span class="keyword">auto</span>* EIC = <span class="function">Cast</span>&lt;<span class="type">UEnhancedInputComponent</span>&gt;(InputComponent))
+    {
+        <span class="comment">// Выстрел: Started = нажал, Triggered = удерживает</span>
+        EIC-><span class="function">BindAction</span>(IA_Fire, ETriggerEvent::Triggered, <span class="keyword">this</span>,
+                       &<span class="type">ANFPlayerController</span>::<span class="function">OnFire</span>);
+
+        <span class="comment">// ADS: Started/Completed = toggle или hold</span>
+        EIC-><span class="function">BindAction</span>(IA_ADS, ETriggerEvent::Started, <span class="keyword">this</span>,
+                       &<span class="type">ANFPlayerController</span>::<span class="function">OnADSStart</span>);
+        EIC-><span class="function">BindAction</span>(IA_ADS, ETriggerEvent::Completed, <span class="keyword">this</span>,
+                       &<span class="type">ANFPlayerController</span>::<span class="function">OnADSEnd</span>);
+
+        <span class="comment">// Движение: осевые значения через InputActionValue</span>
+        EIC-><span class="function">BindAction</span>(IA_Move, ETriggerEvent::Triggered, <span class="keyword">this</span>,
+                       &<span class="type">ANFPlayerController</span>::<span class="function">OnMove</span>); <span class="comment">// FVector2D</span>
+    }
+}</div>
+                </div>
+
+                <h3>Мёртвые зоны и доступность</h3>
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Параметр</th><th>KB&M</th><th>Геймпад (дефолт)</th><th>Настраивается?</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Inner Deadzone (стик)</td><td>Нет</td><td>0.15 (15%)</td><td>Да (0.05–0.30)</td></tr>
+                            <tr><td>Outer Deadzone</td><td>Нет</td><td>0.95</td><td>Нет</td></tr>
+                            <tr><td>Чувствительность прицела</td><td>400–4000 DPI × 0.1–10.0</td><td>0.1–10.0</td><td>Да</td></tr>
+                            <tr><td>Input Buffering (мс)</td><td>0ms (raw input)</td><td>16ms (1 кадр)</td><td>Нет</td></tr>
+                            <tr><td>Gyro Aiming</td><td>N/A</td><td>Опционально</td><td>Да (DualSense/Switch)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box note">
+                    <strong>Input Context Switching:</strong> у нас три <code>UInputMappingContext</code> — базовое управление (всегда активно), меню (блокирует геймплей), кинематика (только отмена). При открытии меню: деактивируем «gameplay» IMC, активируем «menu» IMC. Это не ломает EnhancedInput и исключает «стрельбу через меню».
+                </div>
+            </div>
+
             <!-- NETWORKING -->
             <div class="doc-section" id="networking">
-                <h2><span class="section-icon"></span> 14. Сетевая архитектура</h2>
+                <h2><span class="section-icon"></span> 24. Сетевая архитектура</h2>
 
                 <div class="spec-grid">
                     <div class="spec-card">
@@ -2369,22 +3349,83 @@ Hitzone множители:
 └── Предотвращает большинство читов</div>
                 </div>
 
-                <h3 id="lag-comp">Lag Compensation</h3>
+                <h3 id="lag-comp">Клиентское предсказание и Lag Compensation</h3>
 
+                <p style="color:var(--ink-dim);margin-bottom:1.2rem;line-height:1.6;">Двусторонняя система: клиент предсказывает движение локально (нет задержки управления), сервер авторитарно валидирует и при расхождении отправляет коррекцию. Для регистрации выстрелов сервер «откатывает» позиции игроков на момент клиентского выстрела.</p>
+
+                <h3>4-шаговый цикл предсказания</h3>
                 <div class="code-block">
-                    <div class="code-header"><span class="code-lang">Lag Compensation Algorithm</span></div>
-                    <div class="code-body"><span class="accent">АЛГОРИТМ (стандарт индустрии):</span>
+                    <div class="code-header"><span class="code-lang">Client-Side Prediction Flow</span></div>
+                    <div class="code-body"><span class="accent">① PREDICT</span> — клиент применяет ввод локально
+   Input{W, sprint, aimDir} → клиент двигает персонажа немедленно
+   Сохраняет FSavedMove_NF в кольцевой буфер (64 входа)
 
-<span class="number">1.</span> Клиент стреляет в момент <span class="type">T_client</span>
-<span class="number">2.</span> Клиент отправляет: {timestamp, origin, direction}
-<span class="number">3.</span> Сервер получает в момент <span class="type">T_server</span>
-<span class="number">4.</span> Сервер «отматывает» позиции всех игроков на <span class="type">T_client - RTT/2</span>
-<span class="number">5.</span> Сервер делает line trace в «прошлом»
-<span class="number">6.</span> Если попадание — применяет урон
-<span class="number">7.</span> Отправляет подтверждение клиенту
+<span class="accent">② SEND</span> — клиент отправляет пакет серверу
+   {InputFlags, Timestamp, StartLocation, StartVelocity}
 
-<span class="info">Используется в: CS2, CoD, Overwatch, Valorant</span>
-<span class="info">UE5: Network Prediction Plugin + кастомная реализация</span></div>
+<span class="accent">③ VALIDATE</span> — сервер симулирует тот же ввод
+   Если |ServerPos - ClientPos| &lt; Threshold → OK, подтверждение
+   Если расхождение → отправить коррекцию клиенту
+
+<span class="accent">④ CORRECT</span> — клиент получает коррекцию
+   Принять серверную позицию
+   Переиграть все неподтверждённые ходы из буфера
+   Визуально: плавная интерполяция (не телепорт)
+
+<span class="info">Используется в: CS2, CoD, Overwatch, Valorant, UE5</span>
+<span class="info">В UE5: CharacterMovementComponent имеет это из коробки</span></div>
+                </div>
+
+                <h3>Временная диаграмма клиент/сервер</h3>
+                <div class="diagram">КЛИЕНТ (RTT = 80ms)          СЕРВЕР
+    │                              │
+T=0 ├─ Input[42]: W+Fire ─────────►│ T=40ms (получено)
+    │  (локально применено)        │ Валидация позиции ✓
+    │                              │ Lag comp: откат на 40ms назад
+    │                              │ Line trace → Hit!
+    │◄─ ACK[42] + DamageEvent ─────┤ T=40ms
+T=80│  (подтверждение)             │
+    │                              │
+T=1 ├─ Input[43]: W ──────────────►│
+    │  ...буфер хранит [43]...     │
+    │◄─ CORRECTION[43] ────────────┤  (если расхождение)
+    │  Replay inputs [43..now]     │</div>
+
+                <h3>Структура сохранённого хода</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">C++ — FSavedMove_NF</span>
+                        <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-body"><span class="keyword">struct</span> <span class="type">FSavedMove_NF</span> : <span class="keyword">public</span> <span class="type">FSavedMove_Character</span>
+{
+    <span class="type">uint8</span>    SavedMoveFlags;   <span class="comment">// бит-маска: sprint, ads, crouch...</span>
+    <span class="type">FVector</span>  StartLocation;   <span class="comment">// позиция до хода</span>
+    <span class="type">FVector</span>  StartVelocity;   <span class="comment">// скорость до хода</span>
+    <span class="type">FRotator</span> StartRotation;   <span class="comment">// поворот до хода</span>
+    <span class="type">float</span>    TimeStamp;        <span class="comment">// клиентское время (сек)</span>
+    <span class="type">bool</span>     bFiredThisTick;   <span class="comment">// выстрел в этом ходе</span>
+};</div>
+                </div>
+
+                <h3>Что предсказывается, что только на сервере</h3>
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Система</th><th>Клиент (предсказание)</th><th>Сервер (авторитарно)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Движение</td><td>✅ Локально + replay при коррекции</td><td>✅ Валидация позиции</td></tr>
+                            <tr><td>Выстрел (косметика)</td><td>✅ Вспышка, звук, анимация</td><td>— (только эффекты)</td></tr>
+                            <tr><td>Регистрация попадания</td><td>— (только визуал)</td><td>✅ Lag comp trace + урон</td></tr>
+                            <tr><td>Активация GAS-способности</td><td>✅ Предсказание + откат</td><td>✅ Финальная валидация</td></tr>
+                            <tr><td>Смерть / рестарт</td><td>— (ждёт сервер)</td><td>✅ Авторитарно</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box note">
+                    <strong>Поток выстрела:</strong> клиент мгновенно воспроизводит вспышку и звук; сервер в течение одного RTT подтверждает попадание (или нет) и применяет урон через GAS. При расхождении клиент получает коррекцию, косметические эффекты уже показаны — игрок этого не замечает.
                 </div>
 
                 <h3 id="spawn-system">Система респауна</h3>
@@ -2407,11 +3448,139 @@ Score = W_safety * <span class="type">SafetyScore</span>
 
 Точка с <span class="accent">максимальным Score</span> выбирается.</div>
                 </div>
+
+                <h3 id="sbmm">SBMM — Матчмейкинг на основе навыков</h3>
+                <p style="color:var(--ink-dim);margin-bottom:1.2rem;line-height:1.6;">Скрытый рейтинг (MMR) рассчитывается отдельно для каждого режима. Ранговый режим использует строгий SBMM, казуальный — мягкий диапазон с приоритетом качества соединения.</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">C++ — FMatchmakingTicket</span>
+                        <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-body"><span class="keyword">struct</span> <span class="type">FMatchmakingTicket</span>
+{
+    <span class="type">int32</span>   PlayerMMR;        <span class="comment">// скрытый рейтинг игрока</span>
+    <span class="type">int32</span>   SquadMMR;         <span class="comment">// средний рейтинг группы</span>
+    <span class="type">int32</span>   SearchRadius;     <span class="comment">// текущий радиус поиска (±MMR)</span>
+    <span class="type">float</span>   ElapsedSec;       <span class="comment">// сколько ищем</span>
+    <span class="type">FString</span> RegionPreference; <span class="comment">// "ru-west", "ru-east", "eu"</span>
+    <span class="type">EGameMode</span> Mode;          <span class="comment">// TDM, DOM, SnD, FFA</span>
+};</div>
+                </div>
+
+                <h3>Алгоритм расширения пула</h3>
+                <div class="diagram">┌─────────────────────────────────────────────────────────┐
+│              МАШИНА СОСТОЯНИЙ МАТЧМЕЙКИНГА              │
+└─────────────────────────────────────────────────────────┘
+
+[SEARCHING]  ──► Целевое окно: PlayerMMR ± 150
+     │            Ожидание: 0–15 сек
+     │ лобби не заполнено за 15 сек
+     ▼
+[EXPANDING]  ──► Расширение: +50 каждые 5 сек → макс ± 400
+     │            Ожидание: 15–60 сек
+     │ достаточно игроков
+     ▼
+[FILLING]    ──► Подбор по близости MMR
+     │            Заполнение слотов команды
+     │ команды заполнены
+     ▼
+[BALANCING]  ──► Swap игроков между командами для баланса
+     │            |avg_team1_MMR - avg_team2_MMR| &lt; 80
+     │ баланс достигнут
+     ▼
+[READY]      ──► Запуск матча</div>
+
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Порог MMR Δ</th><th>Время ожидания</th><th>Влияние на баланс команд</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>± 150 (идеал)</td><td>0–15 сек</td><td>Высокое — команды очень сбалансированы</td></tr>
+                            <tr><td>± 200</td><td>15–30 сек</td><td>Хорошее</td></tr>
+                            <tr><td>± 300</td><td>30–45 сек</td><td>Среднее — заметна разница в уровне</td></tr>
+                            <tr><td>± 400 (max)</td><td>45–60 сек</td><td>Низкое — крайний случай для заполнения</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Модель рейтинга и анти-буст</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">MMR Model</span></div>
+                    <div class="code-body"><span class="accent">РЕЙТИНГОВАЯ МОДЕЛЬ:</span>
+├── Основа: Elo-производная, отдельно для каждого режима
+├── K-фактор: 32 (новые аккаунты, первые 50 матчей)
+│             16 (после 50 матчей)
+├── Размещение: первые 10 матчей — широкое окно ±300,
+│              результат ×2 для delta MMR
+└── Группы: MMR лобби = среднее группы ± 20 за каждого
+
+<span class="accent">ЗАЩИТА ОТ БУСТА И СМУФИНГА:</span>
+├── Резкое падение MMR &gt; 200 за 5 матчей → флаг ручной проверки
+├── Smurf detection: возраст аккаунта × аномалия win-rate
+├── Killcam и replay хранятся 30 дней для расследований
+└── Ban wave: банятся аккаунты, а не hardware ID (обход через новый акк)</div>
+                </div>
+
+                <div class="info-box note">
+                    <strong>SBMM vs CBMM (connection-based):</strong> чистый SBMM убивает казуальные лобби для высокорейтинговых игроков — они всегда в «работе». Гибридный подход: <strong>Ранговый</strong> — строгий SBMM, <strong>Казуальный</strong> — сначала качество соединения (ping &lt; 80ms), затем мягкий диапазон MMR. Это снижает нагрузку на высокорейтинговых игроков и увеличивает retention.
+                </div>
+
+                <h3 id="tick-rate">Тик-рейт сервера и ощущение сетевого кода</h3>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.2rem;line-height:1.6;">Тик-рейт — это частота, с которой сервер обрабатывает игровое состояние и рассылает обновления клиентам. Это один из самых <strong>недооценённых параметров</strong>, напрямую влияющий на воспринимаемую честность игры.</p>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Tick Rate — The Math</span></div>
+                    <div class="code-body"><span class="accent">БАЗОВЫЕ ЦИФРЫ:</span>
+
+Tick rate = 64 Hz → обновление каждые <span class="type">15.6ms</span>
+Tick rate = 128 Hz → обновление каждые <span class="type">7.8ms</span>
+
+<span class="accent">ПРИМЕР: Игрок А стреляет в Игрока Б</span>
+
+При 64 Hz:
+  Игрок А нажимает огонь → сервер получает через 0–15.6ms
+  Максимальная задержка регистрации выстрела: RTT/2 + 15.6ms
+  При RTT=50ms: 25ms + 15.6ms = <span class="warn">40.6ms окно</span>
+
+При 128 Hz:
+  Максимальная задержка: RTT/2 + 7.8ms
+  При RTT=50ms: 25ms + 7.8ms = <span class="success">32.8ms окно</span>
+
+<span class="accent">РАЗНИЦА:</span> ~7-8ms — незначительна для глаза (порог ~50ms)
+<span class="accent">НО:</span> уменьшает ВАРИАТИВНОСТЬ позиции игроков в lag compensation
+     → меньше случаев «я попал но промазал»
+
+<span class="accent">СТОИМОСТЬ:</span> 128 Hz = ×2 CPU нагрузка на сервер
+     64 Hz: ~30–50 игроков/ядро
+     128 Hz: ~15–25 игроков/ядро</div>
+                </div>
+
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Параметр</th><th>64 Hz</th><th>128 Hz</th><th>Наш выбор</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Окно обновления</td><td>15.6ms</td><td>7.8ms</td><td>64 Hz казуальный / 128 Hz ранговый</td></tr>
+                            <tr><td>CPU/сервер</td><td>Низкий</td><td>×2</td><td>—</td></tr>
+                            <tr><td>Bandwidth (сервер→клиент)</td><td>~40 KB/s/игрок</td><td>~80 KB/s/игрок</td><td>—</td></tr>
+                            <tr><td>Воспринимаемая честность</td><td>Хорошая</td><td>Отличная</td><td>Ранговый заслуживает</td></tr>
+                            <tr><td>Примеры</td><td>CoD, Battlefield</td><td>CS2, Valorant (ранговый)</td><td>—</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box note">
+                    <strong>Почему не всегда 128 Hz?</strong> CS2 использует 128 Hz тик только в матчмейкинге уровня Premier/Faceit — казуальные сервера работают на 64 Hz. Это прагматичное решение: разница в геймплее ощущается только на уровне 2000+ ELO. Для большинства игроков пинг и стабильность соединения важнее тик-рейта.
+                </div>
             </div>
 
             <!-- SERVER INFRASTRUCTURE -->
             <div class="doc-section" id="server-infra">
-                <h2><span class="section-icon"></span> 15. Серверная инфраструктура</h2>
+                <h2><span class="section-icon"></span> 25. Серверная инфраструктура</h2>
 
                 <h3 id="backend">Архитектура бэкенда</h3>
 
@@ -2477,7 +3646,7 @@ Score = W_safety * <span class="type">SafetyScore</span>
 
             <!-- PIPELINE -->
             <div class="doc-section" id="pipeline">
-                <h2><span class="section-icon"></span> 16. Пайплайн ассетов</h2>
+                <h2><span class="section-icon"></span> 26. Пайплайн ассетов</h2>
 
                 <div class="code-block">
                     <div class="code-header"><span class="code-lang">Asset Pipeline</span></div>
@@ -2511,7 +3680,7 @@ Greybox (BSP) → Плейтест → Замена на финальные ас
 
             <!-- OPTIMIZATION -->
             <div class="doc-section" id="optimization">
-                <h2><span class="section-icon"></span> 17. Оптимизация</h2>
+                <h2><span class="section-icon"></span> 27. Оптимизация</h2>
 
                 <h3>Целевые системные требования</h3>
 
@@ -2559,9 +3728,62 @@ Greybox (BSP) → Плейтест → Замена на финальные ас
                 </div>
             </div>
 
+            <!-- WORLD PARTITION + MEMORY -->
+            <div class="doc-section" id="streaming">
+                <h2><span class="section-icon"></span> 28. World Partition и бюджет памяти</h2>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.5rem;line-height:1.6;">Все мультиплеерные карты используют <strong>World Partition</strong> — автоматическую систему стриминга уровня UE5. Контент делится на ячейки, которые подгружаются и выгружаются по мере движения игрока.</p>
+
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">World Partition Config</span></div>
+                    <div class="code-body"><span class="accent">Размер ячейки:</span> 64m × 64m
+<span class="accent">Расстояние загрузки:</span> 2 ячейки вперёд по направлению движения
+<span class="accent">Расстояние выгрузки:</span> 4 ячейки от игрока (гистерезис)
+
+<span class="accent">Level Instances</span> для разрушаемых объектов:
+├── Chaos-кластеры предфрактурированы offline
+├── Стримятся как отдельные Level Instance per zone
+├── При разрушении: замена на динамический Chaos actor
+└── Limit: 8 активных Chaos объектов одновременно
+
+<span class="accent">HLOD (Hierarchical LOD):</span>
+├── Автоматически генерируются для каждой ячейки
+├── Показываются при &gt;200m от игрока
+└── Nanite mesh + слияние материалов</div>
+                </div>
+
+                <h3>Бюджет памяти по пресетам</h3>
+                <div class="spec-grid">
+                    <div class="spec-card">
+                        <div class="spec-card-label">Low</div>
+                        <div class="spec-card-value">512 MB</div>
+                        <div class="spec-card-desc">Texture streaming pool · LOD0 до 50m · Фолиаж до 30m</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Mid</div>
+                        <div class="spec-card-value">1 GB</div>
+                        <div class="spec-card-desc">Texture streaming pool · LOD0 до 80m · Фолиаж до 60m</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">High</div>
+                        <div class="spec-card-value">1.5 GB</div>
+                        <div class="spec-card-desc">Texture streaming pool · LOD0 до 120m · Фолиаж до 100m</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-card-label">Ultra</div>
+                        <div class="spec-card-value">2 GB</div>
+                        <div class="spec-card-desc">Texture streaming pool · LOD0 до 200m · Фолиаж до 150m</div>
+                    </div>
+                </div>
+
+                <div class="info-box warn">
+                    <strong>Важно:</strong> <code>r.Streaming.PoolSize</code> должен быть установлен <em>до</em> загрузки карты. Увеличение во время игры вызывает хитчи (~100–300ms фриз) из-за перераспределения VRAM. Значение читается из Scalability.ini при старте и не меняется в рантайме.
+                </div>
+            </div>
+
             <!-- ANTICHEAT -->
             <div class="doc-section" id="anticheat">
-                <h2><span class="section-icon"></span> 18. Античит</h2>
+                <h2><span class="section-icon"></span> 29. Античит</h2>
 
                 <div class="code-block">
                     <div class="code-header"><span class="code-lang">Anti-Cheat Layers</span></div>
@@ -2588,7 +3810,7 @@ Greybox (BSP) → Плейтест → Замена на финальные ас
 
             <!-- CI/CD -->
             <div class="doc-section" id="cicd">
-                <h2><span class="section-icon"></span> 19. CI/CD Pipeline</h2>
+                <h2><span class="section-icon"></span> 30. CI/CD Pipeline</h2>
 
                 <div class="diagram">Git Push → Jenkins/GitHub Actions → Build (Win64 + Linux Server)
                                          │
@@ -2613,6 +3835,93 @@ Greybox (BSP) → Плейтест → Замена на финальные ас
                 </div>
             </div>
 
+            <!-- COMPETITIVE RANKED -->
+            <div class="doc-section" id="ranked">
+                <h2><span class="section-icon"></span> 31. Соревновательный / Ранговый режим</h2>
+
+                <p style="color:var(--ink-dim);margin-bottom:1.5rem;line-height:1.6;">Ранговый режим — это отдельная экосистема. Те же механики, но другой <strong>социальный контракт</strong>: каждое действие имеет ставку, результат публичен, прогресс сохраняется через сезоны. Дизайн должен поощрять командную игру и честную конкуренцию.</p>
+
+                <h3>Ранговая структура</h3>
+                <div class="diagram">        РАНГОВАЯ ЛЕСТНИЦА
+
+   ┌─────────────┐
+   │  МАСТЕР+    │  Топ 0.1% — инвайт-только турниры
+   ├─────────────┤
+   │  ЭЛИТА      │  Топ 1% — эксклюзивный анимированный ранговый значок
+   ├─────────────┤
+   │  ПЛАТИНА    │  Топ 5% — уникальный скин оружия по окончании сезона
+   ├─────────────┤
+   │  ЗОЛОТО     │  Топ 15% — декоративный баннер + звук победы
+   ├─────────────┤
+   │  СЕРЕБРО    │  Стандарт — Calling Card сезона
+   ├─────────────┤
+   │  БРОНЗА     │  Новички — базовый ранговый опыт
+   └─────────────┘</div>
+
+                <h3>Механика ранговых очков (RP)</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Rank Points System</span></div>
+                    <div class="code-body"><span class="accent">НАЧИСЛЕНИЕ RP:</span>
+├── Победа в матче:           +100 RP (базово)
+├── MVP команды (топ score):  +25 RP бонус
+├── Серия побед (3+):         +15 RP/матч бонус
+├── Убийство топ-врага:       +10 RP (kill streak bonus)
+└── Флаг/Доминация:           +5 RP за объективное действие
+
+<span class="accent">СПИСАНИЕ RP:</span>
+├── Поражение:               -50 RP (базово)
+├── Серия поражений (3+):    -25 RP (смягчение, не +40)
+├── AFK/Disconnect:          -75 RP + 10-мин ban
+└── Rage-quit (выход &lt;80%):  -100 RP + 20-мин ban
+
+<span class="accent">ЗАЩИТА ОТ ДЕГРАДАЦИИ:</span>
+├── Деление на 2 при достижении нового ранга невозможно до 3 матчей
+├── Нельзя упасть ниже начала текущего ранга в течение 24ч
+└── После 5+ поражений: «Protection window» — следующая победа
+   засчитывается ×2 RP</div>
+                </div>
+
+                <h3>Особые правила рангового режима</h3>
+                <div class="doc-table-container">
+                    <table class="doc-table">
+                        <thead>
+                            <tr><th>Параметр</th><th>Казуальный</th><th>Ранговый</th><th>Причина</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Тик-рейт сервера</td><td>64 Hz</td><td>128 Hz</td><td>Честность на высоком уровне</td></tr>
+                            <tr><td>SBMM окно</td><td>±400 RP (широкое)</td><td>±150 RP (строгое)</td><td>Качество матча важнее скорости</td></tr>
+                            <tr><td>Killstreak'и</td><td>Все доступны</td><td>Только до 5K</td><td>Высокие killstreak искажают навык</td></tr>
+                            <tr><td>Форматы</td><td>TDM, DOM, FFA, S&D</td><td>DOM, S&D (только)</td><td>TDM не объективный режим</td></tr>
+                            <tr><td>Party размер</td><td>1–6</td><td>1–3 (Solo/Duo/Trio)</td><td>Большая группа vs соло = несправедливо</td></tr>
+                            <tr><td>Replay/VOD</td><td>Нет</td><td>Да (24 часа)</td><td>Разбор ошибок, anti-cheat</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Сезонная система</h3>
+                <div class="code-block">
+                    <div class="code-header"><span class="code-lang">Season Design</span></div>
+                    <div class="code-body"><span class="accent">СЕЗОН = 90 дней:</span>
+├── Начало: все игроки проходят 5 placement матчей
+│   (ранг с прошлого сезона: мягкий откат на 1 тир)
+├── Финальные 2 недели: «Конец сезона» — RP множитель ×1.5
+├── Конец: «Снимок» финального ранга → ранговые награды
+└── Сброс: все игроки начинают с нуля (Бронза+)
+
+<span class="accent">СЕЗОННЫЕ НАГРАДЫ (привязаны к финальному рангу):</span>
+├── Бронза:   Calling Card «Сезон N»
+├── Серебро:  Эмблема + Calling Card
+├── Золото:   Баннер игрока + звук победы
+├── Платина:  Уникальный скин оружия (нельзя купить)
+├── Элита:    Анимированный значок + скин оружия
+└── Мастер+:  Персональный флаг + инвайт на турнир</div>
+                </div>
+
+                <div class="info-box note">
+                    <strong>Почему killstreak ограничен до 5K в ранговом?</strong> 7K+ killstreak (вертолёт, дрон) создают ситуации, когда навык управления killstreak'ом важнее навыка стрельбы. В казуальном это нормально — это веселье. В ранговом это искажает измерение навыка. CS2 и Valorant вообще без killstreak — мы идём на компромисс, оставляя информационные (3K UAV) и зональные (5K арт) как инструменты командной игры.
+                </div>
+            </div>
+
             <!-- FOOTER -->
 
             <!-- DOC FOOTER -->
@@ -2625,6 +3934,8 @@ Greybox (BSP) → Плейтест → Замена на финальные ас
                         <a href="index.html">← Вернуться к питчу</a>
                         <a href="#">Скачать PDF</a>
                         <a href="#">Связаться</a>
+                        <a href="arg-play.html" style="opacity:0.48;font-size:0.88em;">NF · alt signal</a>
+                        <a href="arg-play.html?lang=ru" style="opacity:0.42;font-size:0.85em;">RU</a>
                     </div>
                 </div>
             </div>
