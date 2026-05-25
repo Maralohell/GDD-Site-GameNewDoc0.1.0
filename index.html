@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>not_found — параллельная кампания · ЧВК × нетраннеры</title>
-<meta name="description" content="FPS ближнего будущего: параллельная кампания, ЧВК на службе государства против нетраннеров, защищающих информацию.">
+<meta name="description" content="Console-era premium FPS: параллельная кампания + classic CoD 6v6. Global Steam, dev $100k.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -186,7 +186,17 @@ img,svg{display:block;max-width:100%}
   transition:background .15s var(--ease)!important;
 }
 .nav-cta:hover{background:var(--accent-2);color:var(--bg-0)!important}
-.nav-burger{display:none}
+.nav-burger{
+  display:none;align-items:center;justify-content:center;
+  width:40px;height:40px;border:1px solid var(--rule-2);background:var(--bg-1);
+  color:var(--ink);font-family:var(--ff-mono);font-size:1rem;cursor:pointer;
+}
+.nav-links.is-open{
+  display:flex!important;flex-direction:column;align-items:stretch;
+  position:absolute;top:calc(100% + .5rem);right:0;left:0;
+  background:var(--bg-1);border:1px solid var(--rule);padding:.5rem;z-index:1100;
+}
+.nav-links.is-open a{padding:.75rem 1rem}
 
 /* ============ FACTION SWITCH ============ */
 .faction-switch{
@@ -500,11 +510,12 @@ img,svg{display:block;max-width:100%}
 .cmp tbody tr:last-child td{border-bottom:0}
 .cmp tbody tr.hl td{background:var(--accent-soft);color:var(--ink)}
 .cmp tbody tr.hl td:first-child{box-shadow:inset 2px 0 0 var(--accent);color:var(--accent);font-weight:600}
-.cmp thead th:nth-child(2),.cmp tbody td:nth-child(2){
+#compare .cmp thead th:nth-child(2),#compare .cmp tbody td:nth-child(2){
   border-left:2px solid var(--accent);border-right:2px solid var(--accent);background:var(--accent-soft);
 }
-.cmp thead th:nth-child(2){color:var(--accent)}
-.cmp tbody td:nth-child(2){color:var(--ink);font-weight:500}
+#compare .cmp thead th:nth-child(2){color:var(--accent)}
+#compare .cmp tbody td:nth-child(2){color:var(--ink);font-weight:500}
+.market-cmp{min-width:520px}
 #compare .cmp .yes{color:var(--ink)}
 #compare .cmp .no{color:var(--ink-3)}
 #compare .cmp .mid{color:var(--ink-2)}
@@ -728,7 +739,7 @@ img,svg{display:block;max-width:100%}
 .tl-item ul li::before{content:'▸';position:absolute;left:0;color:var(--accent);opacity:.7;font-family:var(--ff-mono);font-size:.78rem}
 
 /* ============ TEAM ============ */
-.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
 .tm{border:1px solid var(--rule);background:var(--bg-1);padding:1.4rem;position:relative;transition:border-color .15s}
 .tm:hover{border-color:var(--accent)}
 .tm .avatar{
@@ -739,6 +750,8 @@ img,svg{display:block;max-width:100%}
 .tm .nm{font-family:var(--ff-display);font-weight:600;font-size:1rem;letter-spacing:-.005em;color:var(--ink);margin-bottom:.2rem}
 .tm .role{font-family:var(--ff-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.55rem}
 .tm p{font-size:.84rem;color:var(--ink-2);line-height:1.5}
+.tm-open{border-style:dashed;opacity:.92}
+.tm-open .avatar{color:var(--ink-3);border-style:dashed}
 
 /* ============ PROTOTYPE ============ */
 .video-frame{
@@ -768,13 +781,6 @@ img,svg{display:block;max-width:100%}
   content:'';width:0;height:0;border-left:18px solid var(--accent);border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:5px;
 }
 .video-label{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);position:relative;z-index:1}
-.video-file-hint{
-  display:none;position:relative;z-index:1;max-width:36rem;padding:0 1.5rem;
-  font-family:var(--ff-mono);font-size:.72rem;line-height:1.55;color:var(--ink-2);text-align:center;
-}
-.video-file-hint.is-on{display:block}
-.video-file-hint a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
-.video-file-hint code{color:var(--cyan);font-size:.68rem}
 
 .status-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--rule)}
 .status-item{display:grid;grid-template-columns:46px 1fr;align-items:start;padding:1rem 1.2rem;border-left:1px solid var(--rule);border-bottom:1px solid var(--rule);gap:.7rem}
@@ -912,6 +918,8 @@ footer .arg a:hover{color:var(--accent)}
   .arsenal-grid,.maps-grid,.team-grid{grid-template-columns:1fr 1fr}
   .console{grid-template-columns:1fr}
   .ask-wrap{grid-template-columns:1fr}
+  .nav-row{position:relative}
+  .nav-burger{display:flex;margin-left:auto}
   .nav-links{display:none}
   footer .grid{grid-template-columns:1fr}
 }
@@ -992,18 +1000,19 @@ footer .arg a:hover{color:var(--accent)}
 <nav class="nav">
   <div class="nav-row">
     <a href="#hero" class="nav-logo">NOT&nbsp;FOUND</a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinks">
       <li><a href="#problem">Проблема</a></li>
       <li><a href="#product">Продукт</a></li>
-      <li><a href="#moat">Почему мы</a></li>
+      <li><a href="#compare">Сравнение</a></li>
+      <li><a href="#moat">Преимущество</a></li>
       <li><a href="#traction">Прогресс</a></li>
-      <li><a href="#monetization">Монетизация</a></li>
-      <li><a href="#market">Рынок</a></li>
+      <li><a href="#finance">Финансы</a></li>
       <li><a href="#ebitda">EBITDA</a></li>
       <li><a href="#exit">ROI</a></li>
       <li><a href="docs.html">GDD</a></li>
       <li><a href="#ask" class="nav-cta">Предложение</a></li>
     </ul>
+    <button type="button" class="nav-burger" id="navBurger" aria-label="Меню" aria-expanded="false">☰</button>
   </div>
 </nav>
 
@@ -1039,9 +1048,10 @@ footer .arg a:hover{color:var(--accent)}
       </h1>
 
       <p class="hero-sub">
-        Arcade FPS ближнего будущего в оболочке нео-нуара. <b>Параллельная кампания</b>
-        на одну-две игровые сессии: <span class="pmc">ЧВК</span> на службе государства против
-        <span class="net">нетраннеров</span>, защищающих информацию. Плюс <b>мультиплеер в духе классических CoD</b>.
+        Console-era arcade FPS: <b>параллельная кампания</b> (~5–7 ч) в духе setpieces
+        <b>CoD · Halo · Killzone</b> и <b>мультиплеер 6v6</b> в духе
+        <b>классического Call of Duty</b> (CoD4 / MW2 / Black Ops).
+        <span class="pmc">ЧВК</span> против <span class="net">нетраннеров</span> — один продукт, две войны.
       </p>
 
       <div class="hero-actions">
@@ -1052,10 +1062,10 @@ footer .arg a:hover{color:var(--accent)}
       </div>
 
       <div class="hero-stats">
-        <div class="stat"><div class="num">20</div><div class="lbl">Месяцев разработки</div></div>
-        <div class="stat"><div class="num">6</div><div class="lbl">Человек в команде</div></div>
-        <div class="stat"><div class="num">30.5M₽</div><div class="lbl">Бюджет (раунд)</div></div>
-        <div class="stat"><div class="num">+156%</div><div class="lbl">ROI · 3 года (реал.)</div></div>
+        <div class="stat"><div class="num">18</div><div class="lbl">Месяцев разработки</div></div>
+        <div class="stat"><div class="num">4</div><div class="lbl">Core-команда (3 + hire)</div></div>
+        <div class="stat"><div class="num">$100k</div><div class="lbl">Dev-бюджет (раунд)</div></div>
+        <div class="stat"><div class="num">+712%</div><div class="lbl">ROI · 3 года (реал.)</div></div>
       </div>
     </div>
 
@@ -1097,17 +1107,17 @@ footer .arg a:hover{color:var(--accent)}
     <div class="prob-grid fade-in">
       <div class="prob-col" data-f="pmc">
         <h3><span>Проблемы рынка</span><span class="tag">— 04</span></h3>
-        <div class="prob-item"><div class="idx">P/01</div><div><strong>Нет российского аркадного FPS</strong><p>На рынке РФ отсутствует качественный сингплеер/мультиплеер шутер от отечественного разработчика.</p></div></div>
-        <div class="prob-item"><div class="idx">P/02</div><div><strong>Call of Duty стоит 5000–7000 ₽</strong><p>И ежегодно теряет доверие аудитории: SBMM, агрессивные микротранзакции, баги на релизе.</p></div></div>
-        <div class="prob-item"><div class="idx">P/03</div><div><strong>Западные издатели уходят</strong><p>Усложнение покупки, блокировки, отсутствие локальной поддержки.</p></div></div>
-        <div class="prob-item"><div class="idx">P/04</div><div><strong>Альтернативы не закрывают нишу</strong><p>Warface устарел, Caliber — тактический PvE, Tarkov — хардкор. Аркадного шутера с кампанией нет.</p></div></div>
+        <div class="prob-item"><div class="idx">P/01</div><div><strong>Live-service вместо кампании</strong><p>AAA-FPS продают сезоны и MTX. Сюжет и «коробочный» опыт — вторичны, SBMM выматывает casual-сессии.</p></div></div>
+        <div class="prob-item"><div class="idx">P/02</div><div><strong>Premium $70+ и F2P-fatigue</strong><p>CoD и аналоги дороги или агрессивно монетизируют. Игроки хотят честную сделку без P2W.</p></div></div>
+        <div class="prob-item"><div class="idx">P/03</div><div><strong>Жанр расщеплён</strong><p>Revival 2025–26: solo-campaigns, movement-6v6, F2P-сервисы — но редко <b>кампания + classic MP</b> в одной покупке.</p></div></div>
+        <div class="prob-item"><div class="idx">P/04</div><div><strong>Нет mid-tier «коробки»</strong><p>Movement-shooters и battle royale не заменяют boots-on-ground 6v6 в духе CoD4/MW2 с сильной кампанией.</p></div></div>
       </div>
       <div class="prob-col" data-f="net">
         <h3><span>Возможности</span><span class="tag">+ 04</span></h3>
-        <div class="prob-item"><div class="idx">O/01</div><div><strong>15+ млн FPS-игроков в РФ</strong><p>Шутеры — самый популярный жанр. Аудитория есть, продукта нет.</p></div></div>
+        <div class="prob-item"><div class="idx">O/01</div><div><strong>Global FPS-аудитория</strong><p>Steam + console: миллионы игроков 25–40 с ностальгией по golden-age shooters. Спрос на premium mid-tier.</p></div></div>
         <div class="prob-item"><div class="idx">O/02</div><div><strong>UE5 снижает порог входа в 10 раз</strong><p>Nanite, Lumen, Megascans, AI-инструменты — малая команда может создать продукт уровня AA.</p></div></div>
-        <div class="prob-item"><div class="idx">O/03</div><div><strong>Государственная поддержка</strong><p>Гранты ИРИ, программы Сколково, интерес VK Play к эксклюзивам.</p></div></div>
-        <div class="prob-item"><div class="idx">O/04</div><div><strong>Ностальгия = маркетинг</strong><p>«Золотая эра» CoD4/MW2 — мощный эмоциональный рычаг для привлечения аудитории.</p></div></div>
+        <div class="prob-item"><div class="idx">O/03</div><div><strong>Волна revival 2025–26</strong><p>Solo sci-fi campaigns, movement-6v6, remasters — рынок снова просит console-era, но предложение фрагментировано.</p></div></div>
+        <div class="prob-item"><div class="idx">O/04</div><div><strong>Golden-age CoD loop</strong><p>6v6, killstreaks, короткие раунды — сегмент без наследника. Мы возвращаем «ещё один матч» без live-service давления.</p></div></div>
       </div>
     </div>
   </div>
@@ -1121,14 +1131,14 @@ footer .arg a:hover{color:var(--accent)}
         <div class="eb">02 // Продукт</div>
         <h2>Что такое<br><em>«not_found»?</em></h2>
       </div>
-      <div class="r">Параллельная кампания (<strong>~5–7 ч</strong>) + быстрый мультиплеер <strong>6v6</strong>. Детальный дизайн — в <a href="docs.html">docs.html</a>.</div>
+      <div class="r">Кампания ~5–7 ч (CoD/Halo/Killzone) + мульти <strong>6v6</strong> в духе <strong>CoD4 / MW2 / Black Ops</strong>. Детальный дизайн — в <a href="docs.html">docs.html</a>.</div>
     </div>
 
     <div class="pillars fade-in">
       <div class="pillar"><span class="pno">01 / PILLAR</span><h4>Ощущение стрельбы</h4><p>Каждый выстрел чувствуется: отдача, хитмаркеры, звук, реакция врагов. Это ДНК жанра.</p></div>
       <div class="pillar"><span class="pno">02 / PILLAR</span><h4>Кинематографичность</h4><p>Скриптовые моменты, постановка, ощущение «боевика» даже при инди-бюджете.</p></div>
-      <div class="pillar"><span class="pno">03 / PILLAR</span><h4>«Ещё один матч»</h4><p>Короткие раунды, быстрый прогресс, килстрики, понятная мета. Луп, который держит в сессии.</p></div>
-      <div class="pillar"><span class="pno">04 / PILLAR</span><h4>Доступность</h4><p>Низкий порог входа, понятные механики, работает на средних ПК. Цена — <b>999 ₽</b>.</p></div>
+      <div class="pillar"><span class="pno">03 / PILLAR</span><h4>«Ещё один матч»</h4><p>Короткие раунды, killstreaks, create-a-class — классический CoD-loop, который держит в сессии часами.</p></div>
+      <div class="pillar"><span class="pno">04 / PILLAR</span><h4>Console-era доступность</h4><p>Читаемый TTK, понятные карты, controller-friendly. Работает на средних ПЦ. Цена — <b>999 ₽</b>.</p></div>
     </div>
 
     <div class="feat-grid fade-in">
@@ -1137,9 +1147,9 @@ footer .arg a:hover{color:var(--accent)}
         <div class="feat-head"><h4>Кампания (~5–7 часов)</h4><span class="tag">PMC × NET</span></div>
         <ul class="feat-list">
           <li>7 кинематографичных миссий</li>
-          <li>Современный военный сеттинг</li>
-          <li>Скриптовые моменты в духе лучших CoD</li>
-          <li>Полная русская озвучка</li>
+          <li>Near-future ops · атмосфера Killzone-scale</li>
+          <li>Скриптовые setpieces в духе CoD / Halo</li>
+          <li>Полная локализация · RU VO</li>
           <li>Смена темпа: штурм → стелс → оборона → снайпинг</li>
           <li>4 уровня сложности</li>
           <li>Подробнее — <a href="docs.html">docs.html</a></li>
@@ -1147,11 +1157,12 @@ footer .arg a:hover{color:var(--accent)}
       </div>
       <div class="feat-card">
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-        <div class="feat-head"><h4>Мультиплеер (6v6)</h4><span class="tag">CORE_LOOP</span></div>
+        <div class="feat-head"><h4>Мультиплеер (6v6)</h4><span class="tag">CLASSIC_CoD</span></div>
         <ul class="feat-list">
+          <li>Референс: <b>CoD4 / MW2 / Black Ops</b> — boots-on-ground, без wallrun/mechs</li>
           <li>4 карты на релизе (+2 бесплатно за 3 месяца)</li>
           <li>Режимы: TDM, Domination, Search &amp; Destroy, FFA</li>
-          <li>Система создания классов</li>
+          <li>Create-a-class + killstreaks</li>
           <li>16 единиц оружия с модификациями</li>
           <li>55 уровней прогрессии + Prestige</li>
           <li>Killstreaks (БПЛА, авиаудар, вертолёт)</li>
@@ -1192,22 +1203,22 @@ footer .arg a:hover{color:var(--accent)}
         <div class="eb">03 // Сравнение</div>
         <h2>Наш проект<br>vs <em>конкуренты</em></h2>
       </div>
-      <div class="r">Аркадный FPS с параллельной кампанией, разовой покупкой и российским сеттингом. На рынке РФ такой связки нет — ни у F2P-гигантов, ни у западных AAA.</div>
+      <div class="r">Premium campaign + <strong>classic CoD-style 6v6</strong> в одной покупке. Сравнение с modern AAA, эталоном эры CoD4/MW2 и revival 2025–26.</div>
     </div>
 
     <div class="cmp-wrap fade-in">
       <table class="cmp">
         <thead>
-          <tr><th>Параметр</th><th>not_found</th><th>CoD</th><th>Warface</th><th>Caliber</th><th>CS2</th></tr>
+          <tr><th>Параметр</th><th>not_found</th><th>Modern CoD</th><th>CoD4/MW2</th><th>Metal Eden</th><th>EMPULSE</th></tr>
         </thead>
         <tbody>
           <tr class="hl">
             <td>Цена</td>
             <td>999–1 499 ₽</td>
             <td>5 000–7 000 ₽</td>
-            <td>F2P + донат</td>
-            <td>F2P + донат</td>
-            <td>F2P</td>
+            <td>Premium box</td>
+            <td>Premium</td>
+            <td>TBD / EA</td>
           </tr>
           <tr>
             <td>Параллельная кампания (2 линии)</td>
@@ -1221,57 +1232,49 @@ footer .arg a:hover{color:var(--accent)}
             <td>Сюжет · объём</td>
             <td>~5–7 ч, 7 миссий</td>
             <td>6–8 ч</td>
-            <td><span class="no">—</span></td>
-            <td><span class="no">—</span></td>
+            <td>5–8 ч</td>
+            <td>~6 ч</td>
             <td><span class="no">—</span></td>
           </tr>
           <tr>
-            <td>Мультиплеер 6v6</td>
+            <td>Classic 6v6 MP</td>
+            <td><span class="yes">Да</span></td>
+            <td><span class="mid">SBMM / service</span></td>
+            <td><span class="yes">Да</span></td>
+            <td><span class="no">Нет</span></td>
+            <td><span class="mid">6v6 movement</span></td>
+          </tr>
+          <tr>
+            <td>Killstreaks + create-a-class</td>
+            <td><span class="yes">Да</span></td>
+            <td><span class="mid">Да / MTX</span></td>
+            <td><span class="yes">Да</span></td>
+            <td><span class="no">—</span></td>
+            <td><span class="no">Нет</span></td>
+          </tr>
+          <tr>
+            <td>Boots-on-ground (без mechs)</td>
             <td><span class="yes">Да</span></td>
             <td><span class="yes">Да</span></td>
             <td><span class="yes">Да</span></td>
-            <td><span class="mid">PvE-кооп</span></td>
-            <td><span class="mid">5v5</span></td>
+            <td><span class="yes">Да</span></td>
+            <td><span class="no">Mechs</span></td>
           </tr>
           <tr>
             <td>Монетизация</td>
             <td><span class="yes">Разовая покупка</span></td>
-            <td><span class="no">P2W / Battle Pass</span></td>
-            <td><span class="no">P2W</span></td>
-            <td><span class="mid">Частично</span></td>
-            <td><span class="mid">Скины</span></td>
+            <td><span class="no">Season / MTX</span></td>
+            <td><span class="yes">Box</span></td>
+            <td><span class="yes">Premium</span></td>
+            <td><span class="mid">TBD</span></td>
           </tr>
           <tr>
-            <td>Российский продукт</td>
+            <td>Campaign + MP bundle</td>
             <td><span class="yes">Да</span></td>
-            <td><span class="no">Нет</span></td>
-            <td><span class="mid">MY.Games</span></td>
+            <td><span class="mid">Split focus</span></td>
             <td><span class="yes">Да</span></td>
-            <td><span class="no">Нет</span></td>
-          </tr>
-          <tr>
-            <td>Аркадный геймплей</td>
-            <td><span class="yes">Да</span></td>
-            <td><span class="mid">SBMM</span></td>
-            <td><span class="no">Устарел</span></td>
-            <td><span class="no">Другой жанр</span></td>
-            <td><span class="mid">Тактический</span></td>
-          </tr>
-          <tr>
-            <td>Серверы в РФ</td>
-            <td><span class="yes">Да</span></td>
-            <td><span class="no">Нет</span></td>
-            <td><span class="yes">Да</span></td>
-            <td><span class="yes">Да</span></td>
-            <td><span class="yes">Да</span></td>
-          </tr>
-          <tr>
-            <td>Русская озвучка кампании</td>
-            <td><span class="yes">Полная</span></td>
-            <td><span class="no">Нет</span></td>
-            <td><span class="mid">Частично</span></td>
-            <td><span class="yes">Да</span></td>
-            <td><span class="no">Нет</span></td>
+            <td><span class="no">Solo only</span></td>
+            <td><span class="no">MP focus</span></td>
           </tr>
         </tbody>
       </table>
@@ -1291,9 +1294,9 @@ footer .arg a:hover{color:var(--accent)}
     </div>
     <div class="pillars fade-in">
       <div class="pillar"><span class="pno">01 / НАРРАТИВ</span><h4>Параллельная кампания</h4><p>Две зеркальные сюжетные арки в одной игре — механика, которой нет ни у одного аркадного инди-FPS. Это не просто фича: это причина пройти игру дважды и обсуждать её онлайн.</p></div>
-      <div class="pillar"><span class="pno">02 / КУЛЬТУРА</span><h4>Российский сеттинг и озвучка</h4><p>Знакомый контекст: города, оружие, слэнг, актёры. Ни CoD, ни CS2 не дают российскому игроку ощущения «своего» продукта. Мы даём.</p></div>
-      <div class="pillar"><span class="pno">03 / ЦЕНА</span><h4>999 ₽ — честный барьер</h4><p>В 5–7 раз дешевле CoD. Не F2P с агрессивной монетизацией. Разовый платёж — честная сделка. Позиционирование само продаёт.</p></div>
-      <div class="pillar"><span class="pno">04 / КОМАНДА</span><h4>Знание рынка изнутри</h4><p>Мы — игроки в этом жанре с многолетним стажем. Знаем, что раздражает в Warface, чего не хватает в Caliber, за что любят классические CoD.</p></div>
+      <div class="pillar"><span class="pno">02 / MP DNA</span><h4>Classic CoD multiplayer</h4><p>6v6, killstreaks, create-a-class — не movement-shooter и не battle royale. Мульти как в CoD4/MW2, кампания — отдельный крючок.</p></div>
+      <div class="pillar"><span class="pno">03 / ЦЕНА</span><h4>999 ₽ — честный барьер</h4><p>Premium mid-tier: в разы дешевле modern AAA. Разовая покупка, live-ops по фазам — без P2W.</p></div>
+      <div class="pillar"><span class="pno">04 / КОМАНДА</span><h4>Знание golden-age FPS</h4><p>Мы выросли на CoD4/MW2/BO. Знаем, что бесит в Modern Warfare и movement-6v6, и что нужно для «ещё одного матча».</p></div>
     </div>
   </div>
 </section>
@@ -1306,7 +1309,7 @@ footer .arg a:hover{color:var(--accent)}
         <div class="eb">05 // Выход на рынок</div>
         <h2>Путь<br><em>на рынок</em></h2>
       </div>
-      <div class="r">Трёхфазная стратегия: сначала сообщество, потом медиа, потом монетизация. Каждая фаза готовит следующую.</div>
+      <div class="r">Студия — dev и community. Маркетинг, PR, QA и wishlist-кампании — <strong>зона издателя</strong>.</div>
     </div>
 
     <div class="gtm-grid fade-in">
@@ -1314,12 +1317,12 @@ footer .arg a:hover{color:var(--accent)}
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
         <div class="gtm-head"><span class="num">PRE-LAUNCH</span><span class="tag">–6 мес. до EA</span></div>
         <ul class="feat-list">
-          <li>Steam-страница + Wishlist-кампания</li>
-          <li>Telegram-канал и Discord-сообщество</li>
+          <li>Steam-страница + wishlist <span style="color:var(--ink-3)">(издатель)</span></li>
+          <li>Telegram / Discord — dev-сообщество</li>
           <li>Devlog-серия: «как мы делаем игру»</li>
-          <li>Работа с инфлюенсерами 50k+ (Twitch/YouTube РФ)</li>
-          <li>Тизер-трейлер + геймплейный ролик</li>
-          <li>Закрытое бета-тестирование для сообщества</li>
+          <li>Influencers / PR <span style="color:var(--ink-3)">(издатель)</span></li>
+          <li>Тизер + геймплейный ролик</li>
+          <li>Закрытая beta + QA <span style="color:var(--ink-3)">(издатель)</span></li>
         </ul>
       </div>
       <div class="gtm-phase f-pmc">
@@ -1327,9 +1330,9 @@ footer .arg a:hover{color:var(--accent)}
         <div class="gtm-head"><span class="num">LAUNCH</span><span class="tag">Early Access</span></div>
         <ul class="feat-list">
           <li>Steam Early Access — мультиплеер + поднабор кампании (первая линия, ~3–4 миссии greybox)</li>
-          <li>Ключи стримерам с аудиторией 100k+</li>
-          <li>PR-рассылка в StopGame, GameGuru, DTF</li>
-          <li>Платная реклама VK Ads (target: FPS-аудитория РФ)</li>
+          <li>Ключи стримерам <span style="color:var(--ink-3)">(издатель)</span></li>
+          <li>PR в медиа <span style="color:var(--ink-3)">(издатель)</span></li>
+          <li>Paid UA / Steam featuring <span style="color:var(--ink-3)">(издатель)</span></li>
           <li>Launch-трейлер с двойной кампанией как крючком</li>
           <li>Специальная цена первой недели: 799 ₽</li>
         </ul>
@@ -1367,7 +1370,7 @@ footer .arg a:hover{color:var(--accent)}
       <div class="ms done"><span class="badge done">✓ Готово</span><div class="title">Прототип передвижения и стрельбы</div><div class="desc">Базовый feel стрельбы реализован в UE5. Хитмаркеры, звук, отдача — ощущение «правильного» FPS подтверждено плейтестами.</div></div>
       <div class="ms wip"><span class="badge wip">→ В работе</span><div class="title">Steam-страница и первый трейлер</div><div class="desc">Запуск Steam-страницы запланирован на Q3 2026 для начала сбора Wishlist.</div></div>
       <div class="ms"><span class="badge future">◦ Далее</span><div class="title">Early Access — Q1 2027</div><div class="desc">Мультиплеер + поднабор кампании (первая линия). Целевой Wishlist к EA: 10 000+.</div></div>
-      <div class="ms"><span class="badge future">◦ Далее</span><div class="title">Полный релиз — Q4 2027</div><div class="desc">Все 7 миссий, 4 карты, полная русская озвучка. Выход на VK Play и партнёрские площадки.</div></div>
+      <div class="ms"><span class="badge future">◦ Далее</span><div class="title">Полный релиз — Q4 2027</div><div class="desc">Все 7 миссий, 4 карты, полная локализация / RU VO. Global Steam + региональные площадки.</div></div>
     </div>
   </div>
 </section>
@@ -1395,20 +1398,20 @@ footer .arg a:hover{color:var(--accent)}
         <div class="mono-label">Season Pass · M+3</div>
         <div class="mono-price">599 ₽ <span>/ сезон</span></div>
         <div class="mono-desc">Скины, ивенты, режимы — после стабилизации релиза. Не в день один. <b>419 ₽</b> нетто.</div>
-      </div>
+        </div>
       <div class="mono-card">
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
         <div class="mono-label">Косметика · M+1</div>
         <div class="mono-price">149–299 ₽</div>
         <div class="mono-desc">Магазин скинов нарастает после релиза. Средний чек выше, чем «99 ₽ impulse» в день покупки.</div>
-      </div>
+          </div>
       <div class="mono-card f-net">
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
         <div class="mono-label">DLC «Netrunner» · Y2</div>
         <div class="mono-price">899 ₽</div>
         <div class="mono-desc">Отдельный продукт: кибердек, quickhacks, миссии. Не входит в базу. <b>629 ₽</b> нетто.</div>
+        </div>
       </div>
-    </div>
     <div class="mono-ltv fade-in">// LTV нетто на игрока: <b>~785 ₽</b> в год релиза · <b>~1 050 ₽</b> за 3 года (база + SP/DLC/скины по фазам)</div>
   </div>
 </section>
@@ -1421,23 +1424,30 @@ footer .arg a:hover{color:var(--accent)}
         <div class="eb">08 // Рынок</div>
         <h2>Размер<br><em>возможности</em></h2>
       </div>
-      <div class="r">FPS — самый популярный жанр в России. Ниша аркадного шутера с кампанией свободна.</div>
+      <div class="r">Global premium FPS: revival 2025–26 фрагментирован — мы закрываем полку <strong>campaign + classic CoD MP</strong>.</div>
     </div>
 
     <div class="market-stats fade-in">
-      <div class="market-stat"><div class="num">$700M</div><div class="lbl">Рынок FPS в России</div><div class="sub">~25% от $2.8B игрового рынка РФ</div></div>
-      <div class="market-stat"><div class="num">15M+</div><div class="lbl">FPS-игроков в РФ</div><div class="sub">Steam + VK Play активные пользователи</div></div>
-      <div class="market-stat"><div class="num">0</div><div class="lbl">Российских аркадных FPS с кампанией</div><div class="sub">Ниша полностью свободна</div></div>
+      <div class="market-stat"><div class="num">$15B+</div><div class="lbl">PC + console FPS</div><div class="sub">Global premium + mid-tier segment</div></div>
+      <div class="market-stat"><div class="num">2025–26</div><div class="lbl">Revival-волна</div><div class="sub">Solo campaigns · movement 6v6 · remasters</div></div>
+      <div class="market-stat"><div class="num">0</div><div class="lbl">Прямых аналогов</div><div class="sub">Campaign + classic CoD MP · premium box</div></div>
+    </div>
+
+    <div class="sub-head fade-in">// Волна 2025–26 (контекст)</div>
+    <div class="pillars fade-in" style="margin-bottom:2rem">
+      <div class="pillar"><span class="pno">SOLO</span><h4>Campaign revivals</h4><p>Metal Eden, remasters в духе Halo: CE — спрос на короткую premium-кампанию, часто без MP.</p></div>
+      <div class="pillar"><span class="pno">MP</span><h4>Movement 6v6</h4><p>EMPULSE и аналоги — wallrun/mechs, не boots-on-ground CoD-loop.</p></div>
+      <div class="pillar"><span class="pno">GAP</span><h4>Наша полка</h4><p>Кампания console-era + <b>classic CoD 6v6</b> в одной покупке — mid-tier для Steam global.</p></div>
     </div>
 
     <div class="sub-head fade-in">// Продажи аналогичных проектов</div>
     <div class="cmp-wrap fade-in">
-      <table class="cmp">
+      <table class="cmp market-cmp">
         <thead>
           <tr><th>Проект</th><th>Страна</th><th>Продажи</th><th>Цена</th><th>Команда</th></tr>
         </thead>
         <tbody>
-          <tr><td>Escape from Tarkov</td><td>Россия</td><td><b>14M+ копий</b></td><td>$45–150</td><td>~100 чел</td></tr>
+          <tr><td>Metal Eden</td><td>Польша</td><td><b>Новый релиз · TBD</b></td><td>~$40</td><td>~30 чел</td></tr>
           <tr><td>Insurgency: Sandstorm</td><td>Канада</td><td><b>4M+ копий</b></td><td>$30</td><td>~40 чел</td></tr>
           <tr><td>Ready or Not</td><td>Новая Зеландия</td><td><b>3M+ копий</b></td><td>$40</td><td>~25 чел</td></tr>
           <tr><td>World War 3</td><td>Польша</td><td><b>500K+ копий</b></td><td>$30</td><td>~30 чел</td></tr>
@@ -1461,16 +1471,14 @@ footer .arg a:hover{color:var(--accent)}
 
     <div class="finance-grid fade-in">
       <div class="ledger">
-        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-        <h3>// Расходы (20 месяцев)</h3>
-        <div class="ledger-row"><span class="lbl">Зарплаты (6 × 150k₽ × 20 мес)</span><span class="val">18 000 000₽</span></div>
-        <div class="ledger-row"><span class="lbl">Аутсорс (музыка, озвучка, QA)</span><span class="val">3 000 000₽</span></div>
-        <div class="ledger-row"><span class="lbl">Инфраструктура (серверы, софт)</span><span class="val">1 000 000₽</span></div>
-        <div class="ledger-row"><span class="lbl">Маркетинг pre-launch</span><span class="val">4 000 000₽</span></div>
-        <div class="ledger-row"><span class="lbl">Юридическое</span><span class="val">500 000₽</span></div>
-        <div class="ledger-row"><span class="lbl">Буфер (15%)</span><span class="val">4 000 000₽</span></div>
-        <div class="ledger-total"><span class="lbl">Итого</span><span class="val">30 500 000₽</span></div>
-        <div class="ledger-note">* Опция для ключевых специалистов: сниженный оклад + 2–5% от чистой прибыли.</div>
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <h3>// Расходы (18 месяцев · dev only)</h3>
+        <div class="ledger-row"><span class="lbl">ФОТ (4 core × ~15 мес)</span><span class="val">7 500 000₽</span></div>
+        <div class="ledger-row"><span class="lbl">Софт / UE / CI / Steam</span><span class="val">800 000₽</span></div>
+        <div class="ledger-row"><span class="lbl">Аудио / ассеты</span><span class="val">700 000₽</span></div>
+        <div class="ledger-row"><span class="lbl">Буфер (~10%)</span><span class="val">1 000 000₽</span></div>
+        <div class="ledger-total"><span class="lbl">Итого</span><span class="val">10 000 000₽ · $100k</span></div>
+        <div class="ledger-note">* QA, маркетинг, LQA, PR — вклад <b>издателя</b>, не в dev-cash. Опция: сниженный оклад + доля от выручки.</div>
       </div>
       <div class="ledger">
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
@@ -1497,7 +1505,7 @@ footer .arg a:hover{color:var(--accent)}
         <div class="scenario-row"><span class="l">DLC</span><span class="v">—</span></div>
         <div class="scenario-row"><span class="l">Комиссии (30%)</span><span class="v neg">−6.6M₽</span></div>
         <div class="scenario-row"><span class="l">Чистая выручка</span><span class="v">15.4M₽</span></div>
-        <div class="scenario-row profit"><span class="l">Остаток Y1*</span><span class="v bad">−15.1M₽</span></div>
+        <div class="scenario-row profit"><span class="l">Остаток Y1*</span><span class="v">+5.4M₽</span></div>
       </div>
       <div class="scenario featured">
         <div class="scenario-badge">Реалистичный</div>
@@ -1508,8 +1516,8 @@ footer .arg a:hover{color:var(--accent)}
         <div class="scenario-row"><span class="l">DLC</span><span class="v">—</span></div>
         <div class="scenario-row"><span class="l">Комиссии (30%)</span><span class="v neg">−16.8M₽</span></div>
         <div class="scenario-row"><span class="l">Чистая выручка</span><span class="v">39.3M₽</span></div>
-        <div class="scenario-row profit"><span class="l">Остаток Y1*</span><span class="v">+8.8M₽</span></div>
-        <div class="roi">EBITDA Y1: 31.8M₽ · накопл. +1.3M₽ после dev</div>
+        <div class="scenario-row profit"><span class="l">Остаток Y1*</span><span class="v">+29.3M₽</span></div>
+        <div class="roi">EBITDA Y1: 33.3M₽ · накопл. +23.3M₽ после dev</div>
       </div>
       <div class="scenario">
         <div class="scenario-badge">Оптимистичный</div>
@@ -1520,13 +1528,13 @@ footer .arg a:hover{color:var(--accent)}
         <div class="scenario-row"><span class="l">DLC</span><span class="v">—</span></div>
         <div class="scenario-row"><span class="l">Комиссии (30%)</span><span class="v neg">−42.0M₽</span></div>
         <div class="scenario-row"><span class="l">Чистая выручка</span><span class="v">97.7M₽</span></div>
-        <div class="scenario-row profit"><span class="l">Остаток Y1*</span><span class="v">+67.2M₽</span></div>
+        <div class="scenario-row profit"><span class="l">Остаток Y1*</span><span class="v">+87.7M₽</span></div>
         <div class="roi" style="color:var(--ok)">EBITDA Y1: 90.2M₽ · окупаемость ~4 мес</div>
       </div>
     </div>
     <div class="breakeven fade-in">
-      <strong>Точка безубыточности (только база 999 ₽):</strong> ~44 000 копий (нетто 699 ₽, без DLC).
-      <br><span style="font-size:.82rem;color:var(--ink-3)">* Остаток Y1 = чистая выручка − 30.5M₽ (без post-launch OPEX). Реальный окупаемый остаток после OPEX и dev — строка «Прибыль (накопл.)» в P&amp;L (+1.3M₽ к концу года 1).</span>
+      <strong>Точка безубыточности (только база 999 ₽):</strong> ~14 000 копий (нетто 699 ₽, dev $100k).
+      <br><span style="font-size:.82rem;color:var(--ink-3)">* Остаток Y1 = чистая выручка − 10M₽ dev (без studio OPEX). Post-launch маркетинг — издатель. Накопл. после OPEX — см. P&amp;L (+23.3M₽ к концу Y1).</span>
     </div>
   </div>
 </section>
@@ -1549,7 +1557,7 @@ footer .arg a:hover{color:var(--accent)}
       <div class="unit-item"><div class="k">DLC</div><div class="v">629₽</div></div>
       <div class="unit-item"><div class="k">LTV · год 1</div><div class="v">~785₽</div></div>
       <div class="unit-item"><div class="k">LTV · 3 года</div><div class="v">~1 050₽</div></div>
-      <div class="unit-item"><div class="k">CAC (4M ÷ 50k)</div><div class="v dim">80₽</div></div>
+      <div class="unit-item"><div class="k">CAC (издатель)</div><div class="v dim">~80₽</div></div>
     </div>
 
     <div class="breakeven fade-in" style="margin-bottom:1.5rem">
@@ -1576,12 +1584,12 @@ footer .arg a:hover{color:var(--accent)}
           <tr class="hl"><td>Итого нетто</td><td>39.3M₽</td><td>33.8M₽</td><td>23.0M₽</td><td>96.1M₽</td></tr>
           <tr><td>Серверы / инфра</td><td class="neg">−2.4M₽</td><td class="neg">−2.0M₽</td><td class="neg">−1.5M₽</td><td class="neg">−5.9M₽</td></tr>
           <tr><td>Команда поддержки</td><td class="neg">−3.6M₽</td><td class="neg">−3.6M₽</td><td class="neg">−1.8M₽</td><td class="neg">−9.0M₽</td></tr>
-          <tr><td>Маркетинг post-launch</td><td class="neg">−1.5M₽</td><td class="neg">−1.0M₽</td><td class="neg">−0.5M₽</td><td class="neg">−3.0M₽</td></tr>
-          <tr><td>Post-launch OPEX</td><td class="neg">−7.5M₽</td><td class="neg">−6.6M₽</td><td class="neg">−3.8M₽</td><td class="neg">−17.9M₽</td></tr>
-          <tr class="hl"><td>EBITDA</td><td class="pos">31.8M₽</td><td class="pos">27.2M₽</td><td class="pos">19.2M₽</td><td class="pos">78.2M₽</td></tr>
-          <tr><td>EBITDA margin</td><td>81%</td><td>80%</td><td>83%</td><td>81%</td></tr>
-          <tr><td>Dev investment</td><td class="neg">−30.5M₽</td><td>—</td><td>—</td><td class="neg">−30.5M₽</td></tr>
-          <tr class="hl"><td>Прибыль (накопл., после dev)</td><td class="pos">+1.3M₽</td><td class="pos">+28.5M₽</td><td class="pos">+47.7M₽</td><td>—</td></tr>
+          <tr><td>Post-launch OPEX</td><td class="neg">−6.0M₽</td><td class="neg">−5.6M₽</td><td class="neg">−3.3M₽</td><td class="neg">−14.9M₽</td></tr>
+          <tr class="sub"><td colspan="5" style="font-size:.78rem;color:var(--ink-3);padding:.5rem 1rem">Post-launch маркетинг (−3M₽) — вклад издателя, не в studio EBITDA</td></tr>
+          <tr class="hl"><td>EBITDA</td><td class="pos">33.3M₽</td><td class="pos">28.2M₽</td><td class="pos">19.7M₽</td><td class="pos">81.2M₽</td></tr>
+          <tr><td>EBITDA margin</td><td>85%</td><td>83%</td><td>86%</td><td>84%</td></tr>
+          <tr><td>Dev investment</td><td class="neg">−10M₽</td><td>—</td><td>—</td><td class="neg">−10M₽</td></tr>
+          <tr class="hl"><td>Прибыль (накопл., после dev)</td><td class="pos">+23.3M₽</td><td class="pos">+51.5M₽</td><td class="pos">+71.2M₽</td><td>—</td></tr>
         </tbody>
       </table>
     </div>
@@ -1589,22 +1597,22 @@ footer .arg a:hover{color:var(--accent)}
     <div class="cf-grid fade-in">
       <div class="cf-card">
         <h4>// Cash flow timeline</h4>
-        <div class="cf-row"><span>М. 1–20 · разработка</span><span class="v neg">−30.5M₽</span></div>
-        <div class="cf-row"><span>М. 20–21 · Early Access</span><span class="v pos">+3.5M₽</span></div>
-        <div class="cf-row"><span>М. 22–24 · launch (база)</span><span class="v pos">+15–22M₽</span></div>
-        <div class="cf-row"><span>М. 25–27 · Season Pass #1</span><span class="v pos">+2–4M₽</span></div>
-        <div class="cf-row hl"><span>М. ~32 · break-even</span><span class="v">0</span></div>
-        <div class="cf-row"><span>М. 34 · конец года 1</span><span class="v pos">+1.3M₽</span></div>
-        <div class="cf-row"><span>М. 46 · конец года 2</span><span class="v pos">+28.5M₽</span></div>
-        <div class="cf-row"><span>М. 58 · конец года 3 + DLC</span><span class="v pos">+47.7M₽</span></div>
+        <div class="cf-row"><span>М. 1–18 · разработка</span><span class="v neg">−$100k</span></div>
+        <div class="cf-row"><span>М. 18–19 · Early Access</span><span class="v pos">+3.5M₽</span></div>
+        <div class="cf-row"><span>М. 20–22 · launch (база)</span><span class="v pos">+15–22M₽</span></div>
+        <div class="cf-row"><span>М. 23–25 · Season Pass #1</span><span class="v pos">+2–4M₽</span></div>
+        <div class="cf-row hl"><span>М. ~20 · break-even</span><span class="v">0</span></div>
+        <div class="cf-row"><span>М. 30 · конец года 1</span><span class="v pos">+23.3M₽</span></div>
+        <div class="cf-row"><span>М. 42 · конец года 2</span><span class="v pos">+51.5M₽</span></div>
+        <div class="cf-row"><span>М. 54 · конец года 3 + DLC</span><span class="v pos">+71.2M₽</span></div>
       </div>
       <div class="cf-card">
         <h4>// Возврат инвестору (3 года)</h4>
-        <div class="cf-row"><span>Инвестиция</span><span class="v">30.5M₽</span></div>
-        <div class="cf-row"><span>EBITDA 3yr (реалист.)</span><span class="v pos">78.2M₽</span></div>
-        <div class="cf-row"><span>Чистая прибыль 3yr</span><span class="v pos">+47.7M₽</span></div>
-        <div class="cf-row hl"><span>ROI 3yr</span><span class="v pos">+156%</span></div>
-        <div class="cf-row hl"><span>Multiple</span><span class="v pos">2.56×</span></div>
+        <div class="cf-row"><span>Инвестиция (dev)</span><span class="v">$100k</span></div>
+        <div class="cf-row"><span>EBITDA 3yr (реалист.)</span><span class="v pos">81.2M₽</span></div>
+        <div class="cf-row"><span>Чистая прибыль 3yr</span><span class="v pos">+71.2M₽</span></div>
+        <div class="cf-row hl"><span>ROI 3yr</span><span class="v pos">+712%</span></div>
+        <div class="cf-row hl"><span>Multiple</span><span class="v pos">8.1×</span></div>
         <div class="cf-row"><span>Payback (накопл. cash)</span><span class="v">~12 мес</span></div>
         <div class="cf-row"><span>IRR (3yr, оценка)</span><span class="v pos">~48%</span></div>
       </div>
@@ -1616,9 +1624,9 @@ footer .arg a:hover{color:var(--accent)}
           <tr><th>Сценарий</th><th>EBITDA 3yr</th><th>Прибыль 3yr</th><th>ROI</th><th>Multiple</th></tr>
         </thead>
         <tbody>
-          <tr><td>Пессимистичный</td><td>17.8M₽</td><td class="neg">−12.7M₽</td><td class="neg">−42%</td><td>0.58×</td></tr>
-          <tr class="hl"><td>Реалистичный</td><td class="pos">78.2M₽</td><td class="pos">+47.7M₽</td><td class="pos">+156%</td><td class="pos">2.56×</td></tr>
-          <tr><td>Оптимистичный</td><td class="pos">229M₽</td><td class="pos">+199M₽</td><td class="pos">+651%</td><td class="pos">7.5×</td></tr>
+          <tr><td>Пессимистичный</td><td>20.8M₽</td><td class="pos">+10.8M₽</td><td class="pos">+108%</td><td>2.08×</td></tr>
+          <tr class="hl"><td>Реалистичный</td><td class="pos">81.2M₽</td><td class="pos">+71.2M₽</td><td class="pos">+712%</td><td class="pos">8.1×</td></tr>
+          <tr><td>Оптимистичный</td><td class="pos">232M₽</td><td class="pos">+222M₽</td><td class="pos">+2222%</td><td class="pos">23.2×</td></tr>
         </tbody>
       </table>
     </div>
@@ -1633,13 +1641,13 @@ footer .arg a:hover{color:var(--accent)}
         <div class="eb">11 // Использование средств</div>
         <h2>Куда идут<br><em>инвестиции</em></h2>
       </div>
-      <div class="r">Бюджет на 20 месяцев разработки до полного релиза. Распределение без лишних прослоек.</div>
+      <div class="r">Бюджет на 18 месяцев до EA/релиза. Dev-cash $100k; маркетинг и QA — издатель.</div>
     </div>
     <div class="pillars fade-in">
-      <div class="pillar"><span class="pno" style="color:var(--amber)">69%</span><h4>Разработка</h4><p>Зарплаты команды: программирование, арт, левел-дизайн, звук, QA.</p></div>
-      <div class="pillar"><span class="pno" style="color:var(--cyan)">13%</span><h4>Маркетинг</h4><p>Трейлер, PR, инфлюенсеры, VK Ads, игровые выставки.</p></div>
-      <div class="pillar"><span class="pno">3%</span><h4>Инфраструктура</h4><p>Серверы РФ (60 Hz), EAC, Steam DevKit, CDN.</p></div>
-      <div class="pillar"><span class="pno" style="color:var(--ink-3)">15%</span><h4>Резерв</h4><p>Буфер на овертайм, QA, юридическое, непредвиденные расходы.</p></div>
+      <div class="pillar"><span class="pno" style="color:var(--amber)">75%</span><h4>Разработка</h4><p>ФОТ core-команды: код, арт, дизайн, звук. QA — издатель.</p></div>
+      <div class="pillar"><span class="pno" style="color:var(--cyan)">15%</span><h4>Инфра + аудио</h4><p>UE, CI, Steam, dev-серверы, музыка и SFX.</p></div>
+      <div class="pillar"><span class="pno" style="color:var(--magenta)">10%</span><h4>Буфер</h4><p>Резерв на овертайм и непредвиденное.</p></div>
+      <div class="pillar"><span class="pno" style="color:var(--ok)">+</span><h4>Издатель</h4><p>Маркетинг, PR, QA/LQA, wishlist, launch UA — вне dev $100k.</p></div>
     </div>
   </div>
 </section>
@@ -1659,8 +1667,8 @@ footer .arg a:hover{color:var(--accent)}
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
         <div class="exit-scenario">Сценарий A</div>
         <div class="exit-title">Безубыточность</div>
-        <div class="exit-copies">~44 000 копий</div>
-        <p class="exit-desc">Только база 999 ₽ (нетто 699 ₽), без DLC. Окупаемость сметы 30.5M₽.</p>
+        <div class="exit-copies">~14 000 копий</div>
+        <p class="exit-desc">Только база 999 ₽ (нетто 699 ₽). Окупаемость dev $100k.</p>
         <div class="exit-roi" style="color:var(--ink-3)">ROI: 0× — точка окупаемости</div>
       </div>
       <div class="exit-card f-pmc">
@@ -1668,8 +1676,8 @@ footer .arg a:hover{color:var(--accent)}
         <div class="exit-scenario">Сценарий B</div>
         <div class="exit-title">Базовый возврат</div>
         <div class="exit-copies">50k копий Y1 + live-ops</div>
-        <p class="exit-desc">Реалистичный трек: база на релизе, Season Pass с M+3, DLC со 2-го года. EBITDA 3Y +156%.</p>
-        <div class="exit-roi" style="color:var(--ok)">ROI: 2.56× за 3 года</div>
+        <p class="exit-desc">Реалистичный трек: база на релизе, Season Pass с M+3, DLC со 2-го года. EBITDA 3Y +712%.</p>
+        <div class="exit-roi" style="color:var(--ok)">ROI: 8.1× за 3 года</div>
       </div>
       <div class="exit-card f-net">
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
@@ -1720,7 +1728,7 @@ footer .arg a:hover{color:var(--accent)}
     <div class="s-head fade-in">
       <div class="l">
         <div class="eb">14 // План разработки</div>
-        <h2>18–20 месяцев<br><em>до релиза</em></h2>
+        <h2>18 месяцев<br><em>до релиза</em></h2>
       </div>
       <div class="r">Чёткие майлстоуны с измеримыми результатами. Транши только под результат — инвестор платит за факт, а не за обещание.</div>
     </div>
@@ -1739,7 +1747,7 @@ footer .arg a:hover{color:var(--accent)}
         <span class="dot"></span>
         <div class="phase">ФАЗА 1 · ACTIVE</div>
         <h4>Pre-production</h4>
-        <div class="period">М. 1–3 · Транш: 5 млн ₽</div>
+        <div class="period">М. 1–3 · Транш: $25k</div>
         <ul>
           <li>Финализация GDD</li>
           <li>Greybox всех карт MP и миссий кампании</li>
@@ -1752,7 +1760,7 @@ footer .arg a:hover{color:var(--accent)}
         <span class="dot"></span>
         <div class="phase">ФАЗА 2</div>
         <h4>Production — Alpha</h4>
-        <div class="period">М. 4–10 · Транш: 10 млн ₽</div>
+        <div class="period">М. 4–9 · Транш: $25k</div>
         <ul>
           <li>Все миссии кампании играбельны</li>
           <li>Все карты мультиплеера играбельны</li>
@@ -1766,7 +1774,7 @@ footer .arg a:hover{color:var(--accent)}
         <span class="dot"></span>
         <div class="phase">ФАЗА 3</div>
         <h4>Production — Beta</h4>
-        <div class="period">М. 11–15 · Транш: 9 млн ₽</div>
+        <div class="period">М. 10–14 · Транш: $25k</div>
         <ul>
           <li>Финальное качество арта</li>
           <li>Озвучка записана и интегрирована</li>
@@ -1780,10 +1788,10 @@ footer .arg a:hover{color:var(--accent)}
         <span class="dot"></span>
         <div class="phase">ФАЗА 4</div>
         <h4>Polish &amp; Release</h4>
-        <div class="period">М. 16–20 · Транш: 6,5 млн ₽</div>
+        <div class="period">М. 15–18 · Транш: $25k</div>
         <ul>
           <li>Баг-фиксинг, финальная оптимизация</li>
-          <li>Маркетинговая кампания (стримеры, трейлеры)</li>
+          <li>Маркетинговая кампания <span style="color:var(--ink-3)">(издатель)</span></li>
           <li>Подготовка Steam / VK Play страниц</li>
           <li>Демо-версия для привлечения аудитории</li>
           <li>Майлстоун: РЕЛИЗ</li>
@@ -1801,16 +1809,33 @@ footer .arg a:hover{color:var(--accent)}
         <div class="eb">15 // Команда</div>
         <h2>Люди за<br><em>проектом</em></h2>
       </div>
-      <div class="r">6 специалистов с опытом в геймдеве и страстью к шутерам. Аватары — заполнители до публичного релиза состава.</div>
+      <div class="r">Три ключевых роли закрыты; открыт набор программиста. Lean-состав под dev $100k.</div>
     </div>
 
     <div class="team-grid fade-in">
-      <div class="tm"><div class="avatar">ГД</div><div class="nm">[Имя Фамилия]</div><div class="role">Game Director / Продюсер</div><p>Видение продукта, управление командой, бизнес-девелопмент. Опыт: X лет в геймдеве.</p></div>
-      <div class="tm"><div class="avatar">ЛП</div><div class="nm">[Имя Фамилия]</div><div class="role">Lead Programmer</div><p>Архитектура, gameplay, сетевой код. UE5 C++, X лет опыта. Ранее: [проекты].</p></div>
-      <div class="tm"><div class="avatar">ПР</div><div class="nm">[Имя Фамилия]</div><div class="role">Programmer</div><p>UI, AI, инструменты, оптимизация. UE5 Blueprints + C++.</p></div>
-      <div class="tm"><div class="avatar">3D</div><div class="nm">[Имя Фамилия]</div><div class="role">3D Artist (Environment)</div><p>Уровни, пропсы, материалы. Blender, Substance. Портфолио: [ArtStation].</p></div>
-      <div class="tm"><div class="avatar">3D</div><div class="nm">[Имя Фамилия]</div><div class="role">3D Artist (Characters/Weapons)</div><p>Персонажи, оружие, анимация. Blender, Mixamo. Портфолио: [ArtStation].</p></div>
-      <div class="tm"><div class="avatar">ЛД</div><div class="nm">[Имя Фамилия]</div><div class="role">Level Designer</div><p>Дизайн карт, скриптинг миссий, баланс. Опыт создания карт для [игры].</p></div>
+      <div class="tm">
+        <div class="avatar">ФД</div>
+        <div class="nm">Дунаев Федор Дмитриевич</div>
+        <div class="role">Геймдизайнер · главный продюсер</div>
+        <p>Отвечает за игровое видение, GDD, USP и общий вектор разработки. Опыт в геймдизайне и продюсировании игровых проектов.</p>
+      </div>
+      <div class="tm">
+        <div class="avatar">МП</div>
+        <div class="nm">Петраковский Максим Владимирович</div>
+        <div class="role">Геймдизайнер · со-продюсер · звукорежиссёр</div>
+        <p>Отвечает за звуковой дизайн, музыкальное сопровождение и операционное продюсирование. Опыт в звукорежиссуре и разработке игр.</p>
+      </div>
+      <div class="tm">
+        <div class="avatar">ПД</div>
+        <div class="nm">Деваторская Полина Владимировна</div>
+        <div class="role">3D-дженералист</div>
+      </div>
+      <div class="tm tm-open">
+        <div class="avatar">DEV</div>
+        <div class="nm">Разработка</div>
+        <div class="role">Programmer · в поиске сотрудника</div>
+        <p>Открытая позиция в core-команде.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1830,14 +1855,7 @@ footer .arg a:hover{color:var(--accent)}
       <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
       <div class="video-placeholder" id="videoPh">
         <div class="video-play"></div>
-        <div class="video-label" id="videoLabel">// Нажмите для просмотра видео прототипа · 02:30</div>
-        <p class="video-file-hint" id="videoFileHint">
-          Embed не работает при открытии файла двойным кликом (<code>file://</code>).
-          Запустите <code>start-pitch.command</code> в папке проекта
-          или <code>python3 -m http.server 8080</code> →
-          <a href="http://localhost:8080/index.html">localhost:8080</a>.
-          Сейчас по клику — <a href="https://www.youtube.com/watch?v=Noy5hcCvMdM" target="_blank" rel="noopener">ролик на YouTube</a>.
-        </p>
+        <div class="video-label">// Нажмите для просмотра видео прототипа · 02:30</div>
       </div>
     </div>
 
@@ -1874,21 +1892,21 @@ footer .arg a:hover{color:var(--accent)}
       <div class="ask-card primary">
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
         <div class="ask-eb">// REQUEST</div>
-        <div class="ask-amount">30.5<em>M ₽</em></div>
-        <div class="ask-sub">~$305,000 · 20 месяцев · 4 транша</div>
+        <div class="ask-amount">$100<em>k</em></div>
+        <div class="ask-sub">~10M ₽ · 18 месяцев · 4 транша · dev only</div>
         <div class="tranches">
-          <div class="tranche"><span class="n">T1</span><span class="lbl">Pre-production</span><span class="m">М. 1–3</span><span class="v">5,000,000 ₽</span></div>
-          <div class="tranche"><span class="n">T2</span><span class="lbl">Alpha</span><span class="m">М. 4–10</span><span class="v">10,000,000 ₽</span></div>
-          <div class="tranche"><span class="n">T3</span><span class="lbl">Beta</span><span class="m">М. 11–15</span><span class="v">9,000,000 ₽</span></div>
-          <div class="tranche"><span class="n">T4</span><span class="lbl">Release</span><span class="m">М. 16–20</span><span class="v">6,500,000 ₽</span></div>
+          <div class="tranche"><span class="n">T1</span><span class="lbl">Pre-production</span><span class="m">М. 1–3</span><span class="v">$25k</span></div>
+          <div class="tranche"><span class="n">T2</span><span class="lbl">Alpha</span><span class="m">М. 4–9</span><span class="v">$25k</span></div>
+          <div class="tranche"><span class="n">T3</span><span class="lbl">Beta</span><span class="m">М. 10–14</span><span class="v">$25k</span></div>
+          <div class="tranche"><span class="n">T4</span><span class="lbl">Release</span><span class="m">М. 15–18</span><span class="v">$25k</span></div>
         </div>
       </div>
 
       <div class="ask-list">
-        <div class="ask-card"><h4>// Что мы ищем в партнёре</h4><p>Издательская экспертиза: маркетинг, PR, QA-поддержка, помощь с локализацией для глобального рынка, бизнес-девелопмент (VK Play, консоли).</p></div>
+        <div class="ask-card"><h4>// Что мы ищем в партнёре</h4><p>Marketing, PR, QA/LQA, wishlist, launch UA, локализация. Global Steam + optional console port roadmap.</p></div>
         <div class="ask-card"><h4>// Что мы предлагаем</h4><p>Доля от выручки (обсуждается). Полная прозрачность: еженедельные отчёты, доступ к билдам. Совместное принятие ключевых решений.</p></div>
         <div class="ask-card"><h4>// Снижение рисков для инвестора</h4><p>Транши по майлстоунам — оплата только за результат. Работающий прототип уже существует. Детальная документация и план.</p></div>
-        <div class="ask-card"><h4>// Потенциал возврата</h4><p>Реалистичный сценарий: ROI +156% за 3 года, multiple 2.56× (база на релизе + live-ops по фазам). При успехе — франшиза, сиквел, порты.</p></div>
+        <div class="ask-card"><h4>// Потенциал возврата</h4><p>Реалистичный сценарий: ROI +712% за 3 года, multiple 8.1× (dev $100k, маркетинг издателя). Франшиза, сиквел, порты.</p></div>
       </div>
     </div>
   </div>
@@ -1906,10 +1924,10 @@ footer .arg a:hover{color:var(--accent)}
     </div>
 
     <div class="reasons-grid fade-in">
-      <div class="reason"><div class="num">01</div><h4>Пустая ниша</h4><p>Нет российского аркадного FPS с кампанией. Мы первые.</p></div>
-      <div class="reason"><div class="num">02</div><h4>Проверенная формула</h4><p>CoD4 — одна из самых продаваемых игр. Мы адаптируем, не изобретаем.</p></div>
-      <div class="reason"><div class="num">03</div><h4>Технологическое окно</h4><p>UE5 + AI позволяют 6 людям сделать то, что раньше требовало 60.</p></div>
-      <div class="reason"><div class="num">04</div><h4>Рыночное окно</h4><p>Западные издатели уходят. Государство поддерживает. Аудитория ждёт.</p></div>
+      <div class="reason"><div class="num">01</div><h4>Console-era bundle</h4><p>Campaign + classic CoD MP в одной premium-коробке — полка, которую revival 2025–26 не закрывает.</p></div>
+      <div class="reason"><div class="num">02</div><h4>Проверенная MP-формула</h4><p>CoD4/MW2/BO — эталон 6v6. Мы адаптируем loop, не изобретаем movement-shooter.</p></div>
+      <div class="reason"><div class="num">03</div><h4>Технологическое окно</h4><p>UE5 + AI позволяют lean-команде сделать AA-scope при dev $100k.</p></div>
+      <div class="reason"><div class="num">04</div><h4>Capital efficiency</h4><p>Dev-cash $100k + издатель на marketing/QA. Высокий ROI при умеренном риске.</p></div>
       <div class="reason"><div class="num">05</div><h4>Прототип есть</h4><p>Не мечтатели — работающий билд, GDD, техническая экспертиза.</p></div>
     </div>
   </div>
@@ -1927,12 +1945,12 @@ footer .arg a:hover{color:var(--accent)}
     </div>
 
     <div class="risks-grid fade-in">
-      <div class="risk"><div class="risk-name">Срыв сроков</div><span class="risk-badge medium">Средний</span><div class="risk-mit">Agile-спринты, буфер 15% в бюджете, приоритизация фич (MVP). Транши по майлстоунам.</div></div>
+      <div class="risk"><div class="risk-name">Срыв сроков</div><span class="risk-badge medium">Средний</span><div class="risk-mit">Agile-спринты, буфер 10% в dev-budget, MVP-приоритеты. Транши по майлстоунам.</div></div>
       <div class="risk"><div class="risk-name">Уход члена команды</div><span class="risk-badge medium">Средний</span><div class="risk-mit">Документация всех процессов, модульный код, договоры с lock-in периодом.</div></div>
       <div class="risk"><div class="risk-name">Сложность сетевого кода</div><span class="risk-badge medium">Средний</span><div class="risk-mit">UE5 — зрелый движок со встроенной репликацией. EOS для matchmaking. Проверенные решения.</div></div>
-      <div class="risk"><div class="risk-name">Низкие продажи</div><span class="risk-badge medium">Средний</span><div class="risk-mit">Бета-тест для валидации спроса. Маркетинг через стримеров. Доступная цена. Безубыточность — ~44K копий (только база).</div></div>
-      <div class="risk"><div class="risk-name">Сравнение с AAA CoD</div><span class="risk-badge high">Высокий</span><div class="risk-mit">Позиционирование: «инди по доступной цене», не «убийца CoD». Честность с аудиторией. Фокус на game feel.</div></div>
-      <div class="risk"><div class="risk-name">Появление конкурента</div><span class="risk-badge low">Низкий</span><div class="risk-mit">Скорость выхода на рынок. Уникальный сеттинг. Лояльность раннего сообщества.</div></div>
+      <div class="risk"><div class="risk-name">Низкие продажи</div><span class="risk-badge medium">Средний</span><div class="risk-mit">Beta + издательский маркетинг. Доступная цена. Безубыточность — ~14K копий (база, dev $100k).</div></div>
+      <div class="risk"><div class="risk-name">Сравнение с AAA CoD</div><span class="risk-badge high">Высокий</span><div class="risk-mit">Не «убийца Warzone». Mid-tier classic CoD MP + campaign. Честный scope, фокус на game feel.</div></div>
+      <div class="risk"><div class="risk-name">Появление конкурента</div><span class="risk-badge low">Низкий</span><div class="risk-mit">Revival 2025–26 фрагментирован — скорость и bundle «campaign + classic CoD MP». Раннее сообщество и EA.</div></div>
     </div>
   </div>
 </section>
@@ -1943,14 +1961,14 @@ footer .arg a:hover{color:var(--accent)}
     <div class="fade-in">
       <div class="eb" style="justify-content:center;font-family:var(--ff-mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:.8rem;margin-bottom:1.4rem">20 // Следующий шаг</div>
       <h2>Давайте создадим<br><em>историю</em></h2>
-      <p class="lead">Российский рынок ждёт свой шутер. У нас есть видение, команда, прототип и план. Нам нужен партнёр, который верит в этот рынок так же, как мы.</p>
+      <p class="lead">Premium console-era shooter для global Steam. Кампания + classic CoD MP, прототип и lean-модель $100k. Ищем издателя с marketing/QA.</p>
       <div class="cta-actions">
-        <a href="/cdn-cgi/l/email-protection#374e58424577525a565e5b1954585a" class="btn btn-primary">Написать нам</a>
+        <a href="mailto:your@email.com" class="btn btn-primary">Написать нам</a>
         <a href="#" class="btn btn-ghost">Скачать PDF</a>
         <a href="#" class="btn btn-ghost">Скачать прототип</a>
       </div>
       <div class="cta-contacts">
-        <div><div class="lbl">// Email</div><div class="val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a3daccd6d1e3c6cec2cacf8dc0ccce">[email&#160;protected]</a></div></div>
+        <div><div class="lbl">// Email</div><div class="val"><a href="mailto:your@email.com">your@email.com</a></div></div>
         <div><div class="lbl">// Telegram</div><div class="val">@yourtelegram</div></div>
         <div><div class="lbl">// Телефон</div><div class="val">+7 (XXX) XXX-XX-XX</div></div>
       </div>
@@ -1984,7 +2002,7 @@ footer .arg a:hover{color:var(--accent)}
       </div>
       <div>
         <h5>// Контакты</h5>
-        <a href="/cdn-cgi/l/email-protection#364f59434476535b575f5a1855595b"><span class="__cf_email__" data-cfemail="a1d8ced4d3e1c4ccc0c8cd8fc2cecc">[email&#160;protected]</span></a>
+        <a href="mailto:your@email.com">your@email.com</a>
         <a href="#">Telegram</a>
         <a href="#">Сайт проекта</a>
       </div>
@@ -1992,7 +2010,6 @@ footer .arg a:hover{color:var(--accent)}
         <h5>// Документы</h5>
         <a href="docs.html">GDD</a>
         <a href="tech.html">Tech</a>
-        <a href="#finance">Экономика</a>
         <a href="#prototype">Прототип</a>
         <a href="#ask">Предложение</a>
       </div>
@@ -2009,7 +2026,24 @@ footer .arg a:hover{color:var(--accent)}
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
+/* ============== MOBILE NAV ============== */
+(()=>{
+  const burger=document.getElementById('navBurger');
+  const links=document.getElementById('navLinks');
+  if(!burger||!links) return;
+  burger.addEventListener('click',()=>{
+    const open=links.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded',open?'true':'false');
+  });
+  links.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click',()=>{
+      links.classList.remove('is-open');
+      burger.setAttribute('aria-expanded','false');
+    });
+  });
+})();
+
 /* ============== FACTION TOGGLE ============== */
 function setFaction(f){
   document.body.dataset.faction=f;
@@ -2080,34 +2114,20 @@ if(pf){
 /* ============== RANDOM HERO GLITCH ============== */
 const ht=document.getElementById('heroTitle');
 if(ht){
-  setInterval(()=>{
-    if(Math.random()<0.32){
-      ht.classList.add('is-glitch');
-      setTimeout(()=>ht.classList.remove('is-glitch'),600);
-    }
-  },3800);
+setInterval(()=>{
+  if(Math.random()<0.32){
+    ht.classList.add('is-glitch');
+    setTimeout(()=>ht.classList.remove('is-glitch'),600);
+  }
+},3800);
 }
 
 /* ============== VIDEO PLACEHOLDER ============== */
 const YT_EMBED='https://www.youtube-nocookie.com/embed/Noy5hcCvMdM?autoplay=1&rel=0';
-const YT_WATCH='https://www.youtube.com/watch?v=Noy5hcCvMdM';
-const isFilePage=location.protocol==='file:';
 const vph=document.getElementById('videoPh');
-const videoFileHint=document.getElementById('videoFileHint');
-const videoLabel=document.getElementById('videoLabel');
-if(isFilePage&&videoFileHint){
-  videoFileHint.classList.add('is-on');
-  if(videoLabel){
-    videoLabel.textContent='// Клик — открыть на YouTube (для embed нужен localhost)';
-  }
-}
 if(vph){
   vph.addEventListener('click',()=>{
     if(vph.querySelector('iframe')) return;
-    if(isFilePage){
-      window.open(YT_WATCH,'_blank','noopener,noreferrer');
-      return;
-    }
     const iframe=document.createElement('iframe');
     iframe.style.cssText='width:100%;height:100%;aspect-ratio:16/9;border:0';
     iframe.src=YT_EMBED;
