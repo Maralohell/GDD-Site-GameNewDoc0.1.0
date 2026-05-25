@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>not_found — параллельная кампания · ЧВК × нетраннеры</title>
-<meta name="description" content="Console-era premium FPS: параллельная кампания + classic CoD 6v6. Global Steam, dev $100k.">
+<meta name="description" content="Premium FPS в духе консольной эры: параллельная кампания + классический мульти CoD 6v6. Steam, бюджет разработки $100k.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,13 +13,13 @@
 
 <style>
 :root{
-  --bg-0:#06080b;--bg-1:#0b0e14;--bg-2:#11151d;--bg-3:#171c27;
-  --ink:#e8edf5;--ink-2:#aab2bf;--ink-3:#6b7280;--ink-4:#3a4150;
-  --rule:#1b2030;--rule-2:#262c3c;
-  --amber:#ffb24a;--cyan:#4de2ff;--magenta:#ff3ea5;
-  --ok:#6fe39c;--bad:#ff5560;--warn:#ffb24a;
+  --bg-0:#020804;--bg-1:#041008;--bg-2:#061810;--bg-3:#082018;
+  --ink:#c8ffc8;--ink-2:#78c878;--ink-3:#488848;--ink-4:#285828;
+  --rule:#183820;--rule-2:#244830;
+  --amber:#ffb830;--cyan:#50ff70;--magenta:#80ff90;
+  --ok:#50ff70;--bad:#ff5050;--warn:#ffb830;
   --accent:var(--amber);--accent-2:var(--cyan);
-  --accent-soft:rgba(255,178,74,.14);
+  --accent-soft:rgba(255,184,48,.14);
   --ff-display:'Saira',sans-serif;--ff-cond:'Saira Condensed','Saira',sans-serif;
   --ff-body:'Space Grotesk','Inter',system-ui,sans-serif;
   --ff-mono:'JetBrains Mono',ui-monospace,monospace;
@@ -32,8 +32,8 @@ body{
   font-family:var(--ff-body);background:var(--bg-0);color:var(--ink);line-height:1.55;
   overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
-body[data-faction="net"]{--accent:var(--cyan);--accent-2:var(--amber);--accent-soft:rgba(77,226,255,.14)}
-body[data-faction="pmc"]{--accent:var(--amber);--accent-2:var(--cyan);--accent-soft:rgba(255,178,74,.14)}
+body[data-faction="net"]{--accent:var(--cyan);--accent-2:var(--amber);--accent-soft:rgba(80,255,112,.12)}
+body[data-faction="pmc"]{--accent:var(--amber);--accent-2:var(--cyan);--accent-soft:rgba(255,184,48,.14)}
 body.ls-locked{overflow:hidden;background:#000}
 body.ls-locked > *:not(#ls-enter):not(#lsScreen):not(.ls-blackout){
   visibility:hidden;
@@ -73,14 +73,14 @@ img,svg{display:block;max-width:100%}
   cursor:pointer;font-family:var(--ff-mono);transition:opacity .5s ease;
 }
 #ls-enter .enter-title{
-  font-size:clamp(10px,1.5vw,16px);color:#c8102e;letter-spacing:.28em;
+  font-size:clamp(10px,1.5vw,16px);color:#50ff70;letter-spacing:.28em;
   text-transform:uppercase;margin-bottom:3rem;line-height:1.3;text-align:center;
   white-space:pre;
 }
-#ls-enter .enter-sub{font-size:.68rem;color:#4a4540;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.5rem}
+#ls-enter .enter-sub{font-size:.68rem;color:#388838;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.5rem}
 #ls-enter .enter-cta{
-  font-size:.75rem;color:#c8c0b8;letter-spacing:.24em;text-transform:uppercase;
-  border:1px solid #2a0d12;padding:.7rem 2rem;margin-top:2.5rem;animation:ls-blink 1.1s step-end infinite;
+  font-size:.75rem;color:#c8ffc8;letter-spacing:.24em;text-transform:uppercase;
+  border:1px solid #183820;padding:.7rem 2rem;margin-top:2.5rem;animation:ls-blink 1.1s step-end infinite;
 }
 #ls-enter.fade-out{opacity:0;pointer-events:none}
 @keyframes ls-blink{0%,100%{opacity:1}50%{opacity:0}}
@@ -89,23 +89,23 @@ img,svg{display:block;max-width:100%}
 .ls-screen{
   position:fixed;inset:0;z-index:99997;background:#000;
   font-family:var(--ff-mono);font-size:clamp(11px,1vw,13px);line-height:1.55;
-  color:#c8c0b8;padding:2rem 2.4rem;overflow:hidden;
+  color:#c8ffc8;padding:2rem 2.4rem;overflow:hidden;
   display:flex;flex-direction:column;
   opacity:1;transition:opacity .5s ease;
 }
 .ls-terminal{flex:1;overflow:hidden;white-space:pre-wrap}
 .ls-line{display:block;white-space:pre}
-.ls-dim{color:#4a4540}.ls-text{color:#c8c0b8}.ls-ok{color:#6fe39c}.ls-amber{color:#ffb24a}.ls-cyan{color:#4de2ff}.ls-red{color:#c8102e}.ls-bright{color:#e8e0d5;font-weight:600}
+.ls-dim{color:#388838}.ls-text{color:#c8ffc8}.ls-ok{color:#50ff70}.ls-amber{color:#ffb830}.ls-cyan{color:#50ff70}.ls-red{color:#ff5050}.ls-bright{color:#e8ffe8;font-weight:600}
 .ls-splash{
   position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity .6s ease;
 }
 .ls-splash.show{opacity:1;pointer-events:auto}
-.ls-logo{font-size:clamp(6px,1vw,11px);line-height:1.2;color:#c8102e;text-align:center;white-space:pre;font-family:var(--ff-mono)}
-.ls-os-label{color:#c8c0b8;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;margin-top:1.8rem;font-family:var(--ff-mono)}
-.ls-os-version{color:#4a4540;font-size:.62rem;letter-spacing:.16em;margin-top:.35rem;font-family:var(--ff-mono)}
-.ls-progress-wrap{width:min(260px,70vw);height:2px;background:#1a1010;margin-top:2.2rem}
-.ls-progress-bar{height:100%;width:0%;background:#c8102e;transition:width 2.6s cubic-bezier(.25,0,.1,1)}
+.ls-logo{font-size:clamp(6px,1vw,11px);line-height:1.2;color:#50ff70;text-align:center;white-space:pre;font-family:var(--ff-mono)}
+.ls-os-label{color:#c8ffc8;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;margin-top:1.8rem;font-family:var(--ff-mono)}
+.ls-os-version{color:#388838;font-size:.62rem;letter-spacing:.16em;margin-top:.35rem;font-family:var(--ff-mono)}
+.ls-progress-wrap{width:min(260px,70vw);height:2px;background:#041008;margin-top:2.2rem}
+.ls-progress-bar{height:100%;width:0%;background:#50ff70;transition:width 2.6s cubic-bezier(.25,0,.1,1)}
 .ls-blackout{position:fixed;inset:0;z-index:99999;background:#000;opacity:0;transition:opacity .55s ease;pointer-events:none}
 .ls-screen.fade-out{opacity:0}
 
@@ -123,7 +123,7 @@ img,svg{display:block;max-width:100%}
   border:1px solid var(--rule-2);background:transparent;color:var(--accent);cursor:pointer;
   transition:color .15s,border-color .15s,background .15s;
 }
-#audio-mute-btn:hover{border-color:var(--accent);background:rgba(255,178,74,.08)}
+#audio-mute-btn:hover{border-color:var(--accent);background:rgba(255,184,48,.08)}
 #audio-mute-btn.muted{color:var(--ink-3);border-color:var(--ink-3)}
 #audio-mute-btn svg{width:.95rem;height:.95rem}
 #audio-vol-wrap{display:flex;align-items:center;gap:.4rem;font-size:.58rem;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase}
@@ -238,15 +238,15 @@ img,svg{display:block;max-width:100%}
 .hero-bg{
   position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(ellipse 90% 60% at 30% 35%,rgba(77,226,255,.10) 0%,transparent 60%),
-    radial-gradient(ellipse 70% 50% at 75% 70%,rgba(255,178,74,.10) 0%,transparent 60%),
+    radial-gradient(ellipse 90% 60% at 30% 35%,rgba(80,255,112,.10) 0%,transparent 60%),
+    radial-gradient(ellipse 70% 50% at 75% 70%,rgba(255,184,48,.08) 0%,transparent 60%),
     radial-gradient(ellipse 100% 80% at 50% 110%,rgba(255,62,165,.06) 0%,transparent 70%);
 }
 .hero-grid{
   position:absolute;inset:0;pointer-events:none;
   background-image:
-    linear-gradient(rgba(77,226,255,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(77,226,255,.05) 1px,transparent 1px);
+    linear-gradient(rgba(80,255,112,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(80,255,112,.05) 1px,transparent 1px);
   background-size:80px 80px;
   mask-image:radial-gradient(ellipse 90% 70% at 50% 45%,#000 0%,transparent 75%);
   -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 45%,#000 0%,transparent 75%);
@@ -321,7 +321,7 @@ img,svg{display:block;max-width:100%}
 .hero-side .v.ok{color:var(--ok)}
 .hero-side .v.warn{color:var(--amber)}
 .hero-side .v.bad{color:var(--magenta)}
-.hero-side .wave{height:54px;margin:.9rem 0;background:linear-gradient(180deg,transparent,rgba(77,226,255,.04));position:relative;overflow:hidden;border:1px solid var(--rule)}
+.hero-side .wave{height:54px;margin:.9rem 0;background:linear-gradient(180deg,transparent,rgba(80,255,112,.04));position:relative;overflow:hidden;border:1px solid var(--rule)}
 .hero-side .wave svg{position:absolute;inset:0;width:100%;height:100%}
 .hero-side .wave path{stroke:var(--accent);stroke-width:1.4;fill:none;filter:drop-shadow(0 0 4px var(--accent))}
 
@@ -428,16 +428,17 @@ img,svg{display:block;max-width:100%}
 .feat-card{
   border:1px solid var(--rule);background:var(--bg-1);padding:1.7rem;position:relative;
   transition:border-color .15s var(--ease),background .15s var(--ease);
+  min-width:0;
 }
 .feat-card:hover{border-color:var(--accent);background:var(--bg-2)}
 .feat-card.f-pmc{border-left:2px solid var(--amber)}
 .feat-card.f-net{border-left:2px solid var(--cyan)}
-.feat-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:.9rem;margin-bottom:1.1rem;border-bottom:1px solid var(--rule)}
+.feat-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem;flex-wrap:wrap;padding-bottom:.9rem;margin-bottom:1.1rem;border-bottom:1px solid var(--rule)}
 .feat-head h4{font-family:var(--ff-display);font-weight:700;font-size:1.15rem;letter-spacing:-.005em}
 .feat-head .tag{font-family:var(--ff-mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);padding:.25rem .55rem;border:1px solid var(--accent)}
 .feat-list{display:flex;flex-direction:column;gap:.5rem}
-.feat-list li{display:grid;grid-template-columns:16px 1fr;gap:.55rem;font-size:.9rem;color:var(--ink-2);line-height:1.5}
-.feat-list li::before{content:'▸';color:var(--accent);font-family:var(--ff-mono);font-size:.85rem}
+.feat-list li{display:flex;align-items:flex-start;gap:.55rem;font-size:.9rem;color:var(--ink-2);line-height:1.5;min-width:0}
+.feat-list li::before{content:'▸';color:var(--accent);font-family:var(--ff-mono);font-size:.85rem;flex-shrink:0;width:16px;margin-top:.1em}
 .feat-list a{color:var(--accent);border-bottom:1px solid var(--accent)}
 
 /* ============ ARSENAL ============ */
@@ -475,7 +476,7 @@ img,svg{display:block;max-width:100%}
 .map:hover{border-color:var(--accent)}
 .map .tile{
   aspect-ratio:16/10;position:relative;overflow:hidden;
-  background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(77,226,255,.06) 0%,transparent 70%),linear-gradient(135deg,var(--bg-2),var(--bg-0));
+  background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(80,255,112,.06) 0%,transparent 70%),linear-gradient(135deg,var(--bg-2),var(--bg-0));
   border-bottom:1px solid var(--rule);
 }
 .map .tile::before{
@@ -670,10 +671,10 @@ img,svg{display:block;max-width:100%}
   background:#05070a;border:1px solid var(--rule);font-family:var(--ff-mono);font-size:.74rem;
   line-height:1.55;color:var(--ink-2);padding:1.3rem;min-height:340px;position:relative;overflow:hidden;
 }
-.console-screen::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0 2px,rgba(77,226,255,.04) 2px 3px)}
+.console-screen::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0 2px,rgba(80,255,112,.04) 2px 3px)}
 .console-screen .crt-line{
   position:absolute;left:0;right:0;height:24px;
-  background:linear-gradient(180deg,transparent,rgba(77,226,255,.06),transparent);
+  background:linear-gradient(180deg,transparent,rgba(80,255,112,.06),transparent);
   animation:crtLine 4s linear infinite;pointer-events:none;
 }
 @keyframes crtLine{0%{top:-30px}100%{top:100%}}
@@ -729,7 +730,7 @@ img,svg{display:block;max-width:100%}
 .tl-item .dot{width:13px;height:13px;background:var(--bg-0);border:2px solid var(--accent);border-radius:50%;margin-bottom:1.4rem;position:relative;z-index:1;display:block}
 .tl-item.done .dot{background:var(--accent)}
 .tl-item.wip .dot{border-color:var(--amber);background:var(--bg-0);animation:pulse 1.5s ease infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,178,74,.6)}50%{box-shadow:0 0 0 6px rgba(255,178,74,0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,184,48,.6)}50%{box-shadow:0 0 0 6px rgba(255,184,48,0)}}
 .tl-item .phase{font-family:var(--ff-mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.35rem}
 .tl-item.future .phase{color:var(--ink-3)}
 .tl-item h4{font-family:var(--ff-display);font-weight:700;font-size:1.02rem;letter-spacing:-.005em;margin-bottom:.35rem}
@@ -760,23 +761,23 @@ img,svg{display:block;max-width:100%}
 .video-placeholder{
   aspect-ratio:16/9;position:relative;cursor:pointer;
   background:
-    radial-gradient(ellipse 60% 50% at 50% 45%,rgba(255,178,74,.07) 0%,transparent 70%),
+    radial-gradient(ellipse 60% 50% at 50% 45%,rgba(255,184,48,.07) 0%,transparent 70%),
     linear-gradient(135deg,var(--bg-2),var(--bg-0));
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;
   overflow:hidden;
 }
 .video-placeholder::before{
   content:'';position:absolute;inset:0;
-  background-image:linear-gradient(rgba(77,226,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(77,226,255,.06) 1px,transparent 1px);
+  background-image:linear-gradient(rgba(80,255,112,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(80,255,112,.06) 1px,transparent 1px);
   background-size:32px 32px;mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,#000,transparent 80%);
 }
 .video-play{
-  width:72px;height:72px;border:2px solid var(--accent);background:rgba(255,178,74,.08);
+  width:72px;height:72px;border:2px solid var(--accent);background:rgba(255,184,48,.08);
   display:flex;align-items:center;justify-content:center;position:relative;z-index:1;
   clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
   transition:transform .2s var(--ease),background .2s var(--ease);
 }
-.video-placeholder:hover .video-play{background:rgba(255,178,74,.18);transform:scale(1.06)}
+.video-placeholder:hover .video-play{background:rgba(255,184,48,.18);transform:scale(1.06)}
 .video-play::after{
   content:'';width:0;height:0;border-left:18px solid var(--accent);border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:5px;
 }
@@ -861,7 +862,7 @@ footer{padding:3rem 0 2rem;border-top:1px solid var(--rule);background:var(--bg-
 .studio-mark-box .corner.br{bottom:8px;right:8px;border-bottom:2px solid;border-right:2px solid}
 .studio-mark-scan{
   position:absolute;inset:0;pointer-events:none;opacity:.35;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(77,226,255,.04) 2px,rgba(77,226,255,.04) 4px);
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(80,255,112,.04) 2px,rgba(80,255,112,.04) 4px);
 }
 .studio-mark-scan::after{
   content:'';position:absolute;left:0;right:0;height:1px;top:-1px;
@@ -876,7 +877,7 @@ footer{padding:3rem 0 2rem;border-top:1px solid var(--rule);background:var(--bg-
   -webkit-overflow-scrolling:touch;
 }
 .studio-mark-logo .mark-dp{color:var(--accent);text-shadow:0 0 20px var(--accent-soft)}
-.studio-mark-logo .mark-dev{color:var(--accent-2);text-shadow:0 0 20px rgba(77,226,255,.12)}
+.studio-mark-logo .mark-dev{color:var(--accent-2);text-shadow:0 0 20px rgba(80,255,112,.12)}
 .studio-mark-meta{
   position:relative;z-index:1;margin-top:1.1rem;padding-top:.95rem;
   border-top:1px dashed var(--rule);font-family:var(--ff-mono);
@@ -1048,9 +1049,10 @@ footer .arg a:hover{color:var(--accent)}
       </h1>
 
       <p class="hero-sub">
-        Console-era arcade FPS: <b>параллельная кампания</b> (~5–7 ч) в духе setpieces
-        <b>CoD · Halo · Killzone</b> и <b>мультиплеер 6v6</b> в духе
-        <b>классического Call of Duty</b> (CoD4 / MW2 / Black Ops).
+        Premium FPS для тех, кто устал от сезонов, extraction и лута — и хочет снова
+        <b>зайти и пострелять</b>, как в <b>CoD4</b>, в игре 2027 года.
+        <b>Параллельная кампания</b> (~5–7 ч) в духе <b>CoD · Halo · Killzone</b>
+        и <b>мульти 6v6</b> в духе классического Call of Duty.
         <span class="pmc">ЧВК</span> против <span class="net">нетраннеров</span> — один продукт, две войны.
       </p>
 
@@ -1063,9 +1065,9 @@ footer .arg a:hover{color:var(--accent)}
 
       <div class="hero-stats">
         <div class="stat"><div class="num">18</div><div class="lbl">Месяцев разработки</div></div>
-        <div class="stat"><div class="num">4</div><div class="lbl">Core-команда (3 + hire)</div></div>
-        <div class="stat"><div class="num">$100k</div><div class="lbl">Dev-бюджет (раунд)</div></div>
-        <div class="stat"><div class="num">+712%</div><div class="lbl">ROI · 3 года (реал.)</div></div>
+        <div class="stat"><div class="num">4</div><div class="lbl">Ядро команды (3 + hire)</div></div>
+        <div class="stat"><div class="num">$100k</div><div class="lbl">Бюджет разработки</div></div>
+        <div class="stat"><div class="num">+712%</div><div class="lbl">ROI за 3 года (реал.)</div></div>
       </div>
     </div>
 
@@ -1101,23 +1103,23 @@ footer .arg a:hover{color:var(--accent)}
         <div class="eb">01 // Проблема и возможность</div>
         <h2>Почему именно <em>сейчас?</em></h2>
       </div>
-      <div class="r">Рынок, решение и три столпа продукта — компактно; детальный дизайн в <a href="docs.html">docs.html</a>.</div>
+      <div class="r">Игроки устали от live-service, extraction и RPG-слоёв поверх стрельбы. Они хотят <strong>просто пострелять</strong> — как двадцать лет назад в CoD4, но в <strong>новой</strong> premium-игре. Ниже — боль, спрос и наш ответ.</div>
     </div>
 
     <div class="prob-grid fade-in">
       <div class="prob-col" data-f="pmc">
         <h3><span>Проблемы рынка</span><span class="tag">— 04</span></h3>
-        <div class="prob-item"><div class="idx">P/01</div><div><strong>Live-service вместо кампании</strong><p>AAA-FPS продают сезоны и MTX. Сюжет и «коробочный» опыт — вторичны, SBMM выматывает casual-сессии.</p></div></div>
-        <div class="prob-item"><div class="idx">P/02</div><div><strong>Premium $70+ и F2P-fatigue</strong><p>CoD и аналоги дороги или агрессивно монетизируют. Игроки хотят честную сделку без P2W.</p></div></div>
-        <div class="prob-item"><div class="idx">P/03</div><div><strong>Жанр расщеплён</strong><p>Revival 2025–26: solo-campaigns, movement-6v6, F2P-сервисы — но редко <b>кампания + classic MP</b> в одной покупке.</p></div></div>
-        <div class="prob-item"><div class="idx">P/04</div><div><strong>Нет mid-tier «коробки»</strong><p>Movement-shooters и battle royale не заменяют boots-on-ground 6v6 в духе CoD4/MW2 с сильной кампанией.</p></div></div>
+        <div class="prob-item"><div class="idx">P/01</div><div><strong>Live-service вместо шутера</strong><p>Modern CoD и AAA-FPS — сезоны, battle pass, SBMM, MTX. Зайти «на 20 минут» не получается: casual-сессия превращается во <b>вторую работу</b>. Сюжет и «коробочный» опыт — вторичны.</p></div></div>
+        <div class="prob-item"><div class="idx">P/02</div><div><strong>Extraction приелся</strong><p>Tarkov и extraction-волна закрыли нишу «напряжённого» FPS — но миллионы не хотят <b>терять час на одну смерть</b>. Им нужен быстрый, читаемый, честный бой без потери лута.</p></div></div>
+        <div class="prob-item"><div class="idx">P/03</div><div><strong>Лут и полоски HP</strong><p>Looter-shooter и service-FPS навешали на стрельбу инвентарь, rarity и баланс через числа. Жанр забыл, ради чего покупали Call of Duty — <b>ощущение выстрела</b> и «ещё один матч».</p></div></div>
+        <div class="prob-item"><div class="idx">P/04</div><div><strong>Ностальгия без наследника</strong><p>CoD4/MW2 помнят 25–40-летние, но remasters их не возвращают. Молодая аудитория <b>не выросла на классическом 6v6</b> — а новых premium-шутеров «просто пострелять» почти не делают.</p></div></div>
       </div>
       <div class="prob-col" data-f="net">
         <h3><span>Возможности</span><span class="tag">+ 04</span></h3>
-        <div class="prob-item"><div class="idx">O/01</div><div><strong>Global FPS-аудитория</strong><p>Steam + console: миллионы игроков 25–40 с ностальгией по golden-age shooters. Спрос на premium mid-tier.</p></div></div>
+        <div class="prob-item"><div class="idx">O/01</div><div><strong>Пустая полка</strong><p>Между «усталым live-service AAA» и «старыми remasters» — спрос на <b>новый</b> premium FPS: стрелять как в золотую эру, платить один раз, без P2W.</p></div></div>
         <div class="prob-item"><div class="idx">O/02</div><div><strong>UE5 снижает порог входа в 10 раз</strong><p>Nanite, Lumen, Megascans, AI-инструменты — малая команда может создать продукт уровня AA.</p></div></div>
-        <div class="prob-item"><div class="idx">O/03</div><div><strong>Волна revival 2025–26</strong><p>Solo sci-fi campaigns, movement-6v6, remasters — рынок снова просит console-era, но предложение фрагментировано.</p></div></div>
-        <div class="prob-item"><div class="idx">O/04</div><div><strong>Golden-age CoD loop</strong><p>6v6, killstreaks, короткие раунды — сегмент без наследника. Мы возвращаем «ещё один матч» без live-service давления.</p></div></div>
+        <div class="prob-item"><div class="idx">O/03</div><div><strong>Волна возрождения 2025–26</strong><p>Solo-кампании, movement-6v6, remasters — рынок снова ищет консольную эру, но предложение <b>фрагментировано</b>: редко кампания + классический мульти CoD в одной покупке.</p></div></div>
+        <div class="prob-item"><div class="idx">O/04</div><div><strong>Наш ответ</strong><p>Классический CoD-loop — 6v6, серии убийств, короткие раунды — <b>без наследника</b>. not_found: кампания + мульти в одной premium-коробке за <b>999 ₽</b>, без давления live-service.</p></div></div>
       </div>
     </div>
   </div>
@@ -1135,10 +1137,10 @@ footer .arg a:hover{color:var(--accent)}
     </div>
 
     <div class="pillars fade-in">
-      <div class="pillar"><span class="pno">01 / PILLAR</span><h4>Ощущение стрельбы</h4><p>Каждый выстрел чувствуется: отдача, хитмаркеры, звук, реакция врагов. Это ДНК жанра.</p></div>
-      <div class="pillar"><span class="pno">02 / PILLAR</span><h4>Кинематографичность</h4><p>Скриптовые моменты, постановка, ощущение «боевика» даже при инди-бюджете.</p></div>
-      <div class="pillar"><span class="pno">03 / PILLAR</span><h4>«Ещё один матч»</h4><p>Короткие раунды, killstreaks, create-a-class — классический CoD-loop, который держит в сессии часами.</p></div>
-      <div class="pillar"><span class="pno">04 / PILLAR</span><h4>Console-era доступность</h4><p>Читаемый TTK, понятные карты, controller-friendly. Работает на средних ПЦ. Цена — <b>999 ₽</b>.</p></div>
+      <div class="pillar"><span class="pno">01 / СТОЛП</span><h4>Ощущение стрельбы</h4><p>Каждый выстрел чувствуется: отдача, хитмаркеры, звук, реакция врагов. Это ДНК жанра.</p></div>
+      <div class="pillar"><span class="pno">02 / СТОЛП</span><h4>Кинематографичность</h4><p>Скриптовые моменты, постановка, ощущение «боевика» даже при инди-бюджете.</p></div>
+      <div class="pillar"><span class="pno">03 / СТОЛП</span><h4>«Ещё один матч»</h4><p>Короткие раунды, серии убийств, создание класса — классический CoD-loop, который держит в сессии часами.</p></div>
+      <div class="pillar"><span class="pno">04 / СТОЛП</span><h4>Доступность в духе консольной эры</h4><p>Читаемый TTK, понятные карты, удобен с геймпада. Работает на средних ПЦ. Цена — <b>999 ₽</b>.</p></div>
     </div>
 
     <div class="feat-grid fade-in">
@@ -1147,9 +1149,9 @@ footer .arg a:hover{color:var(--accent)}
         <div class="feat-head"><h4>Кампания (~5–7 часов)</h4><span class="tag">PMC × NET</span></div>
         <ul class="feat-list">
           <li>7 кинематографичных миссий</li>
-          <li>Near-future ops · атмосфера Killzone-scale</li>
-          <li>Скриптовые setpieces в духе CoD / Halo</li>
-          <li>Полная локализация · RU VO</li>
+          <li>Операции в сеттинге ближайшего будущего · атмосфера масштаба Killzone</li>
+          <li>Скриптовые сцены в духе CoD / Halo</li>
+          <li>Полная локализация · русская озвучка</li>
           <li>Смена темпа: штурм → стелс → оборона → снайпинг</li>
           <li>4 уровня сложности</li>
           <li>Подробнее — <a href="docs.html">docs.html</a></li>
@@ -1159,13 +1161,12 @@ footer .arg a:hover{color:var(--accent)}
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
         <div class="feat-head"><h4>Мультиплеер (6v6)</h4><span class="tag">CLASSIC_CoD</span></div>
         <ul class="feat-list">
-          <li>Референс: <b>CoD4 / MW2 / Black Ops</b> — boots-on-ground, без wallrun/mechs</li>
+          <li>Референс: <b>CoD4 / MW2 / Black Ops</b> — наземный бой, без wallrun/mechs</li>
           <li>4 карты на релизе (+2 бесплатно за 3 месяца)</li>
-          <li>Режимы: TDM, Domination, Search &amp; Destroy, FFA</li>
-          <li>Create-a-class + killstreaks</li>
+          <li>Режимы: TDM, Domination, S&amp;D, FFA</li>
+          <li>Создание класса + серии убийств (БПЛА, авиаудар, вертолёт)</li>
           <li>16 единиц оружия с модификациями</li>
           <li>55 уровней прогрессии + Prestige</li>
-          <li>Killstreaks (БПЛА, авиаудар, вертолёт)</li>
         </ul>
       </div>
       <div class="feat-card">
@@ -1203,7 +1204,7 @@ footer .arg a:hover{color:var(--accent)}
         <div class="eb">03 // Сравнение</div>
         <h2>Наш проект<br>vs <em>конкуренты</em></h2>
       </div>
-      <div class="r">Premium campaign + <strong>classic CoD-style 6v6</strong> в одной покупке. Сравнение с modern AAA, эталоном эры CoD4/MW2 и revival 2025–26.</div>
+      <div class="r">Premium-кампания + <strong>классический мульти CoD 6v6</strong> в одной покупке. Сравнение с modern AAA, эталоном эры CoD4/MW2 и волной возрождения 2025–26.</div>
     </div>
 
     <div class="cmp-wrap fade-in">
@@ -1216,9 +1217,9 @@ footer .arg a:hover{color:var(--accent)}
             <td>Цена</td>
             <td>999–1 499 ₽</td>
             <td>5 000–7 000 ₽</td>
-            <td>Premium box</td>
+            <td>Premium-коробка</td>
             <td>Premium</td>
-            <td>TBD / EA</td>
+            <td>уточняется / EA</td>
           </tr>
           <tr>
             <td>Параллельная кампания (2 линии)</td>
@@ -1237,15 +1238,15 @@ footer .arg a:hover{color:var(--accent)}
             <td><span class="no">—</span></td>
           </tr>
           <tr>
-            <td>Classic 6v6 MP</td>
+            <td>Классический мульти 6v6</td>
             <td><span class="yes">Да</span></td>
-            <td><span class="mid">SBMM / service</span></td>
+            <td><span class="mid">SBMM / live-service</span></td>
             <td><span class="yes">Да</span></td>
             <td><span class="no">Нет</span></td>
             <td><span class="mid">6v6 movement</span></td>
           </tr>
           <tr>
-            <td>Killstreaks + create-a-class</td>
+            <td>Серии убийств + создание класса</td>
             <td><span class="yes">Да</span></td>
             <td><span class="mid">Да / MTX</span></td>
             <td><span class="yes">Да</span></td>
@@ -1253,28 +1254,28 @@ footer .arg a:hover{color:var(--accent)}
             <td><span class="no">Нет</span></td>
           </tr>
           <tr>
-            <td>Boots-on-ground (без mechs)</td>
+            <td>Наземный бой (без mechs)</td>
             <td><span class="yes">Да</span></td>
             <td><span class="yes">Да</span></td>
             <td><span class="yes">Да</span></td>
             <td><span class="yes">Да</span></td>
-            <td><span class="no">Mechs</span></td>
+            <td><span class="no">Мехи</span></td>
           </tr>
           <tr>
             <td>Монетизация</td>
             <td><span class="yes">Разовая покупка</span></td>
-            <td><span class="no">Season / MTX</span></td>
-            <td><span class="yes">Box</span></td>
+            <td><span class="no">Сезоны / MTX</span></td>
+            <td><span class="yes">Коробка</span></td>
             <td><span class="yes">Premium</span></td>
-            <td><span class="mid">TBD</span></td>
+            <td><span class="mid">уточняется</span></td>
           </tr>
           <tr>
-            <td>Campaign + MP bundle</td>
+            <td>Кампания + мульти</td>
             <td><span class="yes">Да</span></td>
-            <td><span class="mid">Split focus</span></td>
+            <td><span class="mid">Разделённый фокус</span></td>
             <td><span class="yes">Да</span></td>
-            <td><span class="no">Solo only</span></td>
-            <td><span class="no">MP focus</span></td>
+            <td><span class="no">Только кампания</span></td>
+            <td><span class="no">Фокус на MP</span></td>
           </tr>
         </tbody>
       </table>
@@ -1294,9 +1295,9 @@ footer .arg a:hover{color:var(--accent)}
     </div>
     <div class="pillars fade-in">
       <div class="pillar"><span class="pno">01 / НАРРАТИВ</span><h4>Параллельная кампания</h4><p>Две зеркальные сюжетные арки в одной игре — механика, которой нет ни у одного аркадного инди-FPS. Это не просто фича: это причина пройти игру дважды и обсуждать её онлайн.</p></div>
-      <div class="pillar"><span class="pno">02 / MP DNA</span><h4>Classic CoD multiplayer</h4><p>6v6, killstreaks, create-a-class — не movement-shooter и не battle royale. Мульти как в CoD4/MW2, кампания — отдельный крючок.</p></div>
-      <div class="pillar"><span class="pno">03 / ЦЕНА</span><h4>999 ₽ — честный барьер</h4><p>Premium mid-tier: в разы дешевле modern AAA. Разовая покупка, live-ops по фазам — без P2W.</p></div>
-      <div class="pillar"><span class="pno">04 / КОМАНДА</span><h4>Знание golden-age FPS</h4><p>Мы выросли на CoD4/MW2/BO. Знаем, что бесит в Modern Warfare и movement-6v6, и что нужно для «ещё одного матча».</p></div>
+      <div class="pillar"><span class="pno">02 / МУЛЬТИ</span><h4>Классический мульти CoD</h4><p>6v6, серии убийств, создание класса — не movement-шутер и не королевская битва. Мульти как в CoD4/MW2, кампания — отдельный крючок.</p></div>
+      <div class="pillar"><span class="pno">03 / ЦЕНА</span><h4>999 ₽ — честный барьер</h4><p>Premium средний сегмент: в разы дешевле modern AAA. Разовая покупка, live-ops по фазам — без P2W.</p></div>
+      <div class="pillar"><span class="pno">04 / КОМАНДА</span><h4>Знание шутеров золотой эры</h4><p>Мы выросли на CoD4/MW2/BO. Знаем, что бесит в Modern Warfare и movement-6v6, и что нужно для «ещё одного матча».</p></div>
     </div>
   </div>
 </section>
@@ -1309,7 +1310,7 @@ footer .arg a:hover{color:var(--accent)}
         <div class="eb">05 // Выход на рынок</div>
         <h2>Путь<br><em>на рынок</em></h2>
       </div>
-      <div class="r">Студия — dev и community. Маркетинг, PR, QA и wishlist-кампании — <strong>зона издателя</strong>.</div>
+      <div class="r">Студия — разработка и сообщество. Маркетинг, PR, QA и wishlist-кампании — <strong>зона издателя</strong>.</div>
     </div>
 
     <div class="gtm-grid fade-in">
@@ -1367,10 +1368,10 @@ footer .arg a:hover{color:var(--accent)}
     <div class="ms-grid fade-in">
       <div class="ms done"><span class="badge done">✓ Готово</span><div class="title">Концепт и жанровый анализ</div><div class="desc">Проведён анализ конкурентов, выбраны референсы, утверждён уникальный угол параллельной кампании.</div></div>
       <div class="ms done"><span class="badge done">✓ Готово</span><div class="title">GDD v1.0</div><div class="desc">Полная документация механик, нарратива, арсенала, карт, прогрессии и монетизации. Доступна по запросу.</div></div>
-      <div class="ms done"><span class="badge done">✓ Готово</span><div class="title">Прототип передвижения и стрельбы</div><div class="desc">Базовый feel стрельбы реализован в UE5. Хитмаркеры, звук, отдача — ощущение «правильного» FPS подтверждено плейтестами.</div></div>
+      <div class="ms done"><span class="badge done">✓ Готово</span><div class="title">Прототип передвижения и стрельбы</div><div class="desc">Базовое ощущение стрельбы реализовано в UE5. Хитмаркеры, звук, отдача — ощущение «правильного» FPS подтверждено плейтестами.</div></div>
       <div class="ms wip"><span class="badge wip">→ В работе</span><div class="title">Steam-страница и первый трейлер</div><div class="desc">Запуск Steam-страницы запланирован на Q3 2026 для начала сбора Wishlist.</div></div>
       <div class="ms"><span class="badge future">◦ Далее</span><div class="title">Early Access — Q1 2027</div><div class="desc">Мультиплеер + поднабор кампании (первая линия). Целевой Wishlist к EA: 10 000+.</div></div>
-      <div class="ms"><span class="badge future">◦ Далее</span><div class="title">Полный релиз — Q4 2027</div><div class="desc">Все 7 миссий, 4 карты, полная локализация / RU VO. Global Steam + региональные площадки.</div></div>
+      <div class="ms"><span class="badge future">◦ Далее</span><div class="title">Полный релиз — Q4 2027</div><div class="desc">Все 7 миссий, 4 карты, полная локализация и русская озвучка. Глобальный Steam + региональные площадки.</div></div>
     </div>
   </div>
 </section>
@@ -1409,7 +1410,7 @@ footer .arg a:hover{color:var(--accent)}
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
         <div class="mono-label">DLC «Netrunner» · Y2</div>
         <div class="mono-price">899 ₽</div>
-        <div class="mono-desc">Отдельный продукт: кибердек, quickhacks, миссии. Не входит в базу. <b>629 ₽</b> нетто.</div>
+        <div class="mono-desc">Отдельный продукт: кибердек, быстрые взломы, миссии. Не входит в базу. <b>629 ₽</b> нетто.</div>
         </div>
       </div>
     <div class="mono-ltv fade-in">// LTV нетто на игрока: <b>~785 ₽</b> в год релиза · <b>~1 050 ₽</b> за 3 года (база + SP/DLC/скины по фазам)</div>
@@ -1424,20 +1425,20 @@ footer .arg a:hover{color:var(--accent)}
         <div class="eb">08 // Рынок</div>
         <h2>Размер<br><em>возможности</em></h2>
       </div>
-      <div class="r">Global premium FPS: revival 2025–26 фрагментирован — мы закрываем полку <strong>campaign + classic CoD MP</strong>.</div>
+      <div class="r">Глобальный premium FPS: волна возрождения 2025–26 фрагментирована — мы закрываем полку <strong>кампания + классический мульти CoD</strong>.</div>
     </div>
 
     <div class="market-stats fade-in">
-      <div class="market-stat"><div class="num">$15B+</div><div class="lbl">PC + console FPS</div><div class="sub">Global premium + mid-tier segment</div></div>
-      <div class="market-stat"><div class="num">2025–26</div><div class="lbl">Revival-волна</div><div class="sub">Solo campaigns · movement 6v6 · remasters</div></div>
-      <div class="market-stat"><div class="num">0</div><div class="lbl">Прямых аналогов</div><div class="sub">Campaign + classic CoD MP · premium box</div></div>
+      <div class="market-stat"><div class="num">$15B+</div><div class="lbl">PC + console FPS</div><div class="sub">Глобальный premium и средний сегмент</div></div>
+      <div class="market-stat"><div class="num">2025–26</div><div class="lbl">Волна возрождения</div><div class="sub">Solo-кампании · movement 6v6 · remasters</div></div>
+      <div class="market-stat"><div class="num">0</div><div class="lbl">Прямых аналогов</div><div class="sub">Кампания + классический мульти CoD · premium-коробка</div></div>
     </div>
 
     <div class="sub-head fade-in">// Волна 2025–26 (контекст)</div>
     <div class="pillars fade-in" style="margin-bottom:2rem">
-      <div class="pillar"><span class="pno">SOLO</span><h4>Campaign revivals</h4><p>Metal Eden, remasters в духе Halo: CE — спрос на короткую premium-кампанию, часто без MP.</p></div>
-      <div class="pillar"><span class="pno">MP</span><h4>Movement 6v6</h4><p>EMPULSE и аналоги — wallrun/mechs, не boots-on-ground CoD-loop.</p></div>
-      <div class="pillar"><span class="pno">GAP</span><h4>Наша полка</h4><p>Кампания console-era + <b>classic CoD 6v6</b> в одной покупке — mid-tier для Steam global.</p></div>
+      <div class="pillar"><span class="pno">СОЛО</span><h4>Возрождение кампаний</h4><p>Metal Eden, remasters в духе Halo: CE — спрос на короткую premium-кампанию, часто без MP.</p></div>
+      <div class="pillar"><span class="pno">МУЛЬТИ</span><h4>Movement 6v6</h4><p>EMPULSE и аналоги — wallrun/mechs, не наземный CoD-loop.</p></div>
+      <div class="pillar"><span class="pno">НИША</span><h4>Наша полка</h4><p>Кампания в духе консольной эры + <b>классический CoD 6v6</b> в одной покупке — средний сегмент для глобального Steam.</p></div>
     </div>
 
     <div class="sub-head fade-in">// Продажи аналогичных проектов</div>
@@ -1447,7 +1448,7 @@ footer .arg a:hover{color:var(--accent)}
           <tr><th>Проект</th><th>Страна</th><th>Продажи</th><th>Цена</th><th>Команда</th></tr>
         </thead>
         <tbody>
-          <tr><td>Metal Eden</td><td>Польша</td><td><b>Новый релиз · TBD</b></td><td>~$40</td><td>~30 чел</td></tr>
+          <tr><td>Metal Eden</td><td>Польша</td><td><b>Новый релиз · уточняется</b></td><td>~$40</td><td>~30 чел</td></tr>
           <tr><td>Insurgency: Sandstorm</td><td>Канада</td><td><b>4M+ копий</b></td><td>$30</td><td>~40 чел</td></tr>
           <tr><td>Ready or Not</td><td>Новая Зеландия</td><td><b>3M+ копий</b></td><td>$40</td><td>~25 чел</td></tr>
           <tr><td>World War 3</td><td>Польша</td><td><b>500K+ копий</b></td><td>$30</td><td>~30 чел</td></tr>
@@ -1547,7 +1548,7 @@ footer .arg a:hover{color:var(--accent)}
         <div class="eb">10 // EBITDA</div>
         <h2>3-летняя<br><em>модель</em></h2>
       </div>
-      <div class="r">Выручка по фазам: релиз = база 999 ₽; SP/скины с M+3; DLC — со 2-го года. Ниже — P&amp;L и EBITDA после OPEX.</div>
+      <div class="r">Выручка по фазам: релиз = база 999 ₽; SP/скины с M+3; DLC — со 2-го года. Ниже — P&amp;L и EBITDA после OPEX. <span style="font-size:.85rem;color:var(--ink-3)">EBITDA — операционная прибыль до амортизации, налогов и процентов.</span></div>
     </div>
 
     <div class="sub-head fade-in">// Unit economics (нетто, Steam 70%)</div>
@@ -1684,7 +1685,7 @@ footer .arg a:hover{color:var(--accent)}
         <div class="exit-scenario">Сценарий C</div>
         <div class="exit-title">Стратегический выход</div>
         <div class="exit-copies">IP-сделка / издатель</div>
-        <p class="exit-desc">Переговоры с MY.GAMES, VK Play или международным паблишером. Уникальный нарратив кратно увеличивает оценку IP.</p>
+        <p class="exit-desc">Переговоры с международным издателем, MY.GAMES или VK Play. Уникальный нарратив кратно увеличивает оценку IP.</p>
         <div class="exit-roi" style="color:var(--cyan)">ROI: 5–10× при IP-сделке</div>
       </div>
     </div>
@@ -1738,15 +1739,15 @@ footer .arg a:hover{color:var(--accent)}
       <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:12%"></div></div>
       <div class="progress-marks">
         <span class="active">Прототип ✓</span>
-        <span>Pre-prod</span><span>Alpha</span><span>Beta</span><span>Polish</span><span>Релиз</span>
+        <span>Подготовка</span><span>Альфа</span><span>Бета</span><span>Полировка</span><span>Релиз</span>
       </div>
     </div>
 
     <div class="tl fade-in">
       <div class="tl-item wip">
         <span class="dot"></span>
-        <div class="phase">ФАЗА 1 · ACTIVE</div>
-        <h4>Pre-production</h4>
+        <div class="phase">ФАЗА 1 · В РАБОТЕ</div>
+        <h4>Подготовка</h4>
         <div class="period">М. 1–3 · Транш: $25k</div>
         <ul>
           <li>Финализация GDD</li>
@@ -1759,7 +1760,7 @@ footer .arg a:hover{color:var(--accent)}
       <div class="tl-item future">
         <span class="dot"></span>
         <div class="phase">ФАЗА 2</div>
-        <h4>Production — Alpha</h4>
+        <h4>Production — Альфа</h4>
         <div class="period">М. 4–9 · Транш: $25k</div>
         <ul>
           <li>Все миссии кампании играбельны</li>
@@ -1773,7 +1774,7 @@ footer .arg a:hover{color:var(--accent)}
       <div class="tl-item future">
         <span class="dot"></span>
         <div class="phase">ФАЗА 3</div>
-        <h4>Production — Beta</h4>
+        <h4>Production — Бета</h4>
         <div class="period">М. 10–14 · Транш: $25k</div>
         <ul>
           <li>Финальное качество арта</li>
@@ -1787,7 +1788,7 @@ footer .arg a:hover{color:var(--accent)}
       <div class="tl-item future">
         <span class="dot"></span>
         <div class="phase">ФАЗА 4</div>
-        <h4>Polish &amp; Release</h4>
+        <h4>Полировка и релиз</h4>
         <div class="period">М. 15–18 · Транш: $25k</div>
         <ul>
           <li>Баг-фиксинг, финальная оптимизация</li>
@@ -1833,7 +1834,7 @@ footer .arg a:hover{color:var(--accent)}
       <div class="tm tm-open">
         <div class="avatar">DEV</div>
         <div class="nm">Разработка</div>
-        <div class="role">Programmer · в поиске сотрудника</div>
+        <div class="role">Программист · в поиске сотрудника</div>
         <p>Открытая позиция в core-команде.</p>
       </div>
     </div>
@@ -1891,14 +1892,14 @@ footer .arg a:hover{color:var(--accent)}
     <div class="ask-wrap fade-in">
       <div class="ask-card primary">
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-        <div class="ask-eb">// REQUEST</div>
+        <div class="ask-eb">// ЗАПРОС</div>
         <div class="ask-amount">$100<em>k</em></div>
         <div class="ask-sub">~10M ₽ · 18 месяцев · 4 транша · dev only</div>
         <div class="tranches">
-          <div class="tranche"><span class="n">T1</span><span class="lbl">Pre-production</span><span class="m">М. 1–3</span><span class="v">$25k</span></div>
-          <div class="tranche"><span class="n">T2</span><span class="lbl">Alpha</span><span class="m">М. 4–9</span><span class="v">$25k</span></div>
-          <div class="tranche"><span class="n">T3</span><span class="lbl">Beta</span><span class="m">М. 10–14</span><span class="v">$25k</span></div>
-          <div class="tranche"><span class="n">T4</span><span class="lbl">Release</span><span class="m">М. 15–18</span><span class="v">$25k</span></div>
+          <div class="tranche"><span class="n">T1</span><span class="lbl">Подготовка</span><span class="m">М. 1–3</span><span class="v">$25k</span></div>
+          <div class="tranche"><span class="n">T2</span><span class="lbl">Альфа</span><span class="m">М. 4–9</span><span class="v">$25k</span></div>
+          <div class="tranche"><span class="n">T3</span><span class="lbl">Бета</span><span class="m">М. 10–14</span><span class="v">$25k</span></div>
+          <div class="tranche"><span class="n">T4</span><span class="lbl">Релиз</span><span class="m">М. 15–18</span><span class="v">$25k</span></div>
         </div>
       </div>
 
@@ -1924,10 +1925,10 @@ footer .arg a:hover{color:var(--accent)}
     </div>
 
     <div class="reasons-grid fade-in">
-      <div class="reason"><div class="num">01</div><h4>Console-era bundle</h4><p>Campaign + classic CoD MP в одной premium-коробке — полка, которую revival 2025–26 не закрывает.</p></div>
-      <div class="reason"><div class="num">02</div><h4>Проверенная MP-формула</h4><p>CoD4/MW2/BO — эталон 6v6. Мы адаптируем loop, не изобретаем movement-shooter.</p></div>
-      <div class="reason"><div class="num">03</div><h4>Технологическое окно</h4><p>UE5 + AI позволяют lean-команде сделать AA-scope при dev $100k.</p></div>
-      <div class="reason"><div class="num">04</div><h4>Capital efficiency</h4><p>Dev-cash $100k + издатель на marketing/QA. Высокий ROI при умеренном риске.</p></div>
+      <div class="reason"><div class="num">01</div><h4>Комплект «кампания + мульти»</h4><p>Для игрока, который устал от grind и extraction — <b>классический CoD 6v6</b> и сюжет в одной premium-покупке. Полку, которую live-service AAA и remasters не закрывают.</p></div>
+      <div class="reason"><div class="num">02</div><h4>Проверенная MP-формула</h4><p>CoD4/MW2/BO — эталон 6v6. Мы адаптируем loop, не изобретаем movement-шутер.</p></div>
+      <div class="reason"><div class="num">03</div><h4>Технологическое окно</h4><p>UE5 + AI позволяют lean-команде сделать объём AA при dev $100k.</p></div>
+      <div class="reason"><div class="num">04</div><h4>Эффективность капитала</h4><p>Dev-cash $100k + издатель на marketing/QA. Высокий ROI при умеренном риске (ориентир модели).</p></div>
       <div class="reason"><div class="num">05</div><h4>Прототип есть</h4><p>Не мечтатели — работающий билд, GDD, техническая экспертиза.</p></div>
     </div>
   </div>
@@ -1941,16 +1942,16 @@ footer .arg a:hover{color:var(--accent)}
         <div class="eb">19 // Риски</div>
         <h2>Честно<br><em>о рисках</em></h2>
       </div>
-      <div class="r">Мы знаем, что может пойти не так, и готовы к этому. По каждому риску — конкретный план митигации.</div>
+      <div class="r">Мы знаем, что может пойти не так, и готовы к этому. По каждому риску — конкретный план снижения рисков.</div>
     </div>
 
     <div class="risks-grid fade-in">
       <div class="risk"><div class="risk-name">Срыв сроков</div><span class="risk-badge medium">Средний</span><div class="risk-mit">Agile-спринты, буфер 10% в dev-budget, MVP-приоритеты. Транши по майлстоунам.</div></div>
-      <div class="risk"><div class="risk-name">Уход члена команды</div><span class="risk-badge medium">Средний</span><div class="risk-mit">Документация всех процессов, модульный код, договоры с lock-in периодом.</div></div>
+      <div class="risk"><div class="risk-name">Уход члена команды</div><span class="risk-badge medium">Средний</span><div class="risk-mit">Документация всех процессов, модульный код, договоры с периодом удержания в команде.</div></div>
       <div class="risk"><div class="risk-name">Сложность сетевого кода</div><span class="risk-badge medium">Средний</span><div class="risk-mit">UE5 — зрелый движок со встроенной репликацией. EOS для matchmaking. Проверенные решения.</div></div>
       <div class="risk"><div class="risk-name">Низкие продажи</div><span class="risk-badge medium">Средний</span><div class="risk-mit">Beta + издательский маркетинг. Доступная цена. Безубыточность — ~14K копий (база, dev $100k).</div></div>
-      <div class="risk"><div class="risk-name">Сравнение с AAA CoD</div><span class="risk-badge high">Высокий</span><div class="risk-mit">Не «убийца Warzone». Mid-tier classic CoD MP + campaign. Честный scope, фокус на game feel.</div></div>
-      <div class="risk"><div class="risk-name">Появление конкурента</div><span class="risk-badge low">Низкий</span><div class="risk-mit">Revival 2025–26 фрагментирован — скорость и bundle «campaign + classic CoD MP». Раннее сообщество и EA.</div></div>
+      <div class="risk"><div class="risk-name">Сравнение с AAA CoD</div><span class="risk-badge high">Высокий</span><div class="risk-mit">Не «убийца Warzone». Средний сегмент: классический CoD MP + кампания. Честный объём работ, фокус на игровом ощущении.</div></div>
+      <div class="risk"><div class="risk-name">Появление конкурента</div><span class="risk-badge low">Низкий</span><div class="risk-mit">Волна возрождения 2025–26 фрагментирована — скорость и комплект «кампания + классический мульти CoD». Раннее сообщество и EA.</div></div>
     </div>
   </div>
 </section>
@@ -1961,7 +1962,7 @@ footer .arg a:hover{color:var(--accent)}
     <div class="fade-in">
       <div class="eb" style="justify-content:center;font-family:var(--ff-mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:.8rem;margin-bottom:1.4rem">20 // Следующий шаг</div>
       <h2>Давайте создадим<br><em>историю</em></h2>
-      <p class="lead">Premium console-era shooter для global Steam. Кампания + classic CoD MP, прототип и lean-модель $100k. Ищем издателя с marketing/QA.</p>
+      <p class="lead">Premium-шутер в духе консольной эры для глобального Steam. Кампания + классический мульти CoD, прототип и lean-модель $100k. Ищем издателя с marketing/QA.</p>
       <div class="cta-actions">
         <a href="mailto:your@email.com" class="btn btn-primary">Написать нам</a>
         <a href="#" class="btn btn-ghost">Скачать PDF</a>
