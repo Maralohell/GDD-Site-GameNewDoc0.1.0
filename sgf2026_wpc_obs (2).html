@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Premiere Counter — SGF 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { background: transparent; }
+
+  body {
+    background: transparent;
+    width: 100vw; height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 14px;
+    font-family: "JetBrains Mono", monospace;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .widget {
+    background: rgba(1, 10, 1, 0.88);
+    border: 1px solid rgba(0,255,65,.4);
+    border-radius: 20px;
+    padding: 16px 22px 18px;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    box-shadow:
+      0 0 0 1px rgba(0,255,65,.08),
+      0 0 50px -8px rgba(0,255,65,.55),
+      inset 0 1px 0 rgba(0,255,65,.18);
+    position: relative;
+    overflow: hidden;
+    min-width: 210px;
+  }
+
+  .widget::after {
+    content: "";
+    position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg, rgba(0,255,65,.03) 0 1px, transparent 1px 3px
+    );
+  }
+
+  .top-label {
+    font-size: 12px; letter-spacing: .15em; text-transform: uppercase;
+    color: rgba(0,255,65,.75); line-height: 1;
+  }
+
+  .emoji { font-size: 28px; line-height: 1; }
+
+  .num {
+    font-family: "Unbounded", sans-serif; font-weight: 900;
+    font-size: 100px; line-height: .88; color: #00ff41;
+    text-shadow:
+      0 0 20px rgba(0,255,65,1),
+      0 0 50px rgba(0,255,65,.6),
+      0 0 100px rgba(0,255,65,.25);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.03em;
+    min-width: 140px; text-align: center;
+  }
+  .num.bump { animation: bump .18s ease; }
+  @keyframes bump {
+    0%  { transform: scale(1); }
+    40% { transform: scale(1.2); }
+    100%{ transform: scale(1); }
+  }
+
+  .bot-label {
+    font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(0,255,65,.65);
+  }
+
+  .btns {
+    display: flex; gap: 10px; margin-top: 4px;
+  }
+  .btn {
+    font-family: "JetBrains Mono", monospace; font-weight: 700;
+    width: 66px; height: 66px; border-radius: 14px; cursor: pointer;
+    border: 1px solid rgba(0,255,65,.35);
+    background: rgba(0,255,65,.08);
+    color: #00ff41; font-size: 32px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .12s, box-shadow .12s, transform .08s;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .btn:hover {
+    background: rgba(0,255,65,.2);
+    border-color: #00ff41;
+    box-shadow: 0 0 20px rgba(0,255,65,.45);
+  }
+  .btn:active { transform: scale(.86); }
+
+  .hint {
+    font-size: 12px; letter-spacing: .07em;
+    color: rgba(0,255,65,.55); margin-top: 2px;
+  }
+  .hint kbd {
+    background: rgba(0,255,65,.12);
+    border: 1px solid rgba(0,255,65,.3);
+    border-radius: 4px; padding: 2px 7px;
+    color: rgba(0,255,65,.85);
+    font-family: inherit; font-size: 11px;
+  }
+
+  .obs-note {
+    font-size: 10px; color: rgba(0,255,65,.4);
+    letter-spacing: .04em; text-align: center; line-height: 1.6;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="widget">
+  <div class="top-label">Summer Game Fest 2026</div>
+  <div class="emoji">🎬</div>
+  <div class="num" id="num">0</div>
+  <div class="bot-label">World Premiere</div>
+  <div class="btns">
+    <button class="btn" id="minus" title="−1 (Q)">−</button>
+    <button class="btn" id="plus"  title="+1 (W)">+</button>
+  </div>
+  <div class="hint"><kbd>W</kbd> = +1 &nbsp;&nbsp; <kbd>Q</kbd> = −1</div>
+  <div class="obs-note">
+    OBS: Browser Source → ✓ Разрешить прозрачность<br>
+    Клавиши работают в окне «Взаимодействие»
+  </div>
+</div>
+
+<script>
+  let count = 0;
+  const numEl = document.getElementById('num');
+
+  function set(n) {
+    count = Math.max(0, Math.min(99, n));
+    numEl.textContent = count;
+    numEl.classList.remove('bump');
+    void numEl.offsetWidth;
+    numEl.classList.add('bump');
+  }
+
+  document.getElementById('plus').addEventListener('click',  () => set(count + 1));
+  document.getElementById('minus').addEventListener('click', () => set(count - 1));
+
+  // Touch support for OBS interact mode
+  document.getElementById('plus').addEventListener('touchend',  e => { e.preventDefault(); set(count + 1); });
+  document.getElementById('minus').addEventListener('touchend', e => { e.preventDefault(); set(count - 1); });
+
+  window.addEventListener('keydown', e => {
+    if (['INPUT','TEXTAREA','BUTTON','SELECT'].includes(e.target.tagName)) return;
+    const k = e.key.toLowerCase();
+    if (k === 'w') { e.preventDefault(); set(count + 1); }
+    if (k === 'q') { e.preventDefault(); set(count - 1); }
+  }, { capture: true, passive: false });
+</script>
+</body>
+</html>
